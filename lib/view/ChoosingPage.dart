@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class choosingPage extends StatelessWidget {
   const choosingPage({super.key});
@@ -50,46 +51,51 @@ class choosingPage extends StatelessWidget {
                         fontFamily: "Portada"),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 50.h),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.r),
-                      gradient: LinearGradient(
-                        tileMode: TileMode.clamp,
-                        colors: [
-                          Color(0xFFFABD63),
-                          Color(0xFFFABD63),
-                          Color(0xFFF6F6F6),
-                        ],
-                        begin: Alignment.bottomRight,
-                        end: Alignment.topLeft,
-                        transform: GradientRotation(0.4),
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed("/loginPage");
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 50.h),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.r),
+                        gradient: LinearGradient(
+                          tileMode: TileMode.clamp,
+                          colors: [
+                            Color(0xFFFABD63),
+                            Color(0xFFFABD63),
+                            Color(0xFFF6F6F6),
+                          ],
+                          begin: Alignment.bottomRight,
+                          end: Alignment.topLeft,
+                          transform: GradientRotation(0.4),
+                        ),
                       ),
-                    ),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 15.h, left: 58.w, right: 59.w),
-                          child: Text(
-                            "الغرف الكتابية",
-                            style: TextStyle(
-                                fontSize: 15.sp,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Portada"),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: 15.h, left: 58.w, right: 59.w),
+                            child: Text(
+                              "الغرف الكتابية",
+                              style: TextStyle(
+                                  fontSize: 15.sp,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Portada"),
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 14.h),
-                          child: Image.asset(
-                            "assets/images/message.png",
-                            width: 220.w,
-                            height: 120.h,
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 14.h),
+                            child: Image.asset(
+                              "assets/images/message.png",
+                              width: 220.w,
+                              height: 120.h,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

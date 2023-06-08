@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lametna/view/ChoosingPage.dart';
 import 'package:lametna/view/LoginPage.dart';
 import 'package:get/get.dart';
 
@@ -22,6 +23,10 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
+          getPages: [
+            GetPage(name: '/loginPage', page: () => const LoginPage()),
+            GetPage(name: '/choosingPage', page: () => const choosingPage()),
+          ],
           title: 'First Method',
           // You can use the library anywhere in the app even in theme
           theme: ThemeData(
@@ -31,7 +36,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: LoginPage(),
+      child: choosingPage(),
     );
   }
 }
