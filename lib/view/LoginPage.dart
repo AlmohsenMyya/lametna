@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  // const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -235,10 +235,10 @@ class LoginPage extends StatelessWidget {
 }
 
 Widget _buildBackgroundImage(String image, double x, double y, int size,
-    {double? opacity = 0.07}) {
+    {double opacity = 0.07}) {
   return Container(
     child: Opacity(
-      opacity: opacity!,
+      opacity: opacity,
       child: Image.asset(
         'assets/images/$image',
         width: size.w,

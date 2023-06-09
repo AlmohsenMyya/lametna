@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class choosingPage extends StatelessWidget {
-  const choosingPage({super.key});
+  // const choosingPage({super.key});
 
   @override
   Widget build(BuildContext context) {

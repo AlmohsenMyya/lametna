@@ -8,11 +8,11 @@ import 'package:get/get.dart';
 import 'package:lametna/view/chatHomePage.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  // const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,9 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           getPages: [
-            GetPage(name: '/loginPage', page: () => const LoginPage()),
-            GetPage(name: '/choosingPage', page: () => const choosingPage()),
-            GetPage(name: "/chatHomePage", page: () => const ChatHomePage())
+            GetPage(name: '/loginPage', page: () => LoginPage()),
+            GetPage(name: '/choosingPage', page: () => choosingPage()),
+            GetPage(name: "/chatHomePage", page: () => ChatHomePage())
           ],
           title: 'First Method',
           // You can use the library anywhere in the app even in theme
