@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lametna/view/ChoosingPage.dart';
 import 'package:lametna/view/LoginPage.dart';
 import 'package:get/get.dart';
+import 'package:lametna/view/chatHomePage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
           getPages: [
             GetPage(name: '/loginPage', page: () => const LoginPage()),
             GetPage(name: '/choosingPage', page: () => const choosingPage()),
+            GetPage(name: "/chatHomePage", page: () => const ChatHomePage())
           ],
           title: 'First Method',
           // You can use the library anywhere in the app even in theme

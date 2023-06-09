@@ -185,39 +185,44 @@ class LoginPage extends StatelessWidget {
             Positioned(
               bottom: 100.h,
               left: Get.width / 2 - 50.w,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color(0xFFffcc00),
-                  borderRadius: BorderRadius.circular(10.r),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 1,
-                      blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 7.h, 20.w, 7.w),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15.w),
-                        child: Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white,
-                          size: 16.sp,
-                        ),
-                      ),
-                      Text(
-                        "دخول زائر",
-                        style: TextStyle(
-                            fontSize: 15.sp,
-                            color: Colors.white,
-                            fontFamily: "Portada"),
+              child: GestureDetector(
+                onTap: () {
+                  Get.toNamed("/chatHomePage");
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFFffcc00),
+                    borderRadius: BorderRadius.circular(10.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 7,
+                        offset: Offset(0, 3), // changes position of shadow
                       ),
                     ],
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(0, 7.h, 20.w, 7.w),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15.w),
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.white,
+                            size: 16.sp,
+                          ),
+                        ),
+                        Text(
+                          "دخول زائر",
+                          style: TextStyle(
+                              fontSize: 15.sp,
+                              color: Colors.white,
+                              fontFamily: "Portada"),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
