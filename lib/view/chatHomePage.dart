@@ -278,25 +278,25 @@ class ChatHomePage extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.h),
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Row(
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               "البلد:",
               style: TextStyle(
                   color: Colors.black, fontFamily: "Portada", fontSize: 12.sp),
             ),
-            SizedBox(
-              width: 15.w,
-            ),
             GetBuilder<ChatHomeController>(
                 init: ChatHomeController(),
                 builder: (controller) {
                   return SizedBox(
                     height: 25.h,
+                    width: Get.width * 0.8,
                     child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
+                        physics: BouncingScrollPhysics(),
                         itemCount: controller.countries.length,
                         itemBuilder: (context, index) => Padding(
                               padding: EdgeInsets.symmetric(horizontal: 3.w),
