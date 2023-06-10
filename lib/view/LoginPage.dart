@@ -187,7 +187,7 @@ class LoginPage extends StatelessWidget {
               left: Get.width / 2 - 50.w,
               child: GestureDetector(
                 onTap: () {
-                  Get.toNamed("/chatHomePage");
+                  Get.toNamed("/home");
                 },
                 child: Container(
                   decoration: BoxDecoration(

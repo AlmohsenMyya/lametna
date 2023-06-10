@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unrelated_type_equality_checks
 
 import 'dart:ui';
 
@@ -112,6 +112,7 @@ class ChatHomePage extends StatelessWidget {
                     ],
                   ),
                   child: TextFormField(
+                    autofocus: false,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(
                           horizontal: 20.w, vertical: 15.h),
@@ -241,11 +242,14 @@ class ChatHomePage extends StatelessWidget {
                         shrinkWrap: true,
                         children: [
                           _countriesBuilder(),
-                          _builderRooms(
+                          _builderRooms(context,
                               color: Color.fromARGB(255, 226, 92, 137)),
-                          _builderRooms(color: Colors.lightBlueAccent),
-                          _builderRooms(color: Colors.orangeAccent),
+                          _builderRooms(context, color: Colors.lightBlueAccent),
                           _builderRooms(
+                            context,
+                            color: Colors.orangeAccent,
+                          ),
+                          _builderRooms(context,
                               color: Color.fromARGB(255, 226, 92, 137)),
                         ],
                       ),
@@ -257,10 +261,10 @@ class ChatHomePage extends StatelessWidget {
                         shrinkWrap: true,
                         children: [
                           _countriesBuilder(),
-                          _builderRooms(),
-                          _builderRooms(),
-                          _builderRooms(),
-                          _builderRooms(),
+                          _builderRooms(context),
+                          _builderRooms(context),
+                          _builderRooms(context),
+                          _builderRooms(context),
                         ],
                       ),
                     ),
@@ -286,6 +290,9 @@ class ChatHomePage extends StatelessWidget {
               "البلد:",
               style: TextStyle(
                   color: Colors.black, fontFamily: "Portada", fontSize: 12.sp),
+            ),
+            SizedBox(
+              width: 5.w,
             ),
             GetBuilder<ChatHomeController>(
                 init: ChatHomeController(),
@@ -317,115 +324,344 @@ class ChatHomePage extends StatelessWidget {
     );
   }
 
-  Widget _builderRooms({Color color = Colors.white}) {
+  Widget _builderRooms(BuildContext context, {Color color = Colors.white}) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
-        child: Card(
-          elevation: 6,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.r),
-          ),
-          child: Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: color,
+      child: GestureDetector(
+        onTap: () {
+          showAlert(context);
+        },
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
+          child: Card(
+            elevation: 6,
+            shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.r),
             ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      // color: Colors.red,
-                      height: 80.h,
-                      width: 100.w,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10), // Image border
-                        child: SizedBox.fromSize(
-                          size: Size.fromRadius(30.r), // Image radius
-                          child: Image.network(
-                            'https://media.istockphoto.com/id/1295072146/vector/mini-heart-korean-love-hand-finger-symbol-on-pink-background-vector-illustration.jpg?s=612x612&w=0&k=20&c=eihpG3p1GoSvMjlSAQjCft50iff2I1AweF2a1MLI1SQ=',
-                            fit: BoxFit.fill,
-                            // height: 30,
-                            // width: 30,
+            child: Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(20.r),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        // color: Colors.red,
+                        height: 80.h,
+                        width: 100.w,
+                        child: ClipRRect(
+                          borderRadius:
+                              BorderRadius.circular(10), // Image border
+                          child: SizedBox.fromSize(
+                            size: Size.fromRadius(30.r), // Image radius
+                            child: Image.network(
+                              'https://media.istockphoto.com/id/1295072146/vector/mini-heart-korean-love-hand-finger-symbol-on-pink-background-vector-illustration.jpg?s=612x612&w=0&k=20&c=eihpG3p1GoSvMjlSAQjCft50iff2I1AweF2a1MLI1SQ=',
+                              fit: BoxFit.fill,
+                              // height: 30,
+                              // width: 30,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    SizedBox(
-                      // height: 100,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Image.asset(
-                                "assets/images/flags/egypt.png",
-                                width: 14.w,
-                                height: 15.h,
-                              ),
-                              SizedBox(
-                                width: 5.w,
-                              ),
-                              Text(
-                                "القاهرة",
-                                style: TextStyle(
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                    fontFamily: "Portada"),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            "الهروب من الواقع",
-                            style: TextStyle(
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontFamily: "Portada"),
-                          ),
-                        ],
+                      SizedBox(
+                        width: 10.w,
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "الناس يعرفون معني الوفاء",
-                        style: TextStyle(
-                            fontSize: 12.sp,
-                            color: Colors.black,
-                            fontFamily: "Portada"),
+                      SizedBox(
+                        // height: 100,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Image.asset(
+                                  "assets/images/flags/egypt.png",
+                                  width: 14.w,
+                                  height: 15.h,
+                                ),
+                                SizedBox(
+                                  width: 5.w,
+                                ),
+                                Text(
+                                  "القاهرة",
+                                  style: TextStyle(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      fontFamily: "Portada"),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              "الهروب من الواقع",
+                              style: TextStyle(
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontFamily: "Portada"),
+                            ),
+                          ],
+                        ),
                       ),
-                      Text("300 ",
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "الناس يعرفون معني الوفاء",
                           style: TextStyle(
                               fontSize: 12.sp,
                               color: Colors.black,
-                              fontFamily: "Portada")),
-                    ],
+                              fontFamily: "Portada"),
+                        ),
+                        Text("300 ",
+                            style: TextStyle(
+                                fontSize: 12.sp,
+                                color: Colors.black,
+                                fontFamily: "Portada")),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  void showAlert(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return GetBuilder<ChatHomeController>(builder: (controller) {
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.r)),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      controller.changeAlertIndex(0);
+                    },
+                    child: Container(
+                      width: 90.w,
+                      height: 40.h,
+                      decoration: controller.alertIndex != 1
+                          ? BoxDecoration(
+                              color: Color(0xFFEFA11B),
+                              borderRadius: BorderRadius.circular(10.r),
+                            )
+                          : BoxDecoration(
+                              // color: Color(0xFFEFA11B),
+                              border: Border.all(
+                                  color: Color(0xFFFABB64), width: 1),
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                      child: Center(
+                        child: Text(
+                          "زائر",
+                          style: TextStyle(
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.bold,
+                              color: controller.alertIndex == 1
+                                  ? Color(0xFFEFA11B)
+                                  : Colors.white,
+                              fontFamily: "Portada"),
+                        ),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      controller.changeAlertIndex(1);
+                    },
+                    child: Container(
+                      width: 90.w,
+                      height: 40.h,
+                      decoration: controller.alertIndex == 1
+                          ? BoxDecoration(
+                              color: Color(0xFFEFA11B),
+                              borderRadius: BorderRadius.circular(10.r),
+                            )
+                          : BoxDecoration(
+                              // color: Color(0xFFEFA11B),
+                              border: Border.all(
+                                  color: Color(0xFFFABB64), width: 1),
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                      child: Center(
+                        child: Text("عضو",
+                            style: TextStyle(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.bold,
+                                color: controller.alertIndex != 1
+                                    ? Color(0xFFEFA11B)
+                                    : Colors.white,
+                                fontFamily: "Portada")),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              content: Container(
+                // width: MediaQuery.of(context).size.width * 0.8,
+                // height: MediaQuery.of(context).size.height * 0.5,
+                height: controller.alertIndex != 1 ? 135.h : 215.h,
+                width: 366.w,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: controller.alertIndex != 1 ? 50.h : 131.h,
+                      child: PageView(
+                        controller: controller.alertPageController,
+                        children: <Widget>[
+                          Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10.w),
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  suffixIcon: Icon(
+                                    Icons.person,
+                                    size: 20.sp,
+                                    color: Colors.grey,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 20.w, vertical: 7.h),
+                                  filled: true,
+                                  hintText: "اسم المستتخدم",
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10.sp,
+                                    fontFamily: "Portada",
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(10.r),
+                                  ),
+                                ),
+                                style: TextStyle(
+                                  color: Color(0xFFf1f1f1),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Column(
+                            children: [
+                              Directionality(
+                                textDirection: TextDirection.rtl,
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.w),
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                      suffixIcon: Icon(
+                                        Icons.person,
+                                        size: 20.sp,
+                                        color: Colors.grey,
+                                      ),
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 20.w, vertical: 7.h),
+                                      filled: true,
+                                      hintText: "اسم المستتخدم",
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 10.sp,
+                                        fontFamily: "Portada",
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius:
+                                            BorderRadius.circular(10.r),
+                                      ),
+                                    ),
+                                    style: TextStyle(
+                                      color: Color(0xFFf1f1f1),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Directionality(
+                                textDirection: TextDirection.rtl,
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.w),
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 20.w, vertical: 7.h),
+                                      filled: true,
+                                      hintText: "اسم المستتخدم",
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 10.sp,
+                                        fontFamily: "Portada",
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius:
+                                            BorderRadius.circular(10.r),
+                                      ),
+                                    ),
+                                    style: TextStyle(
+                                      color: Color(0xFFf1f1f1),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 30.h),
+                      child: Container(
+                        width: 120,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFEFA11B),
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "دخول",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontFamily: "Portada"),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+      },
     );
   }
 }
