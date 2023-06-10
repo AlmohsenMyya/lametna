@@ -648,24 +648,29 @@ class ChatHomePage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 30.h),
-                      child: Container(
-                        width: 120,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Color(0xFFEFA11B),
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "دخول",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 15.sp,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontFamily: "Portada"),
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed('/room');
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 30.h),
+                        child: Container(
+                          width: 120,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Color(0xFFEFA11B),
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "دخول",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontFamily: "Portada"),
+                            ),
                           ),
                         ),
                       ),
