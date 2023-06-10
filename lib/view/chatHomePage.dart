@@ -7,7 +7,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:lametna/controllers/chathomePage.dart';
+import 'package:lametna/controllers/chathomePageController.dart';
 
 class ChatHomePage extends StatelessWidget {
   // const ChatHomePage({super.key});
@@ -301,21 +301,24 @@ class ChatHomePage extends StatelessWidget {
                     height: 25.h,
                     width: Get.width * 0.8,
                     child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        physics: BouncingScrollPhysics(),
-                        itemCount: controller.countries.length,
-                        itemBuilder: (context, index) => Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 3.w),
-                              child: ClipOval(
-                                child: SizedBox.fromSize(
-                                  size: Size.fromRadius(15.r), // Image radius
-                                  child: Image.asset(
-                                      'assets/images/flags/${controller.countries[index]}.png',
-                                      fit: BoxFit.fill),
-                                ),
-                              ),
-                            )),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      physics: BouncingScrollPhysics(),
+                      itemCount: controller.countries.length,
+                      itemBuilder: (context, index) => Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 3.w),
+                        child: ClipOval(
+                          child: SizedBox.fromSize(
+                            size: Size.fromRadius(14.r), // Image radius
+                            child: Image.asset(
+                                'assets/images/flags/${controller.countries[index]}.png',
+                                fit: BoxFit.fill,
+                                width: 12.w,
+                                height: 12.h),
+                          ),
+                        ),
+                      ),
+                    ),
                   );
                 }),
           ],
