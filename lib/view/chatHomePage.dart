@@ -8,13 +8,18 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/chathomePageController.dart';
+import 'package:lametna/view/side%20pages/drawer.dart';
+import 'package:lametna/view/store/test.dart';
 
 class ChatHomePage extends StatelessWidget {
   // const ChatHomePage({super.key});
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: homeDrawer(),
+      endDrawerEnableOpenDragGesture: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(300.h),
         child: Container(
@@ -62,7 +67,13 @@ class ChatHomePage extends StatelessWidget {
                   width: 55.w,
                   height: 30.h,
                 ),
-                IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
+                IconButton(
+                    onPressed: () {
+                      print("object");
+                      Scaffold.of(context).openDrawer();
+                      _scaffoldKey.currentState.openEndDrawer();
+                    },
+                    icon: Icon(Icons.menu)),
               ],
               bottom: PreferredSize(
                 preferredSize: Size.fromHeight(100.h),
@@ -207,6 +218,7 @@ class ChatHomePage extends StatelessWidget {
                         child: TextButton(
                           onPressed: () {
                             controller.changeIndex(0);
+                            Scaffold.of(context).openDrawer();
                           },
                           child: Text(
                             'الغرف المميزة',
