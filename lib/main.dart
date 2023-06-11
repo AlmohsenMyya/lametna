@@ -7,7 +7,7 @@ import 'package:lametna/view/LoginPage.dart';
 import 'package:get/get.dart';
 import 'package:lametna/view/chatHomePage.dart';
 import 'package:lametna/view/home.dart';
-import 'package:lametna/view/roomPage.dart';
+import 'package:lametna/view/chat/roomPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
             GetPage(name: '/choosingPage', page: () => choosingPage()),
             GetPage(name: "/chatHomePage", page: () => ChatHomePage()),
             GetPage(name: "/home", page: () => Home()),
-            GetPage(name: '/room', page: () => RoomPage())
+            GetPage(name: '/room', page: () => RoomPage()),
           ],
           title: 'First Method',
           // You can use the library anywhere in the app even in theme
