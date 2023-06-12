@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,231 +10,224 @@ class RoomPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(72.h),
-        child: Container(
-          decoration: const BoxDecoration(
-            // LinearGradient
-            gradient: LinearGradient(
-              colors: [
-                const Color(0xFFF792F0),
-                const Color(0xFFFABD63),
-              ],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
+    return SafeArea(
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(72.h),
+          child: Container(
+            decoration: const BoxDecoration(
+              // LinearGradient
+              gradient: LinearGradient(
+                colors: [
+                  const Color(0xFFF792F0),
+                  const Color(0xFFFABD63),
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              ),
             ),
-          ),
-          child: AppBar(
-            leadingWidth: 100,
-            toolbarHeight: 72.35.h,
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            leading: IconButton(
-              icon: Row(
+            child: AppBar(
+              leadingWidth: 90.w,
+              toolbarHeight: 72.35.h,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              centerTitle: true,
+              title: Text(
+                ' اسم الغرفة',
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontFamily: "Portada",
+                  color: Colors.white,
+                ),
+              ),
+              leading: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+                  SizedBox(width: 5.w),
                   ImageIcon(
                     AssetImage('assets/icons/login.png'),
                   ),
 
-                  DropdownButton(
-                    value: "الحالة",
-                    items: <String>[
-                      'الحالة',
-                      'الإعدادات',
-                      'اللحظات',
-                      'إدارة الغرفة',
-                      "مشاركة",
-                      "المفضلة",
-                      "عن البرنامج",
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      );
-                    }).toList(),
-                    underline: SizedBox(
-                      height: 0,
+                  PopupMenuButton(
+                    icon: Icon(
+                      Icons.settings,
+                      color: Colors.white,
                     ),
-                    //underline: SizedBox(),
-                    onChanged: (value) {},
-                  ),
-                  // SizedBox(
-                  //   width: 65.w,
-                  //   child: DropdownButton(
-                  //     elevation: 0,
-                  //     onChanged: (value) {},
-                  //     icon: Icon(
-                  //       Icons.settings,
-                  //       color: Colors.white,
-                  //     ),
-                  // items: <String>[
-                  //   'الحالة',
-                  //   'الإعدادات',
-                  //   'اللحظات',
-                  //   'إدارة الغرفة',
-                  //   "مشاركة",
-                  //   "المفضلة",
-                  //   "عن البرنامج",
-                  // ].map<DropdownMenuItem<String>>((String value) {
-                  //   return DropdownMenuItem<String>(
-                  //     value: value,
-                  //     child: Text(
-                  //       value,
-                  //       style: TextStyle(color: Colors.black),
-                  //     ),
-                  //   );
-                  // }).toList(),
-                  //   ),
+                    onSelected: (value) {
+                      // your logic
+                    },
+                    itemBuilder: (BuildContext bc) {
+                      return [
+                        "الحالة",
+                        "الاعدادات",
+                        "اللحظات",
+                        "إدارة الغرفة",
+                        "مشاركة",
+                        "المفضلة",
+                        "عن البرنامج",
+                      ]
+                          .toList()
+                          .map((e) => PopupMenuItem(
+                                height: 15.h,
+                                child: Text(e,
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontFamily: "Segoe",
+                                        color: Colors.black)),
+                                value: '/contact',
+                              ))
+                          .toList();
+                    },
+                  )
+                  // Icon(
+                  //   Icons.settings,
+                  //   color: Colors.white,
                   // )
                 ],
               ),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            // actions widget
-            actions: <Widget>[
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.volume_up),
-              ),
-              ImageIcon(
-                AssetImage('assets/icons/chat.png'),
-                size: 23.sp,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.w),
-                child: Image.asset(
-                  'assets/icons/group.png',
-                  width: 30.sp,
+              actions: <Widget>[
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.volume_up),
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                GetBuilder<RoomsPageController>(
-                    init: RoomsPageController(),
-                    builder: (controller) {
-                      return Container(
-                        height: 70.h,
-                        decoration: BoxDecoration(
-                          // LinearGradient
-                          gradient: controller.roomStatus
-                              ? LinearGradient(
-                                  colors: [
-                                    Color(0xFFFFFFFF),
-                                    Color(0xFFA2ACAC),
-                                  ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                )
-                              : LinearGradient(
-                                  colors: [
-                                    Color(0xFFFFFFFF),
-                                    Color(0xFFFABD63),
-                                  ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ),
-                        ),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 21.w,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                // Get.toNamed('/VIPRoom');
-                                controller.changeRoomStatus();
-                              },
-                              child: SizedBox(
-                                width: 65.w,
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 5.h),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20.r),
-                                    color: controller.roomStatus
-                                        ? Color(0xffF792F0)
-                                        : Color(0xFFFABD63),
-                                  ),
-                                  child: Text(
-                                    controller.roomStatus
-                                        ? 'الروم الحديث'
-                                        : "مظهر قديم",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 9.sp,
-                                        fontFamily: "Portada",
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 60.w,
-                            ),
-                            Text("22:10",
-                                style: TextStyle(
-                                    fontSize: 9.sp,
-                                    fontFamily: "Portada",
-                                    color: Colors.black)),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            SizedBox(
-                              width: 240.w,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  userInCall(),
-                                  userInCall(),
-                                  userInCall(),
-                                  userInCall(),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    }),
-                GetBuilder<RoomsPageController>(builder: (controller) {
-                  return Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        // LinearGradient
-                        gradient: controller.roomStatus
-                            ? null
-                            : LinearGradient(
-                                colors: [
-                                  Color(0xFFFABD63),
-                                  Color(0xFFFABB64),
-                                  Color(0xFFF792F0),
-                                ],
-                                begin: Alignment.centerRight,
-                                end: Alignment.centerLeft,
-                              ),
-                      ),
-                    ),
-                  );
-                }),
+                ImageIcon(
+                  AssetImage('assets/icons/chat.png'),
+                  size: 23.sp,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15.w),
+                  child: Image.asset(
+                    'assets/icons/group.png',
+                    width: 30.sp,
+                  ),
+                )
               ],
             ),
           ),
-          buildMyNavBar(context)
-        ],
+        ),
+
+        body: Column(
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  GetBuilder<RoomsPageController>(
+                      init: RoomsPageController(),
+                      builder: (controller) {
+                        return Container(
+                          height: 70.h,
+                          decoration: BoxDecoration(
+                            // LinearGradient
+                            gradient: controller.roomStatus
+                                ? LinearGradient(
+                                    colors: [
+                                      Color(0xFFFFFFFF),
+                                      Color(0xFFA2ACAC),
+                                    ],
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  )
+                                : LinearGradient(
+                                    colors: [
+                                      Color(0xFFFFFFFF),
+                                      Color(0xFFFABD63),
+                                    ],
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ),
+                          ),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 21.w,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  // Get.toNamed('/VIPRoom');
+                                  controller.changeRoomStatus();
+                                },
+                                child: SizedBox(
+                                  width: 65.w,
+                                  child: Container(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 5.h),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20.r),
+                                      color: controller.roomStatus
+                                          ? Color(0xffF792F0)
+                                          : Color(0xFFFABD63),
+                                    ),
+                                    child: Text(
+                                      controller.roomStatus
+                                          ? 'الروم الحديث'
+                                          : "مظهر قديم",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 9.sp,
+                                          fontFamily: "Portada",
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 60.w,
+                              ),
+                              Text("22:10",
+                                  style: TextStyle(
+                                      fontSize: 9.sp,
+                                      fontFamily: "Portada",
+                                      color: Colors.black)),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              SizedBox(
+                                width: 240.w,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    userInCall(),
+                                    userInCall(),
+                                    userInCall(),
+                                    userInCall(),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      }),
+                  GetBuilder<RoomsPageController>(builder: (controller) {
+                    return Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          // LinearGradient
+                          gradient: controller.roomStatus
+                              ? null
+                              : LinearGradient(
+                                  colors: [
+                                    Color(0xFFFABD63),
+                                    Color(0xFFFABB64),
+                                    Color(0xFFF792F0),
+                                  ],
+                                  begin: Alignment.centerRight,
+                                  end: Alignment.centerLeft,
+                                ),
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              ),
+            ),
+            buildMyNavBar(context)
+          ],
+        ),
+        // bottomNavigationBar: ,
+        resizeToAvoidBottomInset: false,
       ),
-      // bottomNavigationBar: ,
-      resizeToAvoidBottomInset: false,
     );
   }
 

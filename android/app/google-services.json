@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "910358507269",
+    "firebase_url": "https://lametna-42250-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "lametna-42250",
+    "storage_bucket": "lametna-42250.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:910358507269:android:2c767d81a0c8d3d76f516c",
+        "android_client_info": {
+          "package_name": "com.example.lametna"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "910358507269-ehfihfplbidisk4em57o4ufkrp8fs4l6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_UE6wM1vedIBnFDPaluuB37-7qGJhBcA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "910358507269-ehfihfplbidisk4em57o4ufkrp8fs4l6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

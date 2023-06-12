@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 Widget homeDrawer() => Drawer(
       child: Container(
@@ -61,7 +62,9 @@ Widget homeDrawer() => Drawer(
                 color: Colors.white,
                 size: 27.sp,
               ),
-              () {},
+              () {
+                Get.toNamed('/customerService');
+              },
             ),
           ],
         ),

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lametna/controllers/login.dart';
 
 class LoginPage extends StatelessWidget {
   // const LoginPage({super.key});
@@ -33,155 +34,167 @@ class LoginPage extends StatelessWidget {
             _buildBackgroundImage("heart.png", -101.sp, 231.sp, 202,
                 opacity: 1),
             _buildBackgroundImage("message.png", 0.sp, 300.sp, 179),
-            Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.w),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.r),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 10,
-
-                        offset: Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  height: 290.h,
-                  width: double.infinity,
-                  child: Column(
-                    children: [
-                      Container(
+            GetBuilder<LoginController>(
+                init: LoginController(),
+                builder: (controller) {
+                  return Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 30.w),
+                      child: Container(
                         decoration: BoxDecoration(
-                          color: Color(0xFFffcc00),
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(10.r),
-                            bottomRight: Radius.circular(10.r),
-                          ),
+                          borderRadius: BorderRadius.circular(20.r),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 10,
+
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 25.w, vertical: 5.h),
-                          child: Text(
-                            "دخول الاسماء المسجلة",
-                            style: TextStyle(
-                                fontSize: 15.sp,
-                                color: Colors.white,
-                                fontFamily: "Portada"),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 40.w),
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 20.w, vertical: 7.h),
-                              filled: true,
-                              hintText: "اسم المستتخدم",
-                              hintStyle: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 10.sp,
-                                fontFamily: "Portada",
+                        height: 290.h,
+                        width: double.infinity,
+                        child: Column(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Color(0xFFffcc00),
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(10.r),
+                                  bottomRight: Radius.circular(10.r),
+                                ),
                               ),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10.r),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 25.w, vertical: 5.h),
+                                child: Text(
+                                  "دخول الاسماء المسجلة",
+                                  style: TextStyle(
+                                      fontSize: 15.sp,
+                                      color: Colors.white,
+                                      fontFamily: "Portada"),
+                                ),
                               ),
                             ),
-                            style: TextStyle(
-                              color: Color(0xFFf1f1f1),
+                            SizedBox(
+                              height: 15.h,
                             ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 40.w),
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 20.w, vertical: 7.h),
-                              filled: true,
-                              hintText: "كلمة المرور",
-                              hintStyle: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 10.sp,
-                                fontFamily: "Portada",
+                            Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 40.w),
+                                child: TextFormField(
+                                  controller: controller.userNameController,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 20.w, vertical: 7.h),
+                                    filled: true,
+                                    hintText: "اسم المستتخدم",
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 10.sp,
+                                      fontFamily: "Portada",
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      borderRadius: BorderRadius.circular(10.r),
+                                    ),
+                                  ),
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 40.w),
+                                child: TextFormField(
+                                  controller: controller.passwordController,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 20.w, vertical: 7.h),
+                                    filled: true,
+                                    hintText: "كلمة المرور",
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 10.sp,
+                                      fontFamily: "Portada",
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      borderRadius: BorderRadius.circular(10.r),
+                                    ),
+                                  ),
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
                             ),
-                            style: TextStyle(
-                              color: Color(0xFFf1f1f1),
+                            SizedBox(
+                              height: 20.h,
                             ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 10.w),
-                            child: Icon(
-                              Icons.file_download_outlined,
-                              color: Color(0xFFffcc00),
-                              size: 40.sp,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Color(0xFFffcc00),
-                              borderRadius: BorderRadius.circular(10.r),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 1,
-                                  blurRadius: 7,
-                                  offset: Offset(
-                                      0, 3), // changes position of shadow
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10.w),
+                                  child: Icon(
+                                    Icons.file_download_outlined,
+                                    color: Color(0xFFffcc00),
+                                    size: 40.sp,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    controller.login(context);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFFffcc00),
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 1,
+                                          blurRadius: 7,
+                                          offset: Offset(0,
+                                              3), // changes position of shadow
+                                        ),
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 25.w, vertical: 5.h),
+                                      child: Text(
+                                        "دخول",
+                                        style: TextStyle(
+                                            fontSize: 15.sp,
+                                            color: Colors.white,
+                                            fontFamily: "Portada"),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 30.w,
                                 ),
                               ],
                             ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 25.w, vertical: 5.h),
-                              child: Text(
-                                "دخول",
-                                style: TextStyle(
-                                    fontSize: 15.sp,
-                                    color: Colors.white,
-                                    fontFamily: "Portada"),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 30.w,
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+                    ),
+                  );
+                }),
             Positioned(
               bottom: 100.h,
               left: Get.width / 2 - 50.w,

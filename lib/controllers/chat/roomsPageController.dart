@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 class RoomsPageController extends GetxController {
-  bool roomStatus = false;
+  bool roomStatus = true;
 
   void changeRoomStatus() {
     roomStatus = !roomStatus;

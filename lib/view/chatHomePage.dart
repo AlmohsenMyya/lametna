@@ -3,6 +3,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,11 +14,12 @@ import 'package:lametna/view/store/test.dart';
 
 class ChatHomePage extends StatelessWidget {
   // const ChatHomePage({super.key});
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
+      // key: _scaffoldKey,
+      // drawer: Drawer(),
       endDrawer: homeDrawer(),
       endDrawerEnableOpenDragGesture: false,
       appBar: PreferredSize(
@@ -61,20 +63,21 @@ class ChatHomePage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              actions: [
-                Image.asset(
-                  "assets/images/trophy.png",
-                  width: 55.w,
-                  height: 30.h,
-                ),
-                IconButton(
-                    onPressed: () {
-                      print("object");
-                      Scaffold.of(context).openDrawer();
-                      _scaffoldKey.currentState.openEndDrawer();
-                    },
-                    icon: Icon(Icons.menu)),
-              ],
+              // actions: [
+              //   Image.asset(
+              //     "assets/images/trophy.png",
+              //     width: 55.w,
+              //     height: 30.h,
+              //   ),
+              //   IconButton(
+              //       onPressed: () {
+              //         print("object");
+              //         Scaffold.of(context).openDrawer();
+              //         _scaffoldKey.currentState.openEndDrawer();
+              //       },
+              //       icon: Icon(Icons.menu)),
+              // ],
+
               bottom: PreferredSize(
                 preferredSize: Size.fromHeight(100.h),
                 child: Padding(
@@ -95,197 +98,194 @@ class ChatHomePage extends StatelessWidget {
               )),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          // shrinkWrap: true,
-          // physics: NeverScrollableScrollPhysics(),
-          children: [
-            SizedBox(
-              height: 15.h,
-            ),
-            Directionality(
-              textDirection: TextDirection.rtl,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 35.w),
-                child: Container(
-                  height: 50.h,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(13.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 1,
-                        blurRadius: 6,
-                        offset:
-                            const Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: TextFormField(
-                    autofocus: false,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(
-                          horizontal: 20.w, vertical: 15.h),
-                      hintText: "بحث عن غرفة",
-                      hintStyle: TextStyle(
-                        fontSize: 11.sp,
-                        color: Colors.grey,
-                      ),
-                      suffixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(13.r),
-                      ),
+      body: ListView(
+        shrinkWrap: true,
+        // physics: NeverScrollableScrollPhysics(),
+        children: [
+          SizedBox(
+            height: 15.h,
+          ),
+          Directionality(
+            textDirection: TextDirection.rtl,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 35.w),
+              child: Container(
+                height: 50.h,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(13.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 6,
+                      offset: const Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: TextFormField(
+                  autofocus: false,
+                  decoration: InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
+                    hintText: "بحث عن غرفة",
+                    hintStyle: TextStyle(
+                      fontSize: 11.sp,
+                      color: Colors.grey,
+                    ),
+                    suffixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(13.r),
                     ),
                   ),
                 ),
               ),
             ),
-            SizedBox(
-              height: 34.h,
-            ),
-            GetBuilder<ChatHomeController>(
-                init: ChatHomeController(),
-                builder: (controller) {
-                  return Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 50.h,
-                        decoration: controller.selectedIndex == 1
-                            ? BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.r),
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Color(0xFFFABD63),
-                                    Color(0xFFF792F0),
-                                  ],
-                                ),
-                              )
-                            : BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.r),
-                                border: Border.all(
-                                  color: Color(0xFFDADADC),
-                                ),
-                              ),
-                        child: TextButton(
-                          onPressed: () {
-                            controller.changeIndex(1);
-                          },
-                          child: Text(
-                            'الغرف العادية',
-                            style: controller.selectedIndex == 1
-                                ? TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12.sp,
-                                  )
-                                : TextStyle(
-                                    color: Color(0xFFDADADC),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12.sp,
-                                  ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 15.w,
-                      ),
-                      Container(
-                        height: 50.h,
-                        decoration: controller.selectedIndex != 1
-                            ? BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.r),
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Color(0xFFFABD63),
-                                    Color(0xFFF792F0),
-                                  ],
-                                ),
-                              )
-                            : BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.r),
-                                border: Border.all(
-                                  color: Color(0xFFDADADC),
-                                ),
-                              ),
-                        child: TextButton(
-                          onPressed: () {
-                            controller.changeIndex(0);
-                            Scaffold.of(context).openDrawer();
-                          },
-                          child: Text(
-                            'الغرف المميزة',
-                            style: controller.selectedIndex != 1
-                                ? TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12.sp,
-                                  )
-                                : TextStyle(
-                                    color: Color(0xFFDADADC),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12.sp,
-                                  ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                }),
-            GetBuilder<ChatHomeController>(builder: (controller) {
-              return SizedBox(
-                height: 500.h,
-                child: PageView(
-                  physics: NeverScrollableScrollPhysics(),
-                  controller: controller.pageController,
-                  // allowImplicitScrolling: true,
+          ),
+          SizedBox(
+            height: 34.h,
+          ),
+          GetBuilder<ChatHomeController>(
+              init: ChatHomeController(),
+              builder: (controller) {
+                return Row(
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.h),
-                      child: ListView(
-                        // physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        children: [
-                          _countriesBuilder(),
-                          _builderRooms(context,
-                              color: Color.fromARGB(255, 226, 92, 137)),
-                          _builderRooms(context, color: Colors.lightBlueAccent),
-                          _builderRooms(
-                            context,
-                            color: Colors.orangeAccent,
-                          ),
-                          _builderRooms(context,
-                              color: Color.fromARGB(255, 226, 92, 137)),
-                        ],
+                    Container(
+                      height: 50.h,
+                      decoration: controller.selectedIndex == 1
+                          ? BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Color(0xFFFABD63),
+                                  Color(0xFFF792F0),
+                                ],
+                              ),
+                            )
+                          : BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              border: Border.all(
+                                color: Color(0xFFDADADC),
+                              ),
+                            ),
+                      child: TextButton(
+                        onPressed: () {
+                          controller.changeIndex(1);
+                        },
+                        child: Text(
+                          'الغرف العادية',
+                          style: controller.selectedIndex == 1
+                              ? TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12.sp,
+                                )
+                              : TextStyle(
+                                  color: Color(0xFFDADADC),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12.sp,
+                                ),
+                        ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.h),
-                      child: ListView(
-                        // physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        children: [
-                          _countriesBuilder(),
-                          _builderRooms(context),
-                          _builderRooms(context),
-                          _builderRooms(context),
-                          _builderRooms(context),
-                        ],
+                    SizedBox(
+                      width: 15.w,
+                    ),
+                    Container(
+                      height: 50.h,
+                      decoration: controller.selectedIndex != 1
+                          ? BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Color(0xFFFABD63),
+                                  Color(0xFFF792F0),
+                                ],
+                              ),
+                            )
+                          : BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              border: Border.all(
+                                color: Color(0xFFDADADC),
+                              ),
+                            ),
+                      child: TextButton(
+                        onPressed: () {
+                          controller.changeIndex(0);
+                          Scaffold.of(context).openDrawer();
+                        },
+                        child: Text(
+                          'الغرف المميزة',
+                          style: controller.selectedIndex != 1
+                              ? TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12.sp,
+                                )
+                              : TextStyle(
+                                  color: Color(0xFFDADADC),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12.sp,
+                                ),
+                        ),
                       ),
                     ),
                   ],
-                ),
-              );
-            }),
-          ],
-        ),
+                );
+              }),
+          GetBuilder<ChatHomeController>(builder: (controller) {
+            return SizedBox(
+              height: (4 * 185).h,
+              child: PageView(
+                // physics: NeverScrollableScrollPhysics(),
+                controller: controller.pageController,
+                // allowImplicitScrolling: true,
+                children: [
+                  ConstrainedBox(
+                    constraints: BoxConstraints.expand(),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10.h),
+                      child: ListView(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        children: [
+                          _countriesBuilder(),
+                          _builderRooms(context, color: Colors.green),
+                          _builderRooms(context, color: Colors.red),
+                          _builderRooms(context, color: Colors.blue),
+                          _builderRooms(context, color: Colors.blue),
+
+                          //el mic
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10.h),
+                    child: ListView(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      children: [
+                        _countriesBuilder(),
+                        _builderRooms(context),
+                        _builderRooms(context),
+                        _builderRooms(context),
+                        _builderRooms(context),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
+        ],
       ),
     );
   }
@@ -340,6 +340,8 @@ class ChatHomePage extends StatelessWidget {
   }
 
   Widget _builderRooms(BuildContext context, {Color color = Colors.white}) {
+    //bet5od color law mafesh color betb2a white
+    //shayf el widget dy??
     return Directionality(
       textDirection: TextDirection.rtl,
       child: GestureDetector(
@@ -682,6 +684,8 @@ class ChatHomePage extends StatelessWidget {
           );
         });
       },
-    );
+    ).then((value) {
+      Get.put(ChatHomeController()).changeAlertIndex(0);
+    });
   }
 }
