@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 class RoomsSettingPageController extends GetxController {
   bool isSwitched = false;
   var textValue = 'Switch is OFF';
-  int sliderValue = 0;
+  int sliderValue = 21;
   Color pickerColor = Colors.black;
   bool roomStatus = false;
   TextEditingController hexaInputController = TextEditingController();

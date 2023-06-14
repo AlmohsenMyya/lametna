@@ -8,7 +8,10 @@ import 'package:get/get.dart';
 import 'package:lametna/view/chat/roomMangement.dart';
 import 'package:lametna/view/chat/roomPageSettings.dart';
 import 'package:lametna/view/chatHomePage.dart';
+import 'package:lametna/view/customer%20service/ComplaintsSuggestions.dart';
+import 'package:lametna/view/customer%20service/customerServiceChat.dart';
 import 'package:lametna/view/customer%20service/customerServiceHomePage.dart';
+import 'package:lametna/view/customer%20service/salesChat.dart';
 import 'package:lametna/view/home.dart';
 import 'package:lametna/view/chat/roomPage.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -47,6 +50,13 @@ class MyApp extends StatelessWidget {
             GetPage(name: '/customerService', page: () => CustomerService()),
             GetPage(name: '/roomMangement', page: () => RoomMangement()),
             GetPage(name: '/roomSettingsPage', page: () => RoomSettingsPage()),
+            GetPage(
+                name: '/customerServiceChat',
+                page: () => CustomerServiceChat()),
+            GetPage(name: '/salesChat', page: () => SalesChat()),
+            GetPage(
+                name: '/complaintsSuggestions',
+                page: () => ComplaintsSuggestions()),
           ],
           title: 'First Method',
           // You can use the library anywhere in the app even in theme

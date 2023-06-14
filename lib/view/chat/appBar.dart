@@ -20,7 +20,7 @@ PreferredSize appbarBuilder(String title, bool isCentered) {
       child: AppBar(
         centerTitle: false,
         title: Align(
-          alignment: isCentered ? Alignment.center : Alignment.centerLeft,
+          alignment: isCentered ? Alignment.center : Alignment.centerRight,
           child: Text(
             title,
             style: TextStyle(

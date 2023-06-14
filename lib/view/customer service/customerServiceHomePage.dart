@@ -63,33 +63,40 @@ class CustomerService extends StatelessWidget {
                 height: 80.h,
               ),
               _buildServices(
-                  "خدمة العملاء",
-                  Image.asset(
-                    'assets/icons/customerService.png',
-                    width: 35.w,
-                    height: 25.sp,
-                  )),
+                "خدمة العملاء",
+                Image.asset(
+                  'assets/icons/customerService.png',
+                  width: 35.w,
+                  height: 25.sp,
+                ),
+                "/customerServiceChat",
+              ),
               _buildServices(
                 "فريق المبيعات  ",
                 Icon(Icons.sell, color: Colors.black, size: 25.sp),
+                "/salesChat",
               ),
               _buildServices(
-                  "الشكاوي والمقترحات",
-                  Image.asset(
-                    'assets/icons/customerService3.png',
-                    width: 35.w,
-                    height: 25.sp,
-                  )),
+                "الشكاوي والمقترحات",
+                Image.asset(
+                  'assets/icons/customerService3.png',
+                  width: 35.w,
+                  height: 25.sp,
+                ),
+                "/complaintsSuggestions",
+              ),
             ],
           ),
         ));
   }
 
-  Padding _buildServices(String text, Widget icon) {
+  Padding _buildServices(String text, Widget icon, String pageName) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 60.w, vertical: 10.h),
+      padding: EdgeInsets.symmetric(horizontal: 60.w, vertical: 7.h),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Get.toNamed(pageName);
+        },
         style: ElevatedButton.styleFrom(
           primary: Colors.white,
           shape: RoundedRectangleBorder(
@@ -105,13 +112,13 @@ class CustomerService extends StatelessWidget {
               Text(
                 text,
                 style: TextStyle(
-                    fontSize: 14.sp,
+                    fontSize: 16.sp,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontFamily: "Portada"),
               ),
               SizedBox(
-                width: 45.w,
+                width: 28.w,
               ),
               icon,
             ],
