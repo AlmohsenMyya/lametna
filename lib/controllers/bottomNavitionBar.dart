@@ -4,11 +4,17 @@ import 'package:lametna/view/chatHomePage.dart';
 import 'package:lametna/view/store/test.dart';
 
 class BottomNavitionBarController extends GetxController {
+  bool isShow = true;
   int currentIndex = 0;
   int selectedIndex = 0;
 
   void changeIndex(int index) {
     currentIndex = index;
+    update();
+  }
+
+  void changeShow() {
+    isShow = !isShow;
     update();
   }
 

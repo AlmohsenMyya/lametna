@@ -5,16 +5,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lametna/view/ChoosingPage.dart';
 import 'package:lametna/view/LoginPage.dart';
 import 'package:get/get.dart';
+import 'package:lametna/view/chat/roomMangement.dart';
+import 'package:lametna/view/chat/roomPageSettings.dart';
 import 'package:lametna/view/chatHomePage.dart';
 import 'package:lametna/view/customer%20service/customerServiceHomePage.dart';
 import 'package:lametna/view/home.dart';
 import 'package:lametna/view/chat/roomPage.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:device_preview/device_preview.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(
+    DevicePreview(
+      builder: (context) => MyApp(),
+      enabled: false,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -37,6 +45,8 @@ class MyApp extends StatelessWidget {
             GetPage(name: "/home", page: () => Home()),
             GetPage(name: '/room', page: () => RoomPage()),
             GetPage(name: '/customerService', page: () => CustomerService()),
+            GetPage(name: '/roomMangement', page: () => RoomMangement()),
+            GetPage(name: '/roomSettingsPage', page: () => RoomSettingsPage()),
           ],
           title: 'First Method',
           // You can use the library anywhere in the app even in theme

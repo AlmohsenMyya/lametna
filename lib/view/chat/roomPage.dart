@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/chat/roomsPageController.dart';
+import 'package:lametna/view/chat/roomMangement.dart';
 
 class RoomPage extends StatelessWidget {
   // const RoomPage({super.key});
@@ -27,7 +28,7 @@ class RoomPage extends StatelessWidget {
               ),
             ),
             child: AppBar(
-              leadingWidth: 90.w,
+              leadingWidth: 105.w,
               toolbarHeight: 72.35.h,
               backgroundColor: Colors.transparent,
               elevation: 0,
@@ -44,45 +45,336 @@ class RoomPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   SizedBox(width: 5.w),
-                  ImageIcon(
-                    AssetImage('assets/icons/login.png'),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => RoomMangement()));
+                    },
+                    child: ImageIcon(
+                      AssetImage('assets/icons/login.png'),
+                    ),
                   ),
-
                   PopupMenuButton(
+                    onCanceled: () {
+                      print("You have canceled the menu.");
+                    },
                     icon: Icon(
                       Icons.settings,
                       color: Colors.white,
                     ),
-                    onSelected: (value) {
-                      // your logic
-                    },
-                    itemBuilder: (BuildContext bc) {
+                    // itemBuilder: (context) {
+                    //   return [
+                    //     PopupMenuItem(
+                    //       onTap: () {
+                    //         // Get.toNamed("/roomMangement");
+                    //         Navigator.of(context).push(MaterialPageRoute(
+                    //             builder: (context) => RoomMangement()));
+                    //         // Get.back();
+                    //       },
+                    //       height: 40.h,
+                    //       child: Row(
+                    //         mainAxisSize: MainAxisSize.max,
+                    //         mainAxisAlignment: MainAxisAlignment.end,
+                    //         children: [
+                    //           Text("الحالة",
+                    //               style: TextStyle(
+                    //                   fontSize: 15.sp,
+                    //                   fontFamily: "Segoe",
+                    //                   fontWeight: FontWeight.bold,
+                    //                   color: Colors.black)),
+                    //           Padding(
+                    //               padding: EdgeInsets.only(left: 10.w),
+                    //               child: Icon(
+                    //                 Icons.arrow_forward_ios,
+                    //                 color: Colors.black,
+                    //                 size: 17,
+                    //               )),
+                    //         ],
+                    //       ),
+                    //       value: 0,
+                    //     ),
+                    //     PopupMenuItem(
+                    //       onTap: () {
+                    //         // Get.toNamed("/roomMangement");
+                    //         Navigator.of(context).push(MaterialPageRoute(
+                    //             builder: (context) => RoomMangement()));
+                    //         // Get.back();
+                    //       },
+                    //       height: 40.h,
+                    //       child: Row(
+                    //         mainAxisSize: MainAxisSize.max,
+                    //         mainAxisAlignment: MainAxisAlignment.end,
+                    //         children: [
+                    //           Text("الاعدادات",
+                    //               style: TextStyle(
+                    //                   fontSize: 15.sp,
+                    //                   fontFamily: "Segoe",
+                    //                   fontWeight: FontWeight.bold,
+                    //                   color: Colors.black)),
+                    //           Padding(
+                    //               padding: EdgeInsets.only(left: 10.w),
+                    //               child: Icon(
+                    //                 Icons.settings,
+                    //                 color: Colors.black,
+                    //                 size: 17,
+                    //               )),
+                    //         ],
+                    //       ),
+                    //       value: 1,
+                    //     ),
+                    //     PopupMenuItem(
+                    //       onTap: () {
+                    //         // Get.toNamed("/roomMangement");
+                    //         Navigator.of(context).push(MaterialPageRoute(
+                    //             builder: (context) => RoomMangement()));
+                    //         // Get.back();
+                    //       },
+                    //       height: 40.h,
+                    //       child: Row(
+                    //         mainAxisSize: MainAxisSize.max,
+                    //         mainAxisAlignment: MainAxisAlignment.end,
+                    //         children: [
+                    //           Text("اللحظات",
+                    //               style: TextStyle(
+                    //                   fontSize: 15.sp,
+                    //                   fontFamily: "Segoe",
+                    //                   fontWeight: FontWeight.bold,
+                    //                   color: Colors.black)),
+                    //           Padding(
+                    //             padding: EdgeInsets.only(left: 10.w),
+                    //             child: Image.asset(
+                    //               "assets/icons/planet.png",
+                    //               color: Colors.black,
+                    //               width: 22,
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //       value: 2,
+                    //     ),
+                    //     PopupMenuItem(
+                    //       onTap: () {
+                    //         // Get.toNamed("/roomMangement");
+                    //         Navigator.of(context).push(MaterialPageRoute(
+                    //             builder: (context) => RoomMangement()));
+                    //         // Get.back();
+                    //       },
+                    //       height: 40.h,
+                    //       child: Row(
+                    //         mainAxisSize: MainAxisSize.max,
+                    //         mainAxisAlignment: MainAxisAlignment.end,
+                    //         children: [
+                    //           Text("إدارة الغرفة",
+                    //               style: TextStyle(
+                    //                   fontSize: 15.sp,
+                    //                   fontFamily: "Segoe",
+                    //                   fontWeight: FontWeight.bold,
+                    //                   color: Colors.black)),
+                    //           Padding(
+                    //               padding: EdgeInsets.only(left: 10.w),
+                    //               child: Icon(
+                    //                 Icons.home,
+                    //                 color: Colors.black,
+                    //                 size: 17,
+                    //               )),
+                    //         ],
+                    //       ),
+                    //       value: 3,
+                    //     ),
+                    //     PopupMenuItem(
+                    //       onTap: () {
+                    //         // Get.toNamed("/roomMangement");
+                    //         Navigator.of(context).push(MaterialPageRoute(
+                    //             builder: (context) => RoomMangement()));
+                    //         // Get.back();
+                    //       },
+                    //       height: 40.h,
+                    //       child: Row(
+                    //         mainAxisSize: MainAxisSize.max,
+                    //         mainAxisAlignment: MainAxisAlignment.end,
+                    //         children: [
+                    //           Text("مشاركة",
+                    //               style: TextStyle(
+                    //                   fontSize: 15.sp,
+                    //                   fontFamily: "Segoe",
+                    //                   fontWeight: FontWeight.bold,
+                    //                   color: Colors.black)),
+                    //           Padding(
+                    //               padding: EdgeInsets.only(left: 10.w),
+                    //               child: Icon(
+                    //                 Icons.share,
+                    //                 color: Colors.black,
+                    //                 size: 17,
+                    //               )),
+                    //         ],
+                    //       ),
+                    //       value: 4,
+                    //     ),
+                    //     PopupMenuItem(
+                    //       onTap: () {
+                    //         // Get.toNamed("/roomMangement");
+                    //         Navigator.of(context).push(MaterialPageRoute(
+                    //             builder: (context) => RoomMangement()));
+                    //         // Get.back();
+                    //       },
+                    //       height: 40.h,
+                    //       child: Row(
+                    //         mainAxisSize: MainAxisSize.max,
+                    //         mainAxisAlignment: MainAxisAlignment.end,
+                    //         children: [
+                    //           Text("المفضلة",
+                    //               style: TextStyle(
+                    //                   fontSize: 15.sp,
+                    //                   fontFamily: "Segoe",
+                    //                   fontWeight: FontWeight.bold,
+                    //                   color: Colors.black)),
+                    //           Padding(
+                    //               padding: EdgeInsets.only(left: 10.w),
+                    //               child: Icon(
+                    //                 Icons.favorite_border,
+                    //                 color: Colors.black,
+                    //                 size: 17,
+                    //               )),
+                    //         ],
+                    //       ),
+                    //       value: 5,
+                    //     ),
+                    //     PopupMenuItem(
+                    //       onTap: () {
+                    //         // Get.toNamed("/roomMangement");
+                    //         Navigator.of(context).push(MaterialPageRoute(
+                    //             builder: (context) => RoomMangement()));
+                    //         // Get.back();
+                    //       },
+                    //       height: 40.h,
+                    //       child: Row(
+                    //         mainAxisSize: MainAxisSize.max,
+                    //         mainAxisAlignment: MainAxisAlignment.end,
+                    //         children: [
+                    //           Text("عن البرنامج",
+                    //               style: TextStyle(
+                    //                   fontSize: 15.sp,
+                    //                   fontFamily: "Segoe",
+                    //                   fontWeight: FontWeight.bold,
+                    //                   color: Colors.black)),
+                    //           Padding(
+                    //               padding: EdgeInsets.only(left: 10.w),
+                    //               child: Icon(
+                    //                 Icons.help,
+                    //                 color: Colors.black,
+                    //                 size: 17,
+                    //               )),
+                    //         ],
+                    //       ),
+                    //       value: 6,
+                    //     ),
+                    //   ];
+                    // },
+
+                    itemBuilder: (BuildContext context) {
                       return [
-                        "الحالة",
-                        "الاعدادات",
-                        "اللحظات",
-                        "إدارة الغرفة",
-                        "مشاركة",
-                        "المفضلة",
-                        "عن البرنامج",
+                        {
+                          "value": "0",
+                          "name": "الحالة",
+                          "icon": Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black,
+                            size: 17,
+                          ),
+                        },
+                        {
+                          "value": "1",
+                          "name": "الاعدادات",
+                          "icon": Icon(
+                            Icons.settings,
+                            color: Colors.black,
+                            size: 17,
+                          ),
+                        },
+                        {
+                          "value": "2",
+                          "name": "اللحظات",
+                          "icon": Image.asset(
+                            "assets/icons/planet.png",
+                            color: Colors.black,
+                            width: 22,
+                          ),
+                        },
+                        {
+                          "value": "3",
+                          "name": "إدارة الغرفة",
+                          "icon": Icon(
+                            Icons.home,
+                            color: Colors.black,
+                            size: 17,
+                          ),
+                        },
+                        {
+                          "value": "4",
+                          "name": "مشاركة",
+                          "icon": Icon(
+                            Icons.share,
+                            color: Colors.black,
+                            size: 17,
+                          ),
+                        },
+                        {
+                          "value": "5",
+                          "name": "المفضلة",
+                          "icon": Icon(
+                            Icons.favorite_border,
+                            color: Colors.black,
+                            size: 17,
+                          ),
+                          "onTap": "/contact"
+                        },
+                        {
+                          "value": "6",
+                          "name": "عن البرنامج",
+                          "icon": Icon(
+                            Icons.help,
+                            color: Colors.black,
+                            size: 17,
+                          ),
+                        },
                       ]
                           .toList()
                           .map((e) => PopupMenuItem(
-                                height: 15.h,
-                                child: Text(e,
-                                    style: TextStyle(
-                                        fontSize: 12.sp,
-                                        fontFamily: "Segoe",
-                                        color: Colors.black)),
-                                value: '/contact',
+                                // onTap: () {
+                                //   // Get.toNamed("/roomMangement");
+                                //   Navigator.of(context).push(MaterialPageRoute(
+                                //       builder: (context) => RoomMangement()));
+                                //   // Get.back();
+                                // },
+                                height: 40.h,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(e["name"],
+                                        style: TextStyle(
+                                            fontSize: 15.sp,
+                                            fontFamily: "Segoe",
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black)),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 10.w),
+                                      child: e["icon"],
+                                    ),
+                                  ],
+                                ),
+                                value: int.parse(e["value"]),
                               ))
                           .toList();
                     },
+                    onSelected: (value) {
+                      if (value == 1) {
+                        Get.toNamed("/roomSettingsPage");
+                      } else if (value == 3) {
+                        Get.toNamed('/roomMangement');
+                      }
+                    },
                   )
-                  // Icon(
-                  //   Icons.settings,
-                  //   color: Colors.white,
-                  // )
                 ],
               ),
               actions: <Widget>[
@@ -265,12 +557,15 @@ class RoomPage extends StatelessWidget {
         ),
         child: Row(
           children: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.send,
-                color: Colors.white,
-                size: 25.sp,
+            RotatedBox(
+              quarterTurns: 2,
+              child: IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.send,
+                  color: Colors.white,
+                  size: 25.sp,
+                ),
               ),
             ),
             Text(
@@ -281,7 +576,7 @@ class RoomPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 15.w),
               child: SizedBox(
                 width: 230.w,
-                height: 30.h,
+                height: 40.h,
                 child: Directionality(
                   textDirection: TextDirection.rtl,
                   child: TextFormField(

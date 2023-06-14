@@ -5,6 +5,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class CustomerService extends StatelessWidget {
   const CustomerService({Key key}) : super(key: key);
@@ -15,10 +16,15 @@ class CustomerService extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-            size: 25.sp,
+          leading: GestureDetector(
+            onTap: () {
+              Get.back();
+            },
+            child: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+              size: 25.sp,
+            ),
           ),
         ),
         body: Center(

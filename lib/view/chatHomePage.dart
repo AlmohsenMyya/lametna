@@ -8,9 +8,11 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lametna/controllers/bottomNavitionBar.dart';
 import 'package:lametna/controllers/chathomePageController.dart';
 import 'package:lametna/view/side%20pages/drawer.dart';
 import 'package:lametna/view/store/test.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class ChatHomePage extends StatelessWidget {
   // const ChatHomePage({super.key});
@@ -18,9 +20,19 @@ class ChatHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // key: _scaffoldKey,
+      key: _scaffoldKey,
       // drawer: Drawer(),
       endDrawer: homeDrawer(),
+      onEndDrawerChanged: (isOpened) {
+        // print("isOpened");
+        if (isOpened) {
+          print("open");
+          Get.put(BottomNavitionBarController()).changeShow();
+        } else {
+          print("close");
+          Get.put(BottomNavitionBarController()).changeShow();
+        }
+      },
       endDrawerEnableOpenDragGesture: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(300.h),
@@ -63,6 +75,20 @@ class ChatHomePage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              actions: [
+                Image.asset(
+                  "assets/images/trophy.png",
+                  width: 55.w,
+                  height: 30.h,
+                ),
+                IconButton(
+                    onPressed: () {
+                      print("object");
+                      // Scaffold.of(context).openDrawer();
+                      _scaffoldKey.currentState.openEndDrawer();
+                    },
+                    icon: Icon(Icons.menu)),
+              ],
               // actions: [
               //   Image.asset(
               //     "assets/images/trophy.png",
@@ -79,23 +105,33 @@ class ChatHomePage extends StatelessWidget {
               // ],
 
               bottom: PreferredSize(
-                preferredSize: Size.fromHeight(100.h),
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 45.h, horizontal: 35.w),
-                  child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20.r),
+                  preferredSize: Size.fromHeight(0.h),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 45.h),
+                    child: CarouselSlider(
+                      options: CarouselOptions(
+                        height: 150.h,
+                        enableInfiniteScroll: true,
+                        autoPlay: true,
+                        autoPlayInterval: Duration(seconds: 3),
+                        autoPlayAnimationDuration: Duration(milliseconds: 800),
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        enlargeCenterPage: true,
+                        scrollDirection: Axis.horizontal,
                       ),
-                      width: 350.w,
-                      child: Image.asset(
-                        "assets/images/banner.png",
-                        // width: 100.w,
-                        // height: 100.h,
-                      )),
-                ),
-              )),
+                      items: [1, 2, 3, 4, 5].map((i) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Image.asset(
+                              "assets/images/banner.png",
+                              // width: 100.w,
+                              // height: 100.h,
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  ))),
         ),
       ),
       body: ListView(
@@ -244,7 +280,7 @@ class ChatHomePage extends StatelessWidget {
             return SizedBox(
               height: (4 * 185).h,
               child: PageView(
-                // physics: NeverScrollableScrollPhysics(),
+                physics: NeverScrollableScrollPhysics(),
                 controller: controller.pageController,
                 // allowImplicitScrolling: true,
                 children: [
@@ -257,10 +293,10 @@ class ChatHomePage extends StatelessWidget {
                         shrinkWrap: true,
                         children: [
                           _countriesBuilder(),
-                          _builderRooms(context, color: Colors.green),
-                          _builderRooms(context, color: Colors.red),
-                          _builderRooms(context, color: Colors.blue),
-                          _builderRooms(context, color: Colors.blue),
+                          _builderRooms(context, color: Color(0xFFf6acad)),
+                          _builderRooms(context, color: Color(0xFFfabb64)),
+                          _builderRooms(context, color: Color(0xFFfabb64)),
+                          _builderRooms(context, color: Color(0xFFfabb64)),
 
                           //el mic
                         ],
