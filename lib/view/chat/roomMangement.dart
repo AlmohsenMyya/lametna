@@ -47,7 +47,7 @@ class RoomMangement extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF1F1F1),
-      appBar: appbarBuilder("إدارة الغرفة"),
+      appBar: appbarBuilder("إدارة الغرفة", true),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(

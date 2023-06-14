@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-PreferredSize appbarBuilder(String title) {
+PreferredSize appbarBuilder(String title, bool isCentered) {
   return PreferredSize(
     preferredSize: Size.fromHeight(72.h),
     child: Container(
@@ -18,14 +18,17 @@ PreferredSize appbarBuilder(String title) {
         ),
       ),
       child: AppBar(
-        centerTitle: true,
-        title: Text(
-          title,
-          style: TextStyle(
-            color: Colors.white, //Color(0xff9A8B8B),
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            fontFamily: "Portada",
+        centerTitle: false,
+        title: Align(
+          alignment: isCentered ? Alignment.center : Alignment.centerLeft,
+          child: Text(
+            title,
+            style: TextStyle(
+              color: Colors.white, //Color(0xff9A8B8B),
+              fontSize: 20.sp,
+              fontWeight: FontWeight.bold,
+              fontFamily: "Portada",
+            ),
           ),
         ),
         leading: IconButton(

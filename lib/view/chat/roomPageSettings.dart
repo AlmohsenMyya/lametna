@@ -13,7 +13,7 @@ class RoomSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appbarBuilder("الإعدادات"),
+      appBar: appbarBuilder("الإعدادات", true),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
