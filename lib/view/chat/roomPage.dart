@@ -154,8 +154,12 @@ class RoomPage extends StatelessWidget {
                     onSelected: (value) {
                       if (value == 1) {
                         Get.toNamed("/roomSettingsPage");
+                      } else if (value == 2) {
+                        Get.toNamed('/moments');
                       } else if (value == 3) {
                         Get.toNamed('/roomMangement');
+                      } else if (value == 6) {
+                        Get.toNamed('/about');
                       }
                     },
                   )
