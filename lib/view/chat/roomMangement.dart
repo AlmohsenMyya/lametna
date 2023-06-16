@@ -6,11 +6,14 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:lametna/view/chat/appBar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:lametna/view/chat/roomInfo.dart';
 
 var table1 = [
   {
     "name": "معلومات الغرفة",
     "icon": Icons.info_outline,
+    "page": RoomInfo(),
   },
   {
     "name": "إدارة الحسابات",
@@ -108,37 +111,42 @@ class RoomMangement extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Directionality(
                       textDirection: TextDirection.rtl,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10.h),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20.w),
-                              child: Icon(
-                                table1[index]["icon"],
-                                color: Colors.black,
-                                size: 25.sp,
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.toNamed('/roomInfo');
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10.h),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                child: Icon(
+                                  table1[index]["icon"],
+                                  color: Colors.black,
+                                  size: 25.sp,
+                                ),
                               ),
-                            ),
-                            Text(
-                              table1[index]["name"],
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15.sp,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Segoe UI",
+                              Text(
+                                table1[index]["name"],
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Segoe UI",
+                                ),
                               ),
-                            ),
-                            Spacer(),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20.w),
-                              child: Icon(
-                                Icons.arrow_forward_ios,
-                                color: Colors.black,
-                                size: 20.sp,
+                              Spacer(),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                child: Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Colors.black,
+                                  size: 20.sp,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     );

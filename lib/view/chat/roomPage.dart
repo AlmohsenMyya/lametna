@@ -9,10 +9,57 @@ import 'package:lametna/view/chat/roomMangement.dart';
 class RoomPage extends StatelessWidget {
   // const RoomPage({super.key});
 
+  RoomPage({Key key}) : super(key: key);
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
+        drawerScrimColor: Colors.transparent,
+        endDrawer: Container(
+          height: 755.h,
+          width: 300.w,
+          color: Colors.white,
+          child: ListView(
+            children: List.generate(
+              40,
+              (index) => Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Color(0xFF43D0CA),
+                    width: 2.0,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'محمود',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontFamily: "Segoe UI",
+                        color: Colors.black,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: Image.asset(
+                        'assets/icons/profile.png',
+                        width: 25.w,
+                        height: 30.h,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(72.h),
           child: Container(
@@ -174,13 +221,20 @@ class RoomPage extends StatelessWidget {
                   AssetImage('assets/icons/chat.png'),
                   size: 23.sp,
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.w),
-                  child: Image.asset(
-                    'assets/icons/group.png',
-                    width: 30.sp,
-                  ),
-                )
+                Builder(builder: (context) {
+                  return GestureDetector(
+                    onTap: () {
+                      Scaffold.of(context).openEndDrawer();
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.w),
+                      child: Image.asset(
+                        'assets/icons/group.png',
+                        width: 30.sp,
+                      ),
+                    ),
+                  );
+                })
               ],
             ),
           ),

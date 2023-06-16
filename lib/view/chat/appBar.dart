@@ -18,16 +18,18 @@ PreferredSize appbarBuilder(String title, bool isCentered) {
         ),
       ),
       child: AppBar(
-        centerTitle: false,
         title: Align(
           alignment: isCentered ? Alignment.center : Alignment.centerRight,
-          child: Text(
-            title,
-            style: TextStyle(
-              color: Colors.white, //Color(0xff9A8B8B),
-              fontSize: 20.sp,
-              fontWeight: FontWeight.bold,
-              fontFamily: "Portada",
+          child: Padding(
+            padding: EdgeInsets.only(right: isCentered ? 0 : 20.w),
+            child: Text(
+              title,
+              style: TextStyle(
+                color: Colors.white, //Color(0xff9A8B8B),
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Portada",
+              ),
             ),
           ),
         ),

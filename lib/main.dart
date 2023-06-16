@@ -7,6 +7,7 @@ import 'package:lametna/view/LoginPage.dart';
 import 'package:get/get.dart';
 import 'package:lametna/view/chat/about.dart';
 import 'package:lametna/view/chat/moments.dart';
+import 'package:lametna/view/chat/roomInfo.dart';
 import 'package:lametna/view/chat/roomMangement.dart';
 import 'package:lametna/view/chat/roomPageSettings.dart';
 import 'package:lametna/view/chatHomePage.dart';
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
                 page: () => ComplaintsSuggestions()),
             GetPage(name: '/about', page: () => About()),
             GetPage(name: '/moments', page: () => Moments()),
+            GetPage(name: '/roomInfo', page: () => RoomInfo()),
           ],
           title: 'First Method',
           // You can use the library anywhere in the app even in theme
