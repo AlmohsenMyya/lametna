@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:lametna/controllers/chat/roomsPageController.dart';
 import 'package:lametna/view/chat/roomMangement.dart';
 
+import '../../controllers/userData/userCredentials.dart';
+
 class RoomPage extends StatelessWidget {
   // const RoomPage({super.key});
 
@@ -450,6 +452,27 @@ class RoomPage extends StatelessWidget {
                                 begin: Alignment.centerRight,
                                 end: Alignment.centerLeft,
                               ),
+                      ),
+                      child: FutureBuilder(
+                        builder: (context, snapshot) => snapshot.data == null
+                            ? Center(child: CircularProgressIndicator())
+                            : ListView.builder(
+                                itemCount: snapshot.data["data"].length,
+                                itemBuilder: (context, index) => Text(
+                                  // controller.data["data"][index]["text"].toString(),
+                                  snapshot.data["data"][index]["text"]
+                                      .toString(),
+                                  textAlign: snapshot.data["data"][index]
+                                                  ["sender"]
+                                              .toString() ==
+                                          userId
+                                      ? TextAlign.right
+                                      : TextAlign.left,
+                                  style: TextStyle(
+                                      color: Colors.green, fontSize: 30),
+                                ),
+                              ),
+                        future: controller.getData(),
                       ),
                     ),
                   );

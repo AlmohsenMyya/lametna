@@ -22,37 +22,38 @@ class LoginController extends GetxController {
     print(data);
     var response = await crud.loginRequest(data);
     print(response.toString());
-    // if (response['status'] == "success") {
-    //   userName = userNameController.text;
-    //   userPassword = passwordController.text;
+    if (response['status'] == "success") {
+      userName = response["data"]['username'];
+      userId = response["data"]['userid'];
 
-    //   // Get.offAllNamed("/chatHomePage");
-    //   Get.offAllNamed("/home");
+      // Get.offAllNamed("/chatHomePage");
 
-    //   print("done");
-    // } else {
-    //   print("error");
-    //   Get.snackbar("", "",
-    //       titleText: Text(
-    //         "خطأ",
-    //         textAlign: TextAlign.right,
-    //         style: TextStyle(
-    //             fontSize: 15.sp,
-    //             fontWeight: FontWeight.bold,
-    //             fontFamily: "Portada"),
-    //       ),
-    //       messageText: Text(
-    //         "اسم المستخدم او كلمة المرور غير صحيحة",
-    //         textAlign: TextAlign.right,
-    //         style: TextStyle(
-    //             fontSize: 12.sp,
-    //             fontWeight: FontWeight.bold,
-    //             fontFamily: "Portada"),
-    //       ),
-    //       backgroundColor: Colors.red,
-    //       colorText: Colors.white,
-    //       snackPosition: SnackPosition.BOTTOM);
-    //   // }
-    // }
+      Get.offAllNamed("/home");
+
+      print("done");
+    } else {
+      print("error");
+      Get.snackbar("", "",
+          titleText: Text(
+            "خطأ",
+            textAlign: TextAlign.right,
+            style: TextStyle(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Portada"),
+          ),
+          messageText: Text(
+            "اسم المستخدم او كلمة المرور غير صحيحة",
+            textAlign: TextAlign.right,
+            style: TextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Portada"),
+          ),
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM);
+      // }
+    }
   }
 }

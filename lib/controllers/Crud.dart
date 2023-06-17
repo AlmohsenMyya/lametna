@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Crud {
-  String loginUrl = 'https://metna2023.000webhostapp.com/auth/login.php';
+  String loginUrl = 'https://lametna.000webhostapp.com/auth/login.php';
   getRequest(String url) async {
     try {
       var response = await http.get(Uri.parse(url));

@@ -17,146 +17,189 @@ class Messages extends StatelessWidget {
     "https://engineering.unl.edu/images/staff/Kayla-Person.jpg",
     "https://www.wilsoncenter.org/sites/default/files/styles/large/public/media/images/person/james-person-1.jpg",
   ];
-  var names = ["محمد", "احمد", "محمود"];
+  var users = [
+    {
+      "name": "محمد",
+      "image":
+          "https://www.wilsoncenter.org/sites/default/files/styles/large/public/media/images/person/james-person-1.jpg"
+    },
+    {
+      "name": "احمد",
+      "image": "https://engineering.unl.edu/images/staff/Kayla-Person.jpg"
+    },
+    {
+      "name": "محمود",
+      "image":
+          "https://www.wilsoncenter.org/sites/default/files/styles/large/public/media/images/person/james-person-1.jpg"
+    },
+    {
+      "name": "محمد",
+      "image": "https://engineering.unl.edu/images/staff/Kayla-Person.jpg"
+    },
+    {
+      "name": "احمد",
+      "image":
+          "https://www.wilsoncenter.org/sites/default/files/styles/large/public/media/images/person/james-person-1.jpg"
+    },
+    {
+      "name": "محمود",
+      "image":
+          "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fHww&w=1000&q=80"
+    },
+    {
+      "name": "محمد",
+      "image":
+          "https://www.wilsoncenter.org/sites/default/files/styles/large/public/media/images/person/james-person-1.jpg"
+    },
+    {
+      "name": "احمد",
+      "image":
+          "https://www.wilsoncenter.org/sites/default/files/styles/large/public/media/images/person/james-person-1.jpg"
+    },
+    {
+      "name": "محمود",
+      "image":
+          "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fHww&w=1000&q=80"
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(72.h),
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFFF792F0),
-                  Color(0xFFFABD63),
-                ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ),
-            ),
-            child: AppBar(
-              backgroundColor: Colors.transparent,
-              centerTitle: true,
-              elevation: 0,
-              leadingWidth: 130.w,
-              leading: Row(
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.notifications),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.favorite),
-                  ),
-                ],
-              ),
-              title: Text(
-                "Lametna",
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              actions: [
-                Image.asset(
-                  "assets/images/trophy.png",
-                  width: 55.w,
-                  height: 30.h,
-                ),
-                IconButton(
-                    onPressed: () {
-                      print("object");
-                      _scaffoldKey.currentState.openEndDrawer();
-                    },
-                    icon: Icon(Icons.menu)),
+      key: _scaffoldKey,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(72.h),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFFF792F0),
+                Color(0xFFFABD63),
               ],
-              // actions: [
-              //   Image.asset(
-              //     "assets/images/trophy.png",
-              //     width: 55.w,
-              //     height: 30.h,
-              //   ),
-              //   IconButton(
-              //       onPressed: () {
-              //         print("object");
-              //         Scaffold.of(context).openDrawer();
-              //         _scaffoldKey.currentState.openEndDrawer();
-              //       },
-              //       icon: Icon(Icons.menu)),
-              // ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
             ),
           ),
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            centerTitle: true,
+            elevation: 0,
+            leadingWidth: 130.w,
+            leading: Row(
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.notifications),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.favorite),
+                ),
+              ],
+            ),
+            title: Text(
+              "Lametna",
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            actions: [
+              Image.asset(
+                "assets/images/trophy.png",
+                width: 55.w,
+                height: 30.h,
+              ),
+              IconButton(
+                  onPressed: () {
+                    print("object");
+                    _scaffoldKey.currentState.openEndDrawer();
+                  },
+                  icon: Icon(Icons.menu)),
+            ],
+            // actions: [
+            //   Image.asset(
+            //     "assets/images/trophy.png",
+            //     width: 55.w,
+            //     height: 30.h,
+            //   ),
+            //   IconButton(
+            //       onPressed: () {
+            //         print("object");
+            //         Scaffold.of(context).openDrawer();
+            //         _scaffoldKey.currentState.openEndDrawer();
+            //       },
+            //       icon: Icon(Icons.menu)),
+            // ],
+          ),
         ),
-        body: ListView(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
-              child: SizedBox(
-                height: 50.h,
-                child: TextFormField(
-                  textAlign: TextAlign.right,
-                  textAlignVertical: TextAlignVertical.center,
-                  style: TextStyle(
+      ),
+      body: ListView(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
+            child: SizedBox(
+              height: 50.h,
+              child: TextFormField(
+                textAlign: TextAlign.right,
+                textAlignVertical: TextAlignVertical.center,
+                style: TextStyle(
+                  fontSize: 15.sp,
+                  color: Colors.black,
+                ),
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
+
+                  hintText: "بحث",
+                  hintStyle: TextStyle(
                     fontSize: 15.sp,
-                    color: Colors.black,
+                    // color: Colors.grey,s
                   ),
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
 
-                    hintText: "بحث",
-                    hintStyle: TextStyle(
-                      fontSize: 15.sp,
-                      // color: Colors.grey,s
-                    ),
-
-                    prefixIcon: Icon(
-                      Icons.search,
-                      size: 20.sp,
+                  prefixIcon: Icon(
+                    Icons.search,
+                    size: 20.sp,
+                    color: Color(0xff43D0CA),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                    borderSide: BorderSide(
                       color: Color(0xff43D0CA),
+                      width: 1,
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                      borderSide: BorderSide(
-                        color: Color(0xff43D0CA),
-                        width: 1,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                      borderSide: BorderSide(
-                        color: Color(0xff43D0CA),
-                        width: 1,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                      borderSide: BorderSide(
-                        color: Color(0xff43D0CA),
-                        width: 1,
-                      ),
-                    ),
-                    // filled: true,
-                    // fillColor: Colors.grey[200],
                   ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                    borderSide: BorderSide(
+                      color: Color(0xff43D0CA),
+                      width: 1,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                    borderSide: BorderSide(
+                      color: Color(0xff43D0CA),
+                      width: 1,
+                    ),
+                  ),
+                  // filled: true,
+                  // fillColor: Colors.grey[200],
                 ),
               ),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemBuilder: (context, index) => userMessageBuilder(
-                images[Random().nextInt(3)],
-                names[Random().nextInt(3)],
-              ),
-              itemCount: 10,
-            ),
-          ],
-        ));
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            itemBuilder: (context, index) => userMessageBuilder(
+                users[index]["image"], users[index]["name"], context),
+            itemCount: users.length,
+          ),
+        ],
+      ),
+    );
   }
 
-  Widget userMessageBuilder(String image, String name) {
+  Widget userMessageBuilder(String image, String name, BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       child: Directionality(
@@ -233,9 +276,14 @@ class Messages extends StatelessWidget {
                     SizedBox(
                       width: 6.w,
                     ),
-                    Icon(
-                      Icons.more_vert,
-                      color: Colors.black,
+                    GestureDetector(
+                      onTap: () {
+                        _showMyDialog(context);
+                      },
+                      child: Icon(
+                        Icons.more_vert,
+                        color: Colors.black,
+                      ),
                     ),
                   ],
                 )
@@ -244,6 +292,44 @@ class Messages extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _showMyDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      // barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Directionality(
+            textDirection: TextDirection.rtl,
+            child: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  // Icon(Icons.)
+                  Text(
+                    'هل تريد حذف الرسالة',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 15.sp,
+                      fontFamily: "Portada",
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Approve'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
