@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:lametna/view/chatHomePage.dart';
+import 'package:lametna/view/messages/messages.dart';
 import 'package:lametna/view/store/test.dart';
 
 class BottomNavitionBarController extends GetxController {
@@ -24,10 +25,7 @@ class BottomNavitionBarController extends GetxController {
       Icons.camera,
       size: 150,
     ),
-    Icon(
-      Icons.chat,
-      size: 150,
-    ),
+    Messages(),
     test(),
   ];
   void onItemTapped(int index) {

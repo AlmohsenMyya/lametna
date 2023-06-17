@@ -15,352 +15,471 @@ class RoomPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        key: _scaffoldKey,
-        drawerScrimColor: Colors.transparent,
-        endDrawer: Container(
-          height: 755.h,
+    return Scaffold(
+      key: _scaffoldKey,
+      drawerScrimColor: Colors.transparent,
+      endDrawer: SafeArea(
+        child: Container(
+          height: Get.height - (72.h + 99.h),
           width: 300.w,
           color: Colors.white,
           child: ListView(
             children: List.generate(
               40,
-              (index) => Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Color(0xFF43D0CA),
-                    width: 2.0,
+              (index) => PopupMenuButton(
+                child: Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      color: Color(0xFF43D0CA),
+                      width: 2.0,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'محمود',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontFamily: "Segoe UI",
+                          color: Colors.black,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.w),
+                        child: Image.asset(
+                          'assets/icons/profile.png',
+                          width: 25.w,
+                          height: 30.h,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      'محمود',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontFamily: "Segoe UI",
-                        color: Colors.black,
-                      ),
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 0,
+                    height: 25.h,
+                    textStyle: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Portada",
+                      color: Color(0xFF43D0CA),
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.w),
-                      child: Image.asset(
-                        'assets/icons/profile.png',
-                        width: 25.w,
-                        height: 30.h,
+                    child: PopupMenuButton(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "معلومات المستخدم",
+                        ),
                       ),
+                      itemBuilder: (context) => [
+                        usersPopUpMenu('اسم المستخدم'),
+                        usersPopUpMenu('رقم الاي بي'),
+                        usersPopUpMenu('نوع الجهاز'),
+                        usersPopUpMenu('الدول'),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  PopupMenuItem(
+                    value: 0,
+                    height: 25.h,
+                    textStyle: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Portada",
+                      color: Color(0xFF43D0CA),
+                    ),
+                    child: PopupMenuButton(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "طرد",
+                        ),
+                      ),
+                      itemBuilder: (context) => [
+                        usersPopUpMenu('محادثة خاصة'),
+                        usersPopUpMenu('watan'),
+                        usersPopUpMenu('تجاهل'),
+                        usersPopUpMenu('الابلاغ عن المسخدم'),
+                        usersPopUpMenu('خيارات الأشراف'),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 0,
+                    height: 25.h,
+                    textStyle: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Portada",
+                      color: Color(0xFF43D0CA),
+                    ),
+                    child: PopupMenuButton(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "حظر",
+                        ),
+                      ),
+                      itemBuilder: (context) => [
+                        usersPopUpMenu('١٥  دقيقة'),
+                        usersPopUpMenu('ساعة'),
+                        usersPopUpMenu('٦ ساعة'),
+                        usersPopUpMenu('يوم'),
+                        usersPopUpMenu('اسبوع'),
+                        usersPopUpMenu('شهر'),
+                        usersPopUpMenu('دائم'),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 0,
+                    height: 25.h,
+                    textStyle: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Portada",
+                      color: Color(0xFF43D0CA),
+                    ),
+                    child: PopupMenuButton(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "ايقاف",
+                        ),
+                      ),
+                      itemBuilder: (context) => [],
+                    ),
+                  ),
+                  usersPopUpMenu("إرسال تحذير"),
+                ],
               ),
             ),
           ),
         ),
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(72.h),
-          child: Container(
-            decoration: const BoxDecoration(
-              // LinearGradient
-              gradient: LinearGradient(
-                colors: [
-                  const Color(0xFFF792F0),
-                  const Color(0xFFFABD63),
-                ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
+      ),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(72.h),
+        child: Container(
+          decoration: const BoxDecoration(
+            // LinearGradient
+            gradient: LinearGradient(
+              colors: [
+                const Color(0xFFF792F0),
+                const Color(0xFFFABD63),
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+          ),
+          child: AppBar(
+            leadingWidth: 105.w,
+            toolbarHeight: 72.35.h,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            centerTitle: true,
+            title: Text(
+              ' اسم الغرفة',
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontFamily: "Portada",
+                color: Colors.white,
               ),
             ),
-            child: AppBar(
-              leadingWidth: 105.w,
-              toolbarHeight: 72.35.h,
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              centerTitle: true,
-              title: Text(
-                ' اسم الغرفة',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontFamily: "Portada",
-                  color: Colors.white,
-                ),
-              ),
-              leading: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SizedBox(width: 5.w),
-                  GestureDetector(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: ImageIcon(
-                      AssetImage('assets/icons/login.png'),
-                    ),
+            leading: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(width: 5.w),
+                GestureDetector(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: ImageIcon(
+                    AssetImage('assets/icons/login.png'),
                   ),
-                  PopupMenuButton(
-                    onCanceled: () {
-                      print("You have canceled the menu.");
-                    },
-                    icon: Icon(
-                      Icons.settings,
-                      color: Colors.white,
-                    ),
-                    itemBuilder: (BuildContext context) {
-                      return [
-                        {
-                          "value": "0",
-                          "name": "الحالة",
-                          "icon": Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.black,
-                            size: 17,
-                          ),
-                        },
-                        {
-                          "value": "1",
-                          "name": "الاعدادات",
-                          "icon": Icon(
-                            Icons.settings,
-                            color: Colors.black,
-                            size: 17,
-                          ),
-                        },
-                        {
-                          "value": "2",
-                          "name": "اللحظات",
-                          "icon": Image.asset(
-                            "assets/icons/planet.png",
-                            color: Colors.black,
-                            width: 22,
-                          ),
-                        },
-                        {
-                          "value": "3",
-                          "name": "إدارة الغرفة",
-                          "icon": Icon(
-                            Icons.home,
-                            color: Colors.black,
-                            size: 17,
-                          ),
-                        },
-                        {
-                          "value": "4",
-                          "name": "مشاركة",
-                          "icon": Icon(
-                            Icons.share,
-                            color: Colors.black,
-                            size: 17,
-                          ),
-                        },
-                        {
-                          "value": "5",
-                          "name": "المفضلة",
-                          "icon": Icon(
-                            Icons.favorite_border,
-                            color: Colors.black,
-                            size: 17,
-                          ),
-                          "onTap": "/contact"
-                        },
-                        {
-                          "value": "6",
-                          "name": "عن البرنامج",
-                          "icon": Icon(
-                            Icons.help,
-                            color: Colors.black,
-                            size: 17,
-                          ),
-                        },
-                      ]
-                          .toList()
-                          .map((e) => PopupMenuItem(
-                                height: 40.h,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text(e["name"],
-                                        style: TextStyle(
-                                            fontSize: 15.sp,
-                                            fontFamily: "Segoe",
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black)),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 10.w),
-                                      child: e["icon"],
-                                    ),
-                                  ],
-                                ),
-                                value: int.parse(e["value"]),
-                              ))
-                          .toList();
-                    },
-                    onSelected: (value) {
-                      if (value == 1) {
-                        Get.toNamed("/roomSettingsPage");
-                      } else if (value == 2) {
-                        Get.toNamed('/moments');
-                      } else if (value == 3) {
-                        Get.toNamed('/roomMangement');
-                      } else if (value == 6) {
-                        Get.toNamed('/about');
-                      }
-                    },
-                  )
-                ],
-              ),
-              actions: <Widget>[
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.volume_up),
                 ),
-                ImageIcon(
-                  AssetImage('assets/icons/chat.png'),
-                  size: 23.sp,
-                ),
-                Builder(builder: (context) {
-                  return GestureDetector(
-                    onTap: () {
-                      Scaffold.of(context).openEndDrawer();
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15.w),
-                      child: Image.asset(
-                        'assets/icons/group.png',
-                        width: 30.sp,
-                      ),
-                    ),
-                  );
-                })
+                PopupMenuButton(
+                  onCanceled: () {
+                    print("You have canceled the menu.");
+                  },
+                  icon: Icon(
+                    Icons.settings,
+                    color: Colors.white,
+                  ),
+                  itemBuilder: (BuildContext context) {
+                    return [
+                      {
+                        "value": "0",
+                        "name": "الحالة",
+                        "icon": Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.black,
+                          size: 17,
+                        ),
+                      },
+                      {
+                        "value": "1",
+                        "name": "الاعدادات",
+                        "icon": Icon(
+                          Icons.settings,
+                          color: Colors.black,
+                          size: 17,
+                        ),
+                      },
+                      {
+                        "value": "2",
+                        "name": "اللحظات",
+                        "icon": Image.asset(
+                          "assets/icons/planet.png",
+                          color: Colors.black,
+                          width: 22,
+                        ),
+                      },
+                      {
+                        "value": "3",
+                        "name": "إدارة الغرفة",
+                        "icon": Icon(
+                          Icons.home,
+                          color: Colors.black,
+                          size: 17,
+                        ),
+                      },
+                      {
+                        "value": "4",
+                        "name": "مشاركة",
+                        "icon": Icon(
+                          Icons.share,
+                          color: Colors.black,
+                          size: 17,
+                        ),
+                      },
+                      {
+                        "value": "5",
+                        "name": "المفضلة",
+                        "icon": Icon(
+                          Icons.favorite_border,
+                          color: Colors.black,
+                          size: 17,
+                        ),
+                        "onTap": "/contact"
+                      },
+                      {
+                        "value": "6",
+                        "name": "عن البرنامج",
+                        "icon": Icon(
+                          Icons.help,
+                          color: Colors.black,
+                          size: 17,
+                        ),
+                      },
+                    ]
+                        .toList()
+                        .map((e) => PopupMenuItem(
+                              height: 40.h,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(e["name"],
+                                      style: TextStyle(
+                                          fontSize: 15.sp,
+                                          fontFamily: "Segoe",
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black)),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10.w),
+                                    child: e["icon"],
+                                  ),
+                                ],
+                              ),
+                              value: int.parse(e["value"]),
+                            ))
+                        .toList();
+                  },
+                  onSelected: (value) {
+                    if (value == 1) {
+                      Get.toNamed("/roomSettingsPage");
+                    } else if (value == 2) {
+                      Get.toNamed('/moments');
+                    } else if (value == 3) {
+                      Get.toNamed('/roomMangement');
+                    } else if (value == 6) {
+                      Get.toNamed('/about');
+                    }
+                  },
+                )
               ],
             ),
+            actions: <Widget>[
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.volume_up),
+              ),
+              ImageIcon(
+                AssetImage('assets/icons/chat.png'),
+                size: 23.sp,
+              ),
+              Builder(builder: (context) {
+                return GestureDetector(
+                  onTap: () {
+                    Scaffold.of(context).openEndDrawer();
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15.w),
+                    child: Image.asset(
+                      'assets/icons/group.png',
+                      width: 30.sp,
+                    ),
+                  ),
+                );
+              })
+            ],
           ),
         ),
+      ),
 
-        body: Column(
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  GetBuilder<RoomsPageController>(
-                      init: RoomsPageController(),
-                      builder: (controller) {
-                        return Container(
-                          height: 70.h,
-                          decoration: BoxDecoration(
-                            // LinearGradient
-                            gradient: controller.roomStatus
-                                ? LinearGradient(
-                                    colors: [
-                                      Color(0xFFFFFFFF),
-                                      Color(0xFFA2ACAC),
-                                    ],
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                  )
-                                : LinearGradient(
-                                    colors: [
-                                      Color(0xFFFFFFFF),
-                                      Color(0xFFFABD63),
-                                    ],
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                  ),
-                          ),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 21.w,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  // Get.toNamed('/VIPRoom');
-                                  controller.changeRoomStatus();
-                                },
-                                child: SizedBox(
-                                  width: 65.w,
-                                  child: Container(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 5.h),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20.r),
-                                      color: controller.roomStatus
-                                          ? Color(0xffF792F0)
-                                          : Color(0xFFFABD63),
-                                    ),
-                                    child: Text(
-                                      controller.roomStatus
-                                          ? 'الروم الحديث'
-                                          : "مظهر قديم",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 9.sp,
-                                          fontFamily: "Portada",
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 60.w,
-                              ),
-                              Text("22:10",
-                                  style: TextStyle(
-                                      fontSize: 9.sp,
-                                      fontFamily: "Portada",
-                                      color: Colors.black)),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              SizedBox(
-                                width: 240.w,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    userInCall(),
-                                    userInCall(),
-                                    userInCall(),
-                                    userInCall(),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        );
-                      }),
-                  GetBuilder<RoomsPageController>(builder: (controller) {
-                    return Expanded(
-                      child: Container(
+      body: Column(
+        children: [
+          Expanded(
+            child: Column(
+              children: [
+                GetBuilder<RoomsPageController>(
+                    init: RoomsPageController(),
+                    builder: (controller) {
+                      return Container(
+                        height: 70.h,
                         decoration: BoxDecoration(
                           // LinearGradient
                           gradient: controller.roomStatus
-                              ? null
+                              ? LinearGradient(
+                                  colors: [
+                                    Color(0xFFFFFFFF),
+                                    Color(0xFFA2ACAC),
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                )
                               : LinearGradient(
                                   colors: [
+                                    Color(0xFFFFFFFF),
                                     Color(0xFFFABD63),
-                                    Color(0xFFFABB64),
-                                    Color(0xFFF792F0),
                                   ],
-                                  begin: Alignment.centerRight,
-                                  end: Alignment.centerLeft,
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
                                 ),
                         ),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 21.w,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                // Get.toNamed('/VIPRoom');
+                                controller.changeRoomStatus();
+                              },
+                              child: SizedBox(
+                                width: 65.w,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 5.h),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20.r),
+                                    color: controller.roomStatus
+                                        ? Color(0xffF792F0)
+                                        : Color(0xFFFABD63),
+                                  ),
+                                  child: Text(
+                                    controller.roomStatus
+                                        ? 'الروم الحديث'
+                                        : "مظهر قديم",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 9.sp,
+                                        fontFamily: "Portada",
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 60.w,
+                            ),
+                            Text("22:10",
+                                style: TextStyle(
+                                    fontSize: 9.sp,
+                                    fontFamily: "Portada",
+                                    color: Colors.black)),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            SizedBox(
+                              width: 240.w,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  userInCall(),
+                                  userInCall(),
+                                  userInCall(),
+                                  userInCall(),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    }),
+                GetBuilder<RoomsPageController>(builder: (controller) {
+                  return Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        // LinearGradient
+                        gradient: controller.roomStatus
+                            ? null
+                            : LinearGradient(
+                                colors: [
+                                  Color(0xFFFABD63),
+                                  Color(0xFFFABB64),
+                                  Color(0xFFF792F0),
+                                ],
+                                begin: Alignment.centerRight,
+                                end: Alignment.centerLeft,
+                              ),
                       ),
-                    );
-                  }),
-                ],
-              ),
+                    ),
+                  );
+                }),
+              ],
             ),
-            buildMyNavBar(context)
-          ],
+          ),
+          buildMyNavBar(context)
+        ],
+      ),
+      // bottomNavigationBar: ,
+      resizeToAvoidBottomInset: false,
+    );
+  }
+
+  PopupMenuItem<int> usersPopUpMenu(String name) {
+    return PopupMenuItem(
+      height: 30.h,
+      textStyle: TextStyle(
+        fontSize: 10.sp,
+        fontWeight: FontWeight.bold,
+        fontFamily: "Portada",
+        color: Color(0xFF43D0CA),
+      ),
+      value: 0,
+      child: Align(
+        alignment: Alignment.center,
+        child: Text(
+          name,
         ),
-        // bottomNavigationBar: ,
-        resizeToAvoidBottomInset: false,
       ),
     );
   }

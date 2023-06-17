@@ -219,7 +219,7 @@ class LoginPage extends StatelessWidget {
                             size: 16.sp,
                           ),
                           onPressed: () {
-                            Get.toNamed("/home");
+                            Get.offAllNamed("/home");
                           },
                           label: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 25.w),
