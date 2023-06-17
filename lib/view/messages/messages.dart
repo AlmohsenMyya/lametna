@@ -97,23 +97,45 @@ class Messages extends StatelessWidget {
               child: SizedBox(
                 height: 50.h,
                 child: TextFormField(
+                  textAlign: TextAlign.right,
+                  textAlignVertical: TextAlignVertical.center,
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    color: Colors.black,
+                  ),
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
 
                     hintText: "بحث",
                     hintStyle: TextStyle(
-                      fontSize: 16.sp,
-                      color: Colors.grey,
+                      fontSize: 15.sp,
+                      // color: Colors.grey,s
                     ),
+
                     prefixIcon: Icon(
                       Icons.search,
+                      size: 20.sp,
                       color: Color(0xff43D0CA),
                     ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.r),
+                      borderRadius: BorderRadius.circular(10.r),
                       borderSide: BorderSide(
                         color: Color(0xff43D0CA),
-                        width: 2,
+                        width: 1,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                      borderSide: BorderSide(
+                        color: Color(0xff43D0CA),
+                        width: 1,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                      borderSide: BorderSide(
+                        color: Color(0xff43D0CA),
+                        width: 1,
                       ),
                     ),
                     // filled: true,
@@ -135,87 +157,90 @@ class Messages extends StatelessWidget {
   }
 
   Widget userMessageBuilder(String image, String name) {
-    return GestureDetector(
-      onTap: () {
-        Get.toNamed("/privateMessage", arguments: [image, name]);
-      },
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-        child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 75.w,
-                    height: 85.h,
-                    decoration: BoxDecoration(
-                      // color: const Color(0xff7c94b6),
-                      image: DecorationImage(
-                        image: NetworkImage(image),
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                      border: Border.all(
-                        color: Color(0xff43D0CA),
-                        width: 1.5,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: GestureDetector(
+          onTap: () {
+            Get.toNamed("/privateMessage", arguments: [image, name]);
+          },
+          child: Container(
+            color: Colors.transparent,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 75.w,
+                      height: 85.h,
+                      decoration: BoxDecoration(
+                        // color: const Color(0xff7c94b6),
+                        image: DecorationImage(
+                          image: NetworkImage(image),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                        border: Border.all(
+                          color: Color(0xff43D0CA),
+                          width: 1.5,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 6.w,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      SizedBox(
-                        height: 29.h,
-                        child: Text(
-                          name,
+                    SizedBox(
+                      width: 6.w,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        SizedBox(
+                          height: 29.h,
+                          child: Text(
+                            name,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontSize: 15.sp,
+                              fontFamily: "Portada",
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "السلام عليكم",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontSize: 15.sp,
+                            color: Color(0xff707070),
+                            fontSize: 8.sp,
                             fontFamily: "Portada",
                           ),
                         ),
-                      ),
-                      Text(
-                        "السلام عليكم",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xff707070),
-                          fontSize: 8.sp,
-                          fontFamily: "Portada",
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text(
-                    "12:00",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff707070),
-                      fontSize: 8.sp,
-                      fontFamily: "Portada",
+                      ],
                     ),
-                  ),
-                  SizedBox(
-                    width: 6.w,
-                  ),
-                  Icon(
-                    Icons.more_vert,
-                    color: Colors.black,
-                  ),
-                ],
-              )
-            ],
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "12:00",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff707070),
+                        fontSize: 8.sp,
+                        fontFamily: "Portada",
+                      ),
+                    ),
+                    SizedBox(
+                      width: 6.w,
+                    ),
+                    Icon(
+                      Icons.more_vert,
+                      color: Colors.black,
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
