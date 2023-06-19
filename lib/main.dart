@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lametna/test.dart';
 import 'package:lametna/view/ChoosingPage.dart';
 import 'package:lametna/view/LoginPage.dart';
 import 'package:get/get.dart';
@@ -17,13 +18,13 @@ import 'package:lametna/view/customer%20service/customerServiceHomePage.dart';
 import 'package:lametna/view/customer%20service/salesChat.dart';
 import 'package:lametna/view/home.dart';
 import 'package:lametna/view/chat/roomPage.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:lametna/view/messages/privateMessages.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   runApp(
     DevicePreview(
       builder: (context) => MyApp(),
@@ -75,7 +76,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: choosingPage(),
+      child: test(),
     );
   }
 }
