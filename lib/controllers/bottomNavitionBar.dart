@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:lametna/view/chat/moments.dart';
 import 'package:lametna/view/chatHomePage.dart';
 import 'package:lametna/view/messages/messages.dart';
 import 'package:lametna/view/store/test.dart';
@@ -21,10 +22,7 @@ class BottomNavitionBarController extends GetxController {
 
   List<Widget> pages = <Widget>[
     ChatHomePage(),
-    Icon(
-      Icons.camera,
-      size: 150,
-    ),
+    Moments(),
     Messages(),
     test(),
   ];

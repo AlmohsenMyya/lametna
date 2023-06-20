@@ -12,9 +12,9 @@ class test extends StatefulWidget {
 }
 
 class _testState extends State<test> {
-  String channelName = "1";
+  String channelName = "2";
   String token =
-      "007eJxTYPjwNOWUzeUQ0Udn+Iymm9+SErvwxWPJD5sVltLTOXqKYtYpMKQamhomJ1uYGaekGJskpiRbppmbpRlYmKaapCWZJ5lbbJjUn9IQyMgglT6DhZEBAkF8RgZDBgYAHhMeZw==";
+      "007eJxTYLjsGX/px4H5kZn9nLebHrNqHI/Zz7zsApvyYvW2khUp1+coMKQamhomJ1uYGaekGJskpiRbppmbpRlYmKaapCWZJ5lbLGufkNIQyMhwLECCgREKQXxGBiMGBgA4wB7P";
 
   int uid = 0; // uid of the local user
 

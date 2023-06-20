@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:lametna/controllers/login.dart';
+import 'package:lametna/controllers/loginController.dart';
 
 class LoginPage extends StatelessWidget {
   // const LoginPage({super.key});
@@ -153,12 +153,17 @@ class LoginPage extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 10.w),
-                                      child: Icon(
-                                        Icons.file_download_outlined,
-                                        color: Color(0xFFffcc00),
-                                        size: 40.sp,
+                                    GestureDetector(
+                                      onTap: () {
+                                        controller.getSavedPassword();
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: 10.w),
+                                        child: Icon(
+                                          Icons.file_download_outlined,
+                                          color: Color(0xFFffcc00),
+                                          size: 40.sp,
+                                        ),
                                       ),
                                     ),
                                     GestureDetector(

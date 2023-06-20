@@ -190,8 +190,7 @@ class Messages extends StatelessWidget {
           ),
           ListView.builder(
             shrinkWrap: true,
-            itemBuilder: (context, index) => userMessageBuilder(
-                users[index]["image"], users[index]["name"], context),
+            itemBuilder: (context, index) => userMessageBuilder(index, context),
             itemCount: users.length,
           ),
         ],
@@ -199,14 +198,15 @@ class Messages extends StatelessWidget {
     );
   }
 
-  Widget userMessageBuilder(String image, String name, BuildContext context) {
+  Widget userMessageBuilder(int position, BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: GestureDetector(
           onTap: () {
-            Get.toNamed("/privateMessage", arguments: [image, name]);
+            Get.toNamed("/privateMessage",
+                arguments: [users[position]["image"], users[position]["name"]]);
           },
           child: Container(
             color: Colors.transparent,
@@ -221,7 +221,7 @@ class Messages extends StatelessWidget {
                       decoration: BoxDecoration(
                         // color: const Color(0xff7c94b6),
                         image: DecorationImage(
-                          image: NetworkImage(image),
+                          image: NetworkImage(users[position]["image"]),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(50.0)),
@@ -240,7 +240,7 @@ class Messages extends StatelessWidget {
                         SizedBox(
                           height: 29.h,
                           child: Text(
-                            name,
+                            users[position]["name"],
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -278,7 +278,7 @@ class Messages extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        _showMyDialog(context);
+                        _showMyDialog(context, position);
                       },
                       child: Icon(
                         Icons.more_vert,
@@ -295,39 +295,145 @@ class Messages extends StatelessWidget {
     );
   }
 
-  Future<void> _showMyDialog(BuildContext context) async {
+  Future<void> _showSuccess(BuildContext context) async {
     return showDialog<void>(
       context: context,
+
       // barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Directionality(
-            textDirection: TextDirection.rtl,
-            child: SingleChildScrollView(
+            actionsAlignment: MainAxisAlignment.center,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20.r),
+              ),
+            ),
+            content: SingleChildScrollView(
               child: ListBody(
-                children: <Widget>[
-                  // Icon(Icons.)
+                children: [
+                  Icon(
+                    Icons.check_box_outlined,
+                    color: Colors.greenAccent,
+                    size: 50.sp,
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
                   Text(
-                    'هل تريد حذف الرسالة',
+                    "تم حذف الدردشة بناج",
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 15.sp,
-                      fontFamily: "Portada",
-                    ),
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontFamily: 'Portada'),
                   ),
                 ],
               ),
+            ));
+      },
+    );
+  }
+
+  Future<void> _showMyDialog(BuildContext context, int position) async {
+    return showDialog<void>(
+      context: context,
+
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: AlertDialog(
+            actionsAlignment: MainAxisAlignment.center,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20.r),
+              ),
             ),
+            content: Directionality(
+              textDirection: TextDirection.rtl,
+              child: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    RotatedBox(
+                      quarterTurns: 2,
+                      child: Icon(Icons.info_outlined,
+                          color: Colors.red, size: 50.sp),
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Text(
+                      'هل تريد حدف الدردشة',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 16.sp,
+                        fontFamily: "Portada",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.r),
+                    color: Color(0xffE34848),
+                  ),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 40.w, vertical: 5.h),
+                    child: Text(
+                      'إلغاء',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 16.sp,
+                        fontFamily: "Portada",
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 10.w,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _showSuccess(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.r),
+                    color: Color(0xff47A6E5),
+                  ),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 40.w, vertical: 5.h),
+                    child: Text(
+                      'موافق',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 16.sp,
+                        fontFamily: "Portada",
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Approve'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
         );
       },
     );
