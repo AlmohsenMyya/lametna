@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
+import '../userData/userCredentials.dart';
+
 class RoomsPageController extends GetxController {
   bool roomStatus = true;
   @override
@@ -11,11 +13,8 @@ class RoomsPageController extends GetxController {
     getData();
   }
 
-  var data;
-
   getData() async {
-    var url = Uri.parse(
-        'https://lametna.000webhostapp.com/messages/showmessagegroup.php');
+    var url = Uri.parse('${baseURL}/messages/showmessagegroup.php');
     var response = await http.get(url);
 
     if (response.statusCode == 200) {

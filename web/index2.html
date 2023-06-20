@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function submitForm(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get form values
+            var owner_username = document.getElementById('owner_username').value;
+            var room_name = document.getElementById('room_name').value;
+            var password = document.getElementById('password').value;
+            var capacity = document.getElementById('capacity').value;
+            var room_type = document.getElementById('room_type').value;
+            var Channel_Name = document.getElementById('Channel_Name').value;
+            var Token = document.getElementById('Token').value;
+            var room_img = document.getElementById('room_img').value;
+            var background_img = document.getElementById('background_img').value;
+
+            // Create data object
+
+
+            // Send data to API
+            fetch('${baseURL}?owner_username=${owner_username}&room_name=${room_name}&password=${password}&capacity=${capacity}&room_type=${room_type}&Channel_Name=${Channel_Name}&Token=${Token}&room_img=${room_img}&background_img=${background_img}')
+                .then(function (response) {
+                    if (response.ok) {
+                        alert('Form submitted successfully!');
+                    } else {
+                        alert('Error submitting form. Please try again.');
+                    }
+                })
+                .catch(function (error) {
+                    alert('An error occurred. Please try again later.');
+                    console.error(error);
+                });
+        }
+    </script>
+</head>
+
+<body>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label> مالك الغرفه</label>
+            <input type="text" id="owner_username" class="form-control" name="owner_username">
+        </div>
+        <div class="form-group">
+            <label> اسم الغرفه</label>
+            <input type="text" id="room_name" class="form-control" name="room_name">
+        </div>
+        <div class="form-group">
+            <label> كلمه مرور الغرفه</label>
+            <input type="text" id="password" class="form-control" name="password ">
+        </div>
+        <div class="form-group">
+            <label> سعه الغرفه</label>
+            <input type="text" id="capacity" class="form-control" name="capacity">
+        </div>
+        </div>
+        <div class="form-group">
+            <label> نوع الغرفه</label>
+            <input type="text" id="room_type" class="form-control" name="room_type">
+            <div class="form-group">
+                <label> اسم القناه </label>
+                <input type="text" id="Channel_Name" class="form-control" name="Channel_Name">
+            </div>
+            <div class="form-group">
+                <label> رمز القناه</label>
+                <input type="text" id="Token" class="form-control" name="Token">
+            </div>
+            <div class="form-group">
+                <label for="img"> صوره الغرفه</label>
+                <input type="file" id="room_img" class="form-control" name="room_img ">
+            </div>
+            <div class="form-group">
+                <label for="img"> خلفيه الغرفه</label>
+                <input type="file" id="background_img" class="form-control" name="background_img ">
+            </div>
+            <button class="custom-btn"> انشاء غرفه</button>
+    </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

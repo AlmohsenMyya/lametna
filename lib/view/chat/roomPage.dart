@@ -458,19 +458,25 @@ class RoomPage extends StatelessWidget {
                             ? Center(child: CircularProgressIndicator())
                             : ListView.builder(
                                 itemCount: snapshot.data["data"].length,
-                                itemBuilder: (context, index) => Text(
-                                  // controller.data["data"][index]["text"].toString(),
-                                  snapshot.data["data"][index]["text"]
-                                      .toString(),
-                                  textAlign: snapshot.data["data"][index]
-                                                  ["sender"]
-                                              .toString() ==
-                                          userId
-                                      ? TextAlign.right
-                                      : TextAlign.left,
-                                  style: TextStyle(
-                                      color: Colors.green, fontSize: 30),
-                                ),
+                                itemBuilder: (context, index) => messageBuilder(
+                                    "ali fekry",
+                                    "hello",
+                                    snapshot.data["data"][index]["sender"]
+                                            .toString() ==
+                                        userId),
+                                //     Text(
+                                //   // controller.data["data"][index]["text"].toString(),
+                                //   snapshot.data["data"][index]["text"]
+                                //       .toString(),
+                                // textAlign: snapshot.data["data"][index]
+                                //                 ["sender"]
+                                //             .toString() ==
+                                //         userId
+                                //       ? TextAlign.right
+                                //       : TextAlign.left,
+                                //   style: TextStyle(
+                                //       color: Colors.green, fontSize: 30),
+                                // ),
                               ),
                         future: controller.getData(),
                       ),
@@ -485,6 +491,196 @@ class RoomPage extends StatelessWidget {
       ),
       // bottomNavigationBar: ,
       resizeToAvoidBottomInset: false,
+    );
+  }
+
+  Widget messageBuilder(String name, String message, bool isMe) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5.h),
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+            width: double.infinity,
+            color: Color(0xFFCAF8ED),
+            child: Directionality(
+              textDirection: isMe ? TextDirection.rtl : TextDirection.ltr,
+              child: Row(
+                children: [
+                  Container(
+                    width: 25.w,
+                    height: 27.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.black,
+                      size: 20.sp,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  Text(
+                    name,
+                    textAlign: isMe ? TextAlign.right : TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Portada",
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            // height: 50.h,
+            width: double.infinity,
+            decoration: BoxDecoration(color: Colors.white, boxShadow: [
+              BoxShadow(
+                color: Color(0xff00000029).withOpacity(0.2),
+                offset: Offset(0, 3),
+                spreadRadius: 1,
+                blurRadius: 6,
+              )
+            ]),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                  isMe ? 0.w : 60.w, 12.h, isMe ? 60.w : 0.w, 12.h),
+              child: Text(
+                message,
+                textAlign: isMe ? TextAlign.right : TextAlign.left,
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Portada",
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget messageVIPBuilder(String name, String message, bool isMe) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5.h),
+      child: Stack(
+        children: [
+          Column(
+            children: [
+              Container(
+                // height: 20.h,
+                width: double.infinity,
+                color: Color(0xFFCAF8ED),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                      isMe ? 0.w : 55.w, 5.h, isMe ? 55.w : 0, 5.h),
+                  child: Text(
+                    name,
+                    textAlign: isMe ? TextAlign.right : TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Portada",
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                // height: 50.h,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: isMe
+                      ? LinearGradient(
+                          colors: [
+                            Color(0xFFF792F0),
+                            Color(0xFFF1F1F1),
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        )
+                      : LinearGradient(
+                          colors: [
+                            Color(0xFFF1F1F1),
+                            Color(0xFFF792F0),
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                  borderRadius: isMe
+                      ? BorderRadius.only(
+                          bottomLeft: Radius.circular(20.r),
+                        )
+                      : BorderRadius.only(
+                          bottomRight: Radius.circular(20.r),
+                        ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                      isMe ? 0.w : 60.w, 12.h, isMe ? 60.w : 0.w, 12.h),
+                  child: Text(
+                    message,
+                    textAlign: isMe ? TextAlign.right : TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Portada",
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            top: 3.h,
+            left: isMe ? null : 10.w,
+            right: isMe ? 10.w : null,
+            child: Container(
+              width: 35.w,
+              height: 40.h,
+              decoration: BoxDecoration(
+                // color: const Color(0xff7c94b6),
+                image: DecorationImage(
+                  image: NetworkImage(
+                      'https://www.wilsoncenter.org/sites/default/files/styles/large/public/media/images/person/james-person-1.jpg'),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                border: Border.all(
+                  color: Color(0xff43D0CA),
+                  width: 1.5,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: -7.h,
+            // right: isMe ? 10.w : null,
+            left: isMe ? 10.w : null,
+            right: isMe ? null : 10.w,
+            // right: isMe ? null : 10.w,
+            child: Image.asset(
+              "assets/images/vipBadge.png",
+              width: 30.w,
+              height: 70.h,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

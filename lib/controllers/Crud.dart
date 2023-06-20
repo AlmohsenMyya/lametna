@@ -3,10 +3,8 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-String baseURL = "https://lametna2023-store.preview-domain.com/";
-String loginUrl = baseURL + "auth/login.php";
 
 class Crud {
   getRequest(String url) async {
