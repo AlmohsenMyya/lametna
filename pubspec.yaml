@@ -57,7 +57,7 @@ dev_dependencies:
   flutter_launcher_icons:
   flutter_colorpicker:
   carousel_slider:
-  agora_rtc_engine:
+  # agora_rtc_engine:
   flutter_secure_storage:
 
 

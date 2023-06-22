@@ -283,8 +283,11 @@ class ChatHomePage extends StatelessWidget {
           _countriesBuilder(),
           GetBuilder<ChatHomeController>(builder: (controller) {
             return controller.vipRooms.isEmpty
-                ? Center(
-                    child: CircularProgressIndicator(),
+                ? Padding(
+                    padding: EdgeInsets.only(top: 150.h),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   )
                 : SizedBox(
                     height: (controller.vipRooms.length * 185).h,

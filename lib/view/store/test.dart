@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -186,7 +188,7 @@ class test extends StatelessWidget {
         ),
         GetBuilder<StoreController>(builder: (controller) {
           return SizedBox(
-            height: Get.height - 200.h,
+            height: Get.height - 370.h,
             child: Directionality(
               textDirection: TextDirection.rtl,
               child: PageView(
@@ -198,295 +200,318 @@ class test extends StatelessWidget {
                     child: GridView(
                         //itemCount: 3,
                         shrinkWrap: true,
+                        physics: ScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
-                          crossAxisSpacing: 12.w,
+                          crossAxisSpacing: 30.w,
                           mainAxisSpacing: 13.h,
-                          childAspectRatio: 0.8,
+                          childAspectRatio: 0.7,
                         ),
                         children: [
-                          marketBuilder(
-                              "", "150 \u0024", "100", "30", "30", "45", "45"),
-                          marketBuilder("كل 3 أشهر", "100 \u0024", "50", "20",
-                              "20", "30", "30"),
-                          marketBuilder("كل 3 أشهر", "200 \u0024", "150", "50",
-                              "50", "75", "75"),
+                          marketBuilder(["100", "30", "30", "45", "45"], "150"),
+                          marketBuilder(["50", "20", "20", "30", "30"], "100"),
+                          marketBuilder(["150", "50", "50", "75", "75"], "200"),
+                          // marketBuilder("كل 3 أشهر", "100 \u0024", "50", "20",
+                          //     "20", "30", "30"),
+                          // marketBuilder("كل 3 أشهر", "200 \u0024", "150", "50",
+                          //     "50", "75", "75"),
                         ]),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15.w),
-                    child: GridView(
-                        //itemCount: 3,
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 12.w,
-                          mainAxisSpacing: 13.h,
-                          childAspectRatio: 0.5,
-                        ),
+                  ListView(
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      Column(
                         children: [
-                          roomBuilder(
-                            "ملف محمي ",
-                            "35 دولار",
-                            [
-                              "ملف شخصي",
-                              "ارسال الصور في العام والخاص",
-                              "بدون خلفية"
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              roomBuilder(
+                                  "ملف محمي",
+                                  [
+                                    "ملف شخصي",
+                                    "ارسال الصور في العام والخاص",
+                                    "بدون خلفية",
+                                  ],
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.w),
+                                    child: Container(
+                                      padding: EdgeInsets.all(7.sp),
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.4),
+                                            blurRadius: 6,
+                                            offset: Offset(0, 3),
+                                          ),
+                                        ],
+                                        color: Color(0xFFE1E1E1),
+                                        borderRadius:
+                                            BorderRadius.circular(3.r),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          360.r),
+                                                ),
+                                                child: Icon(
+                                                  Icons.person,
+                                                  color: Colors.black,
+                                                  size: 20.sp,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                "lametna",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 8.sp,
+                                                  fontFamily: "Portada",
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Icon(
+                                            Icons.verified,
+                                            color: Colors.lightBlue,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  "35"),
+                              roomBuilder(
+                                  "VIP ملف محمي",
+                                  [
+                                    "ملف شخصي",
+                                    "مجموعة من الخلفيات المميزة",
+                                    "ارسال الصور في العام والخاص",
+                                  ],
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.w),
+                                    child: Container(
+                                      padding: EdgeInsets.all(7.sp),
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.4),
+                                            blurRadius: 6,
+                                            offset: Offset(0, 3),
+                                          ),
+                                        ],
+                                        // color: Color(0xFFE1E1E1),
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            Colors.white,
+                                            Color(0xFF5CE1E6),
+                                          ],
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(3.r),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          360.r),
+                                                ),
+                                                child: Icon(
+                                                  Icons.person,
+                                                  color: Colors.black,
+                                                  size: 20.sp,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                "lametna",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 8.sp,
+                                                  fontFamily: "Portada",
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Icon(
+                                            Icons.check_circle,
+                                            color: Colors.yellow,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  "35"),
                             ],
-                            Container(
-                              width: 134.w,
-                              height: 27.h,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(3.r),
-                                color: Color(0xffE1E1E1),
-                              ),
-                              child: Row(
-                                children: [
-                                  CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    child: Icon(
-                                      Icons.person,
-                                      color: Colors.black,
-                                      size: 18.sp,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 8.0.h),
-                                    child: Text('Lametna',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontFamily: "Segoe UI",
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 7.sp,
-                                        )),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 35.0.w),
-                                    child: Icon(
-                                      Icons.verified_rounded,
-                                      color: Colors.blue,
-                                      size: 15.sp,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            240,
                           ),
-                          roomBuilder(
-                              "ملف محمي VIP",
-                              "100 دولار",
-                              [
-                                "ملف شخصي",
-                                "مجموعة من الخلفيات المميزة",
-                                "ارسال الصور في العام والخاص"
-                              ],
-                              Container(
-                                width: 134.w,
-                                height: 27.h,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3.r),
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color(0xFF5CE1E6),
-                                        Color(0xFFffffff),
-                                      ],
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                    )),
-                                child: Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      child: Icon(
-                                        Icons.person,
-                                        color: Colors.black,
-                                        size: 18.sp,
+                          SizedBox(
+                            height: 30.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              roomBuilder(
+                                  "ملف ملكي",
+                                  [
+                                    "ملف شخصي",
+                                    "حالة تحت الأسم",
+                                    "صورة شخصية بجانب الاسم"
+                                        "ارسال الصور في العام والخاص",
+                                  ],
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.w),
+                                    child: Container(
+                                      padding: EdgeInsets.all(7.sp),
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.4),
+                                            blurRadius: 6,
+                                            offset: Offset(0, 3),
+                                          ),
+                                        ],
+                                        // color: Color(0xFFE1E1E1),
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            Colors.white,
+                                            Color(0xFF5CE1E6),
+                                          ],
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(3.r),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(360.r),
+                                            ),
+                                            child: Icon(
+                                              Icons.person,
+                                              color: Colors.black,
+                                              size: 20.sp,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            "lametna",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 8.sp,
+                                              fontFamily: "Portada",
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(bottom: 8.0.h),
-                                      child: Text('Lametna',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: "Segoe UI",
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 7.sp,
-                                          )),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 35.0.w),
-                                      child: Icon(
-                                        Icons.verified_rounded,
-                                        color: Color(0xffFFCC00),
-                                        size: 15.sp,
+                                  ),
+                                  "60"),
+                              roomBuilder(
+                                  "ملف ملكي",
+                                  [
+                                    "ملف شخصي",
+                                    "حالة تحت الأسم",
+                                    "صورة شخصية بجانب الاسم"
+                                        "ارسال الصور في العام والخاص",
+                                  ],
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.w),
+                                    child: Container(
+                                      padding: EdgeInsets.all(7.sp),
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.4),
+                                            blurRadius: 6,
+                                            offset: Offset(0, 3),
+                                          ),
+                                        ],
+                                        // color: Color(0xFFE1E1E1),
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            Colors.white,
+                                            Color(0xFF5CE1E6),
+                                          ],
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(3.r),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(360.r),
+                                            ),
+                                            child: Icon(
+                                              Icons.person,
+                                              color: Colors.black,
+                                              size: 20.sp,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            "lametna",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 8.sp,
+                                              fontFamily: "Portada",
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              240),
-                          roomBuilder(
-                              "ملف ملكي ",
-                              "60 دولار",
-                              [
-                                "ملف شخصي",
-                                "حالة تحت الأسم",
-                                "صورة شخصية بجانب الاسم",
-                                "ارسال الصور في العام والخاص"
-                              ],
-                              Container(
-                                // width: 134.w,
-                                height: 27.h,
-
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3.r),
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color(0xFFE1E1E1),
-                                        Color(0xFFffffff),
-                                      ],
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                    )),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      "assets/images/profile.png",
-                                      width: 55.w,
-                                      height: 30.h,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(bottom: 8.0.h),
-                                      child: Text('Lametna',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: "Segoe UI",
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 7.sp,
-                                          )),
-                                    ),
-                                    Image.asset(
-                                      "assets/images/tag.png",
-                                      width: 55.w,
-                                      height: 30.h,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              260),
-                          roomBuilder(
-                              "ملف ملكيVIP ",
-                              "80 دولار",
-                              [
-                                "ملف شخصي",
-                                "حالة تحت الأسم",
-                                "صورة شخصية بجانب الاسم",
-                                "ارسال الصور في العام والخاص",
-                                "إشارةVIP",
-                                "اسم مميز علي العام",
-                                "اكثر من 90 خلفية للإسم",
-                              ],
-                              Container(
-                                // width: 134.w,
-                                height: 27.h,
-
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3.r),
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color(0xFF6EE1DC),
-                                        Color(0xFFB1C061),
-                                      ],
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                    )),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      "assets/images/profile.png",
-                                      width: 55.w,
-                                      height: 30.h,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(bottom: 8.0.h),
-                                      child: Text('Lametna',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: "Segoe UI",
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 7.sp,
-                                          )),
-                                    ),
-                                    Image.asset(
-                                      "assets/images/tag.png",
-                                      width: 55.w,
-                                      height: 30.h,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              330),
-                          roomBuilder(
-                              "ملف ملكيVIP ",
-                              "150 دولار",
-                              [
-                                "ملف شخصي",
-                                "حالة تحت الأسم",
-                                "صورة شخصية بجانب الاسم",
-                                "ارسال الصور في العام والخاص",
-                                "مجموعة من الشعاراتVIP",
-                                "إطارات الصورة الشخصيةVIP",
-                                "اسم مميز علي العام",
-                                "اكثر من 90 خلفية للإسم",
-                                "اختيار خلفية من جهازك",
-                                //
-                              ],
-                              Container(
-                                // width: 134.w,
-                                height: 27.h,
-
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3.r),
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color(0xFFFFCC00),
-                                        Color(0xFFFFFFFF),
-                                      ],
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                    )),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      "assets/images/profile1.png",
-                                      width: 55.w,
-                                      height: 30.h,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(bottom: 8.0.h),
-                                      child: Text('Lametna',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: "Segoe UI",
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 7.sp,
-                                          )),
-                                    ),
-                                    Image.asset(
-                                      "assets/images/padg3.png",
-                                      width: 55.w,
-                                      height: 30.h,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              370)
-                        ]),
+                                  ),
+                                  "60")
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15.w),
                     child: GridView(
+                        physics: ScrollPhysics(),
                         //itemCount: 3,
                         shrinkWrap: true,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -506,11 +531,12 @@ class test extends StatelessWidget {
                     child: GridView(
                         //itemCount: 3,
                         shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           crossAxisSpacing: 12.w,
                           mainAxisSpacing: 13.h,
-                          childAspectRatio: 0.9,
+                          childAspectRatio: 1.1,
                         ),
                         children: [
                           frameBuilder(
@@ -526,12 +552,12 @@ class test extends StatelessWidget {
                           frameBuilder(
                             "إطار مميز",
                             "5 \u0024",
-                            "assets/images/badge2.png",
+                            "assets/images/badge3.png",
                           ),
                           frameBuilder(
                             "إطار مميز",
                             "5 \u0024",
-                            "assets/images/badge1.png",
+                            "assets/images/badge4.png",
                           ),
                           frameBuilder(
                             "إطار مميز",
@@ -546,6 +572,7 @@ class test extends StatelessWidget {
                       textDirection: TextDirection.ltr,
                       child: GridView(
                           //itemCount: 3,
+                          physics: ScrollPhysics(),
                           shrinkWrap: true,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
@@ -588,124 +615,104 @@ class test extends StatelessWidget {
     );
   }
 
-  Widget roomBuilder(
-      String title, String price, List items, Widget container, int height) {
-    return Column(
-      children: [
-        Directionality(
-          textDirection: TextDirection.rtl,
-          child: Container(
-              height: height.h,
-              width: 156.w,
+  Container roomBuilder(String title, List items, Widget banner, String price) {
+    return Container(
+      width: 155.w,
+      decoration: BoxDecoration(
+        border: Border.all(color: Color(0xffFABD63), width: 1.w),
+        borderRadius: BorderRadius.circular(10.r),
+        // color: Colors.green,
+      ),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
+            child: Container(
+              width: double.infinity,
               decoration: BoxDecoration(
+                color: Color(0xffFABD63),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10.r),
+                  bottomRight: Radius.circular(10.r),
+                ),
+              ),
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(6.r),
-                  border: Border.all(color: Color(0xFFFABD63)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0xFF00000029).withOpacity(0.2),
-                      spreadRadius: 0.5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3),
-                      // changes position of shadow
-                    ),
-                  ]),
-              child: Column(
-                // mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    child: Container(
-                      width: 131,
-                      height: 30.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(10.r),
-                          bottomLeft: Radius.circular(10.r),
-                        ),
-                        color: Color(0xFFFABD63),
-                        border: Border.all(
-                          color: Color(0xFFFABD63),
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          title,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12.sp,
-                          ),
-                        ),
-                      ),
-                    ),
+                  fontSize: 12.sp,
+                  fontFamily: "Portada",
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          ListView.builder(
+            itemBuilder: (context, index) => Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.r),
+                  color: Color(0xffE1E1E1),
+                ),
+                child: Text(
+                  items[index],
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 8.sp,
+                    fontFamily: 'Segoe UI',
                   ),
-                  SizedBox(
-                    height: 21.h,
+                ),
+              ),
+            ),
+            itemCount: items.length,
+            shrinkWrap: true,
+          ),
+          SizedBox(height: 10.h),
+          banner,
+          SizedBox(
+            height: 10.h,
+          ),
+          Text(
+            "$price دولار",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 12.sp,
+              fontFamily: 'portada',
+            ),
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15.r),
+                color: Color(0xffFABD63),
+              ),
+              child: Center(
+                child: Text(
+                  "أطلب الأن",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12.sp,
+                    fontFamily: 'portada',
                   ),
-                  ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: items.length,
-                    separatorBuilder: (context, index) => SizedBox(
-                      height: 3.h,
-                    ),
-                    itemBuilder: (context, index) => Container(
-                      width: 130.w,
-                      height: 20.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5.r),
-                        color: Color(0xffE1E1E1),
-                      ),
-                      child: Text(
-                        items[index],
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: "Segoe UI",
-                          fontWeight: FontWeight.bold,
-                          fontSize: 8.sp,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 11.h,
-                  ),
-                  container,
-                  SizedBox(
-                    height: 12.h,
-                  ),
-                  Text(price,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: "Portada",
-                        fontWeight: FontWeight.w900,
-                        fontSize: 12.sp,
-                      )),
-                  Padding(
-                      padding: EdgeInsets.only(top: 7.h),
-                      child: Container(
-                          width: 130.w,
-                          height: 25.h,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFFABD63),
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "أطلب الأن",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  fontFamily: "Portada"),
-                            ),
-                          ))),
-                ],
-              )),
-        ),
-      ],
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 7.h,
+          ),
+        ],
+      ),
     );
   }
 
@@ -724,7 +731,7 @@ class test extends StatelessWidget {
                   border: Border.all(color: Color(0xFF43D0CA)),
                   boxShadow: [
                     BoxShadow(
-                      color: Color(0xFF00000029).withOpacity(0.2),
+                      color: Color(0xFF00000029).withOpacity(0.1),
                       spreadRadius: 0.5,
                       blurRadius: 7,
                       offset: Offset(0, 3),
@@ -854,7 +861,7 @@ class test extends StatelessWidget {
                           style: TextStyle(
                             color: Colors.black,
                             fontFamily: "Portada",
-                            fontWeight: FontWeight.w900,
+                            fontWeight: FontWeight.w700,
                             fontSize: 12.sp,
                           )),
                       Padding(
@@ -901,7 +908,7 @@ class test extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.r),
                   boxShadow: [
                     BoxShadow(
-                      color: Color(0xFF00000029).withOpacity(0.2),
+                      color: Color(0xFF00000029).withOpacity(0.1),
                       spreadRadius: 0.5,
                       blurRadius: 7,
                       offset: Offset(0, 3), // changes position of shadow
@@ -1009,7 +1016,7 @@ class test extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.r),
                   boxShadow: [
                     BoxShadow(
-                      color: Color(0xFF00000029).withOpacity(0.2),
+                      color: Color(0xFF00000029).withOpacity(0.1),
                       spreadRadius: 0.5,
                       blurRadius: 7,
                       offset: Offset(0, 3), // changes position of shadow
@@ -1115,21 +1122,20 @@ class test extends StatelessWidget {
     );
   }
 
-  Widget marketBuilder(String text, String price, String num1, String num2,
-      String num3, String num4, String num5) {
+  Widget marketBuilder(List prices, String price) {
     return Column(
       children: [
         Directionality(
           textDirection: TextDirection.rtl,
           child: Container(
               height: 260.h,
-              width: 156.w,
+              // width: 156.w,
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10.r),
                   boxShadow: [
                     BoxShadow(
-                      color: Color(0xFF00000029).withOpacity(0.2),
+                      color: Color(0xFF00000029).withOpacity(0.1),
                       spreadRadius: 0.5,
                       blurRadius: 7,
                       offset: Offset(0, 3), // changes position of shadow
@@ -1167,144 +1173,70 @@ class test extends StatelessWidget {
                   ),
                   Column(
                     children: [
-                      Text(
-                        text,
-                        style: TextStyle(
-                          fontSize: 9.sp,
-                          fontFamily: "Segoe UI",
-                          fontWeight: FontWeight.normal,
-                          color: Color(0xff707070),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            num1,
-                            style: TextStyle(
-                              fontSize: 7.sp,
-                              fontWeight: FontWeight.w900,
-                              fontFamily: "Portada",
-                              color: Colors.black,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 5.w,
-                          ),
-                          Text(
-                            "مستخدم",
-                            style: TextStyle(
-                              fontSize: 7.sp,
-                              fontWeight: FontWeight.w900,
-                              fontFamily: "Portada",
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            num2,
-                            style: TextStyle(
-                              fontSize: 7.sp,
-                              fontWeight: FontWeight.w900,
-                              fontFamily: "Portada",
-                              color: Color(0xFFFF0000),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 6.w,
-                          ),
-                          Text(
-                            "سوبر ماستر",
-                            style: TextStyle(
-                              fontSize: 7.sp,
-                              fontWeight: FontWeight.w900,
-                              fontFamily: "Portada",
-                              color: Color(0xFFFF0000),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            num3,
-                            style: TextStyle(
-                              fontSize: 7.sp,
-                              fontWeight: FontWeight.w900,
-                              fontFamily: "Portada",
-                              color: Color(0xff5D00FF),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            "سوبر أدمن",
-                            style: TextStyle(
-                              fontSize: 7.sp,
-                              fontWeight: FontWeight.w900,
-                              fontFamily: "Portada",
-                              color: Color(0xff5D00FF),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            num4,
-                            style: TextStyle(
-                              fontSize: 7.sp,
-                              fontWeight: FontWeight.w900,
-                              fontFamily: "Portada",
-                              color: Color(0xff00B041),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 15.w,
-                          ),
-                          Text(
-                            "أدمن",
-                            style: TextStyle(
-                              fontSize: 7.sp,
-                              fontWeight: FontWeight.w900,
-                              fontFamily: "Portada",
-                              color: Color(0xff00B041),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            num4,
-                            style: TextStyle(
-                              fontSize: 7.sp,
-                              fontWeight: FontWeight.w900,
-                              fontFamily: "Portada",
-                              color: Color(0xffFF00EE),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 15.w,
-                          ),
-                          Text(
-                            "ممبر",
-                            style: TextStyle(
-                              fontSize: 7.sp,
-                              fontWeight: FontWeight.w900,
-                              fontFamily: "Portada",
-                              color: Color(0xffFF00EE),
-                            ),
-                          ),
-                        ],
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return [
+                            {
+                              "val": "مستخدم",
+                              "color": Colors.black,
+                            },
+                            {
+                              "val": "سوبر ماستر",
+                              "color": Colors.red,
+                            },
+                            {
+                              "val": "سوبر أدمن",
+                              "color": Colors.purple,
+                            },
+                            {
+                              "val": "أدمن",
+                              "color": Colors.green,
+                            },
+                            {
+                              "val": "ممبر",
+                              "color": Colors.pink,
+                            }
+                          ]
+                              .map((e) => Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 78.w,
+                                        height: 20.h,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(prices[index],
+                                                style: TextStyle(
+                                                  color: e['color'],
+                                                  fontFamily: "Portada",
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 10.sp,
+                                                )),
+                                            SizedBox(
+                                              width: 10.w,
+                                            ),
+                                            Text(
+                                              e['val'],
+                                              style: TextStyle(
+                                                color: e['color'],
+                                                fontFamily: "Segoe UI",
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 10.sp,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ))
+                              .toList()[index];
+                        },
+                        itemCount: prices.length,
                       ),
                       SizedBox(
                         height: 9.h,
@@ -1320,10 +1252,13 @@ class test extends StatelessWidget {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(right: 5.w),
-                              child: Image.asset(
-                                "assets/images/profile.png",
-                                width: 22.w,
-                                height: 22.h,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                child: Icon(
+                                  Icons.person,
+                                  color: Colors.black,
+                                  size: 18.sp,
+                                ),
                               ),
                             ),
                             Text('Master',
@@ -1339,7 +1274,7 @@ class test extends StatelessWidget {
                       SizedBox(
                         height: 9.h,
                       ),
-                      Text(price,
+                      Text(price + " \$",
                           style: TextStyle(
                             color: Colors.black,
                             fontFamily: "Portada",
@@ -1353,7 +1288,7 @@ class test extends StatelessWidget {
                           height: 25.h,
                           decoration: BoxDecoration(
                             color: Color(0xFFFABD63),
-                            borderRadius: BorderRadius.circular(9.r),
+                            borderRadius: BorderRadius.circular(10.r),
                           ),
                           child: Center(
                             child: Text(
