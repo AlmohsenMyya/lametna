@@ -122,7 +122,7 @@ class choosingPage extends StatelessWidget {
                           padding: EdgeInsets.only(
                               top: 15.h, left: 58.w, right: 59.w),
                           child: Text(
-                            "الغرف الكتابية",
+                            "الغرف الصوتية",
                             style: TextStyle(
                                 fontSize: 15.sp,
                                 color: Colors.white,

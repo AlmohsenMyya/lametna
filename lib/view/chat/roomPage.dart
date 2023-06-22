@@ -393,7 +393,7 @@ class RoomPage extends StatelessWidget {
                             SizedBox(
                               width: 21.w,
                             ),
-                            isOwner
+                            !isOwner
                                 ? SizedBox(
                                     width: 65.w,
                                   )
@@ -491,10 +491,14 @@ class RoomPage extends StatelessWidget {
                                     controller: controller.scrollController,
                                     reverse: true,
                                     itemBuilder: (context, index) {
-                                      return messageVIPBuilder(context,
-                                          snapshot.data["data"][index]);
+                                      return !controller.roomStatus
+                                          ? messageVipNewRoomBuilder(context,
+                                              snapshot.data["data"][index])
+                                          : messageVIPBuilder(context,
+                                              snapshot.data["data"][index]);
                                     },
                                     itemCount: snapshot.data["data"].length,
+                                    // itemCount: 1,
                                   ),
                                 )
                               : Center(child: CircularProgressIndicator());
@@ -525,14 +529,23 @@ class RoomPage extends StatelessWidget {
                       width: 145.w,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20.r),
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFFF792F0),
-                            Color(0xFFFABD63),
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
+                        gradient: !controller.roomStatus
+                            ? LinearGradient(
+                                colors: [
+                                  Color(0xFF00E54C),
+                                  Color(0xFFDADADC),
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              )
+                            : LinearGradient(
+                                colors: [
+                                  Color(0xFFF792F0),
+                                  Color(0xFFFABD63),
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              ),
                       ),
                       padding: EdgeInsets.symmetric(horizontal: 8.w),
                       child: Row(
@@ -570,12 +583,6 @@ class RoomPage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
     );
   }
-
-  // messageBuilder(
-  //                           snapshot.data[index]["sender_name"],
-  //                           snapshot.data[index]["text"],
-  //                           snapshot.data[index]["sender"].toString() ==
-  //                               userId)
 
   Widget messageBuilder(BuildContext context, dynamic data) {
     // return Text(
@@ -918,6 +925,132 @@ class RoomPage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget messageVipNewRoomBuilder(BuildContext context, dynamic data) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5.h),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 70.h,
+            width: double.infinity,
+            // color: Color(0xFFCAF8ED),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                  data["senderName"] == userName ? 0.w : 10.w,
+                  5.h,
+                  data["senderName"] == userName ? 10.w : 0,
+                  5.h),
+              child: Directionality(
+                textDirection: data["senderName"] == userName
+                    ? TextDirection.rtl
+                    : TextDirection.ltr,
+                child: Row(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/icons/logo.png",
+                          width: 70.w,
+                          height: 70.h,
+                          // fit: BoxFit.cover,
+                        ),
+                        Image.asset(
+                          "assets/images/badge4.png",
+                          width: 70.w,
+                          height: 70.h,
+                          // fit: BoxFit.cover,
+                        ),
+                      ],
+                    ),
+                    Stack(
+                      children: [
+                        Text(
+                          data["senderName"],
+                          textAlign: data["senderName"] == userName
+                              ? TextAlign.right
+                              : TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w900,
+                            fontFamily: "Portada",
+                            foreground: Paint()
+                              ..style = PaintingStyle.stroke
+                              ..strokeWidth = 1.5
+                              ..color = Colors.yellow,
+                          ),
+                        ),
+                        Text(
+                          data["senderName"],
+                          textAlign: data["senderName"] == userName
+                              ? TextAlign.right
+                              : TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w900,
+                            fontFamily: "Portada",
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              right: data["senderName"] == userName ? 70.w : 60.w,
+              left: data["senderName"] == userName ? 60.w : 70.w,
+            ),
+            child: Container(
+              // height: 50.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: Color(0xFFFBF205),
+                  width: 4.w,
+                ),
+                borderRadius: data["senderName"] == userName
+                    ? BorderRadius.only(
+                        bottomLeft: Radius.circular(20.r),
+                        bottomRight: Radius.circular(20.r),
+                        topLeft: Radius.circular(20.r),
+                      )
+                    : BorderRadius.only(
+                        bottomRight: Radius.circular(20.r),
+                        bottomLeft: Radius.circular(20.r),
+                        topRight: Radius.circular(20.r),
+                      ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(
+                    data["senderName"] == userName ? 0.w : 30.w,
+                    15.h,
+                    data["senderName"] == userName ? 30.w : 0.w,
+                    15.h),
+                child: Text(
+                  data["message"],
+                  textAlign: data["senderName"] == userName
+                      ? TextAlign.right
+                      : TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Portada",
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

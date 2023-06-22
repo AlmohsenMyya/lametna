@@ -442,10 +442,15 @@ class ChatHomePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        // color: Colors.red,
-                        height: 80.h,
-                        width: 100.w,
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.r),
+                          border: Border.all(
+                            color: Color(0xFF43D0CA),
+                          ),
+                        ),
+                        height: 56.h,
+                        width: 60.w,
                         child: ClipRRect(
                           borderRadius:
                               BorderRadius.circular(10), // Image border
