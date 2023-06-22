@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/state_manager.dart';
 
 class StoreController extends GetxController {
+  PageController pageController = PageController();
+  PageController alertPageController = PageController();
+  ScrollController _scrollController = ScrollController();
   int selectedIndex = 0;
-  PageController scrollController = PageController();
-
+  int alertIndex = 0;
   void changeIndex(int index) {
     selectedIndex = index;
-    scrollController.jumpToPage(index);
-
-    print("object");
-    update();
-  }
-
-  void changeAlertIndex(int index) {
-    // alertIndex = index;
-    scrollController.jumpToPage(index);
+    pageController.jumpToPage(index);
     update();
   }
 }

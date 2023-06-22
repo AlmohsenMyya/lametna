@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:lametna/controllers/userData/userCredentials.dart';
+import 'package:lametna/controllers/userData/variables.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Crud {
@@ -21,7 +21,7 @@ class Crud {
     }
   }
 
-  loginRequest(Map data) async {
+  postRequest(Map data) async {
     try {
       var response = await http.post(Uri.parse(loginUrl), body: data);
       if (response.statusCode == 200) {
@@ -35,32 +35,35 @@ class Crud {
     }
   }
 
-  Future<void> saveUserCredentials(
-      List<Map<String, String>> credentials) async {
-    final prefs = await SharedPreferences.getInstance();
-    final encodedCredentials =
-        credentials.map((cred) => jsonEncode(cred)).toList();
-    await prefs.setStringList('userCredentials', encodedCredentials);
-  }
+  get(String targetedUrl) async {
+    var url = Uri.parse(targetedUrl);
+    var response = await http.get(url);
 
-  Future<List<Map<String, String>>> getUserCredentials() async {
-    final prefs = await SharedPreferences.getInstance();
-    final encodedCredentials = prefs.getStringList('userCredentials');
-    if (encodedCredentials != null) {
-      final credentials = encodedCredentials
-          .map((encodedCred) => jsonDecode(encodedCred))
-          .cast<Map<String, String>>()
-          .toList();
-      return credentials;
+    if (response.statusCode == 200) {
+      // Request successful, parse the response data
+      var jsonResponse = json.decode(response.body);
+      // print(response.body["status"]);
+      return jsonResponse;
+    } else {
+      // Request failed
+      print('Request failed with status: ${response.statusCode}.');
+      return null;
     }
-    return [];
   }
 
-  Future<void> updateUserCredentials(
-      List<Map<String, String>> updatedCredentials) async {
-    final prefs = await SharedPreferences.getInstance();
-    final encodedCredentials =
-        updatedCredentials.map((cred) => jsonEncode(cred)).toList();
-    await prefs.setStringList('userCredentials', encodedCredentials);
+  post(String targetedUrl, Map data) async {
+    var url = Uri.parse(targetedUrl);
+    var response = await http.post(url, body: data);
+
+    if (response.statusCode == 200) {
+      // Request successful, parse the response data
+      var jsonResponse = json.decode(response.body);
+      // print(response.body["status"]);
+      return jsonResponse;
+    } else {
+      // Request failed
+      print('Request failed with status: ${response.statusCode}.');
+      return null;
+    }
   }
 }

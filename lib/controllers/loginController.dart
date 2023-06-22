@@ -4,7 +4,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'crud.dart';
+// import 'crud.dart';
+import 'package:lametna/controllers/Crud.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,7 +35,7 @@ class LoginController extends GetxController {
     };
     FocusScope.of(context).unfocus();
 
-    var response = await crud.loginRequest(data);
+    var response = await crud.postRequest(data);
     print(response.toString());
     if (response['status'] == "success") {
       userName = response["data"]['username'];

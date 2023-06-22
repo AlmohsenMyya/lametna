@@ -1,14 +1,19 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, missing_return
+
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/chat/roomsPageController.dart';
+import 'package:lametna/model/message.dart';
 import 'package:lametna/view/chat/roomMangement.dart';
+import 'package:lametna/view/messages/messages.dart';
 
 import '../../controllers/userData/userCredentials.dart';
 
 class RoomPage extends StatelessWidget {
+  bool isOwner = Get.arguments["owner"] != userName;
   // const RoomPage({super.key});
 
   RoomPage({Key key}) : super(key: key);
@@ -185,7 +190,7 @@ class RoomPage extends StatelessWidget {
             elevation: 0,
             centerTitle: true,
             title: Text(
-              ' اسم الغرفة',
+              Get.arguments['room_name'],
               style: TextStyle(
                 fontSize: 18.sp,
                 fontFamily: "Portada",
@@ -217,6 +222,7 @@ class RoomPage extends StatelessWidget {
                       {
                         "value": "0",
                         "name": "الحالة",
+                        "mustBeAdmin": false,
                         "icon": Icon(
                           Icons.arrow_forward_ios,
                           color: Colors.black,
@@ -226,6 +232,7 @@ class RoomPage extends StatelessWidget {
                       {
                         "value": "1",
                         "name": "الاعدادات",
+                        "mustBeAdmin": false,
                         "icon": Icon(
                           Icons.settings,
                           color: Colors.black,
@@ -235,6 +242,7 @@ class RoomPage extends StatelessWidget {
                       {
                         "value": "2",
                         "name": "اللحظات",
+                        "mustBeAdmin": false,
                         "icon": Image.asset(
                           "assets/icons/planet.png",
                           color: Colors.black,
@@ -244,6 +252,7 @@ class RoomPage extends StatelessWidget {
                       {
                         "value": "3",
                         "name": "إدارة الغرفة",
+                        "mustBeAdmin": true,
                         "icon": Icon(
                           Icons.home,
                           color: Colors.black,
@@ -253,6 +262,7 @@ class RoomPage extends StatelessWidget {
                       {
                         "value": "4",
                         "name": "مشاركة",
+                        "mustBeAdmin": false,
                         "icon": Icon(
                           Icons.share,
                           color: Colors.black,
@@ -262,6 +272,7 @@ class RoomPage extends StatelessWidget {
                       {
                         "value": "5",
                         "name": "المفضلة",
+                        "mustBeAdmin": false,
                         "icon": Icon(
                           Icons.favorite_border,
                           color: Colors.black,
@@ -272,6 +283,7 @@ class RoomPage extends StatelessWidget {
                       {
                         "value": "6",
                         "name": "عن البرنامج",
+                        "mustBeAdmin": false,
                         "icon": Icon(
                           Icons.help,
                           color: Colors.black,
@@ -281,23 +293,25 @@ class RoomPage extends StatelessWidget {
                     ]
                         .toList()
                         .map((e) => PopupMenuItem(
-                              height: 40.h,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(e["name"],
-                                      style: TextStyle(
-                                          fontSize: 15.sp,
-                                          fontFamily: "Segoe",
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black)),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 10.w),
-                                    child: e["icon"],
-                                  ),
-                                ],
-                              ),
+                              height: e["mustBeAdmin"] ? 0 : 40.h,
+                              child: e["mustBeAdmin"] && isOwner
+                                  ? SizedBox()
+                                  : Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(e["name"],
+                                            style: TextStyle(
+                                                fontSize: 15.sp,
+                                                fontFamily: "Segoe",
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black)),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 10.w),
+                                          child: e["icon"],
+                                        ),
+                                      ],
+                                    ),
                               value: int.parse(e["value"]),
                             ))
                         .toList();
@@ -379,34 +393,40 @@ class RoomPage extends StatelessWidget {
                             SizedBox(
                               width: 21.w,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                // Get.toNamed('/VIPRoom');
-                                controller.changeRoomStatus();
-                              },
-                              child: SizedBox(
-                                width: 65.w,
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 5.h),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20.r),
-                                    color: controller.roomStatus
-                                        ? Color(0xffF792F0)
-                                        : Color(0xFFFABD63),
+                            isOwner
+                                ? SizedBox(
+                                    width: 65.w,
+                                  )
+                                : GestureDetector(
+                                    onTap: () {
+                                      // Get.toNamed('/VIPRoom');
+                                      controller.changeRoomStatus();
+                                    },
+                                    child: SizedBox(
+                                      width: 65.w,
+                                      child: Container(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 5.h),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20.r),
+                                          color: controller.roomStatus
+                                              ? Color(0xffF792F0)
+                                              : Color(0xFFFABD63),
+                                        ),
+                                        child: Text(
+                                          controller.roomStatus
+                                              ? 'الروم الحديث'
+                                              : "مظهر قديم",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 9.sp,
+                                              fontFamily: "Portada",
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                  child: Text(
-                                    controller.roomStatus
-                                        ? 'الروم الحديث'
-                                        : "مظهر قديم",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 9.sp,
-                                        fontFamily: "Portada",
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ),
                             SizedBox(
                               width: 60.w,
                             ),
@@ -453,32 +473,33 @@ class RoomPage extends StatelessWidget {
                                 end: Alignment.centerLeft,
                               ),
                       ),
-                      child: FutureBuilder(
-                        builder: (context, snapshot) => snapshot.data == null
-                            ? Center(child: CircularProgressIndicator())
-                            : ListView.builder(
-                                itemCount: snapshot.data["data"].length,
-                                itemBuilder: (context, index) => messageBuilder(
-                                    "ali fekry",
-                                    "hello",
-                                    snapshot.data["data"][index]["sender"]
-                                            .toString() ==
-                                        userId),
-                                //     Text(
-                                //   // controller.data["data"][index]["text"].toString(),
-                                //   snapshot.data["data"][index]["text"]
-                                //       .toString(),
-                                // textAlign: snapshot.data["data"][index]
-                                //                 ["sender"]
-                                //             .toString() ==
-                                //         userId
-                                //       ? TextAlign.right
-                                //       : TextAlign.left,
-                                //   style: TextStyle(
-                                //       color: Colors.green, fontSize: 30),
-                                // ),
-                              ),
-                        future: controller.getData(),
+                      // child: Container(),
+                      child: StreamBuilder(
+                        builder: (context, snapshot) {
+                          // print(snapshot.data.length);
+                          return snapshot.hasData
+                              ? NotificationListener(
+                                  onNotification:
+                                      (ScrollNotification scrollInfo) {
+                                    scrollInfo.metrics.pixels < 80
+                                        ? controller
+                                            .scrollDownButtonStatus(true)
+                                        : controller
+                                            .scrollDownButtonStatus(false);
+                                  },
+                                  child: ListView.builder(
+                                    controller: controller.scrollController,
+                                    reverse: true,
+                                    itemBuilder: (context, index) {
+                                      return messageVIPBuilder(context,
+                                          snapshot.data["data"][index]);
+                                    },
+                                    itemCount: snapshot.data["data"].length,
+                                  ),
+                                )
+                              : Center(child: CircularProgressIndicator());
+                        },
+                        stream: controller.streamController.stream,
                       ),
                     ),
                   );
@@ -489,12 +510,80 @@ class RoomPage extends StatelessWidget {
           buildMyNavBar(context)
         ],
       ),
+      floatingActionButton: GetBuilder<RoomsPageController>(
+        builder: (controller) {
+          return controller.scrollDownButton
+              ? SizedBox()
+              : Padding(
+                  padding: EdgeInsets.only(bottom: 60.h),
+                  child: GestureDetector(
+                    onTap: () {
+                      controller.scrollController.animateTo(0,
+                          duration: Duration(seconds: 1), curve: Curves.easeIn);
+                    },
+                    child: Container(
+                      width: 145.w,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.r),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFFF792F0),
+                            Color(0xFFFABD63),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 7.h),
+                            child: RotatedBox(
+                              quarterTurns: 3,
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                size: 20.sp,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "الرسائل الجديدة",
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontFamily: 'Segoe UI',
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+        },
+      ),
       // bottomNavigationBar: ,
       resizeToAvoidBottomInset: false,
     );
   }
 
-  Widget messageBuilder(String name, String message, bool isMe) {
+  // messageBuilder(
+  //                           snapshot.data[index]["sender_name"],
+  //                           snapshot.data[index]["text"],
+  //                           snapshot.data[index]["sender"].toString() ==
+  //                               userId)
+
+  Widget messageBuilder(BuildContext context, dynamic data) {
+    // return Text(
+    //   data["message"],
+    //   style: TextStyle(
+    //     color: Colors.black,
+    //   ),
+    // );
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 5.h),
       child: Column(
@@ -504,7 +593,9 @@ class RoomPage extends StatelessWidget {
             width: double.infinity,
             color: Color(0xFFCAF8ED),
             child: Directionality(
-              textDirection: isMe ? TextDirection.rtl : TextDirection.ltr,
+              textDirection: data["senderName"] == userName
+                  ? TextDirection.rtl
+                  : TextDirection.ltr,
               child: Row(
                 children: [
                   Container(
@@ -528,8 +619,10 @@ class RoomPage extends StatelessWidget {
                     width: 5.w,
                   ),
                   Text(
-                    name,
-                    textAlign: isMe ? TextAlign.right : TextAlign.left,
+                    data["senderName"],
+                    textAlign: data["senderName"] == userName
+                        ? TextAlign.right
+                        : TextAlign.left,
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
@@ -554,10 +647,15 @@ class RoomPage extends StatelessWidget {
             ]),
             child: Padding(
               padding: EdgeInsets.fromLTRB(
-                  isMe ? 0.w : 60.w, 12.h, isMe ? 60.w : 0.w, 12.h),
+                  data["senderName"] == userName ? 0.w : 60.w,
+                  12.h,
+                  data["senderName"] == userName ? 60.w : 0.w,
+                  12.h),
               child: Text(
-                message,
-                textAlign: isMe ? TextAlign.right : TextAlign.left,
+                data["message"],
+                textAlign: data["senderName"] == userName
+                    ? TextAlign.right
+                    : TextAlign.left,
                 style: TextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
@@ -572,7 +670,7 @@ class RoomPage extends StatelessWidget {
     );
   }
 
-  Widget messageVIPBuilder(String name, String message, bool isMe) {
+  Widget messageVIPBuilder(BuildContext context, dynamic data) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 5.h),
       child: Stack(
@@ -585,10 +683,15 @@ class RoomPage extends StatelessWidget {
                 color: Color(0xFFCAF8ED),
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(
-                      isMe ? 0.w : 55.w, 5.h, isMe ? 55.w : 0, 5.h),
+                      data["senderName"] == userName ? 0.w : 55.w,
+                      5.h,
+                      data["senderName"] == userName ? 55.w : 0,
+                      5.h),
                   child: Text(
-                    name,
-                    textAlign: isMe ? TextAlign.right : TextAlign.left,
+                    data["senderName"],
+                    textAlign: data["senderName"] == userName
+                        ? TextAlign.right
+                        : TextAlign.left,
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
@@ -602,7 +705,7 @@ class RoomPage extends StatelessWidget {
                 // height: 50.h,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  gradient: isMe
+                  gradient: data["senderName"] == userName
                       ? LinearGradient(
                           colors: [
                             Color(0xFFF792F0),
@@ -619,7 +722,7 @@ class RoomPage extends StatelessWidget {
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
                         ),
-                  borderRadius: isMe
+                  borderRadius: data["senderName"] == userName
                       ? BorderRadius.only(
                           bottomLeft: Radius.circular(20.r),
                         )
@@ -629,10 +732,15 @@ class RoomPage extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(
-                      isMe ? 0.w : 60.w, 12.h, isMe ? 60.w : 0.w, 12.h),
+                      data["senderName"] == userName ? 0.w : 60.w,
+                      12.h,
+                      data["senderName"] == userName ? 60.w : 0.w,
+                      12.h),
                   child: Text(
-                    message,
-                    textAlign: isMe ? TextAlign.right : TextAlign.left,
+                    data["message"],
+                    textAlign: data["senderName"] == userName
+                        ? TextAlign.right
+                        : TextAlign.left,
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
@@ -646,8 +754,8 @@ class RoomPage extends StatelessWidget {
           ),
           Positioned(
             top: 3.h,
-            left: isMe ? null : 10.w,
-            right: isMe ? 10.w : null,
+            left: data["senderName"] == userName ? null : 10.w,
+            right: data["senderName"] == userName ? 10.w : null,
             child: Container(
               width: 35.w,
               height: 40.h,
@@ -669,8 +777,8 @@ class RoomPage extends StatelessWidget {
           Positioned(
             top: -7.h,
             // right: isMe ? 10.w : null,
-            left: isMe ? 10.w : null,
-            right: isMe ? null : 10.w,
+            left: data["senderName"] == userName ? 10.w : null,
+            right: data["senderName"] == userName ? null : 10.w,
             // right: isMe ? null : 10.w,
             child: Image.asset(
               "assets/images/vipBadge.png",
@@ -737,17 +845,22 @@ class RoomPage extends StatelessWidget {
         ),
         child: Row(
           children: [
-            RotatedBox(
-              quarterTurns: 2,
-              child: IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.send,
-                  color: Colors.white,
-                  size: 25.sp,
+            GetBuilder<RoomsPageController>(builder: (controller) {
+              return RotatedBox(
+                quarterTurns: 2,
+                child: IconButton(
+                  onPressed: () {
+                    controller
+                        .sendMessage(controller.messageController.text.trim());
+                  },
+                  icon: Icon(
+                    Icons.send,
+                    color: Colors.white,
+                    size: 25.sp,
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
             Text(
               "🙂",
               style: TextStyle(fontSize: 25.sp),
@@ -759,31 +872,35 @@ class RoomPage extends StatelessWidget {
                 height: 40.h,
                 child: Directionality(
                   textDirection: TextDirection.rtl,
-                  child: TextFormField(
-                    cursorColor: Colors.black,
-                    // textAlign: TextAlign.center,
+                  child: GetBuilder<RoomsPageController>(
+                    builder: (controller) {
+                      return TextFormField(
+                        cursorColor: Colors.black,
+                        controller: controller.messageController,
+                        style: TextStyle(
+                          color: Colors.black, //Color(0xff9A8B8B),
+                          fontSize: 14.sp,
+                          fontFamily: "Portada",
+                        ),
+                        expands: true,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 10.w),
+                          hintText: 'اكتب رسالة',
 
-                    style: TextStyle(
-                      color: Colors.black, //Color(0xff9A8B8B),
-                      fontSize: 14.sp,
-                      fontFamily: "Portada",
-                    ),
-                    expands: true,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
-                      hintText: 'اكتب رسالة',
-
-                      hintStyle: TextStyle(
-                        fontSize: 12.sp,
-                        fontFamily: "Portada",
-                      ),
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(50.r)),
-                      filled: true,
-                      fillColor: Colors.white, // Color(0xff00000029),
-                    ),
+                          hintStyle: TextStyle(
+                            fontSize: 12.sp,
+                            fontFamily: "Portada",
+                          ),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(50.r)),
+                          filled: true,
+                          fillColor: Colors.white, // Color(0xff00000029),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),

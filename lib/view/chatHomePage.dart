@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/bottomNavitionBar.dart';
 import 'package:lametna/controllers/chathomePageController.dart';
+import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/view/side%20pages/drawer.dart';
 import 'package:lametna/view/store/test.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -276,50 +277,69 @@ class ChatHomePage extends StatelessWidget {
                   ],
                 );
               }),
+          SizedBox(
+            height: 15.h,
+          ),
+          _countriesBuilder(),
           GetBuilder<ChatHomeController>(builder: (controller) {
-            return SizedBox(
-              height: (4 * 185).h,
-              child: PageView(
-                physics: NeverScrollableScrollPhysics(),
-                controller: controller.pageController,
-                // allowImplicitScrolling: true,
-                children: [
-                  ConstrainedBox(
-                    constraints: BoxConstraints.expand(),
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 10.h),
-                      child: ListView(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        children: [
-                          _countriesBuilder(),
-                          _builderRooms(context, color: Color(0xFFf6acad)),
-                          _builderRooms(context, color: Color(0xFFfabb64)),
-                          _builderRooms(context, color: Color(0xFFfabb64)),
-                          _builderRooms(context, color: Color(0xFFfabb64)),
-
-                          //el mic
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 10.h),
-                    child: ListView(
+            return controller.vipRooms.isEmpty
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : SizedBox(
+                    height: (controller.vipRooms.length * 185).h,
+                    child: PageView(
                       physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
+                      controller: controller.pageController,
+                      // allowImplicitScrolling: true,
                       children: [
-                        _countriesBuilder(),
-                        _builderRooms(context),
-                        _builderRooms(context),
-                        _builderRooms(context),
-                        _builderRooms(context),
+                        Padding(
+                          padding: EdgeInsets.only(top: 10.h),
+                          child: ListView.builder(
+                            itemCount: controller.vipRooms.length,
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return _builderRooms(
+                                  context,
+                                  controller.vipRooms[index]["room_name"],
+                                  controller.vipRooms[index]["country_name"],
+                                  controller.vipRooms[index]["flag"],
+                                  controller.vipRooms[index]["description"],
+                                  controller.vipRooms[index]["room_id"],
+                                  controller.vipRooms[index]["owner_username"],
+                                  color: Color(int.parse(
+                                          controller.vipRooms[index]
+                                                  ["background_color"]
+                                              .substring(1, 7),
+                                          radix: 16) +
+                                      0xFF000000));
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 10.h),
+                          child: ListView.builder(
+                            itemCount: controller.regularRooms.length,
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return _builderRooms(
+                                context,
+                                controller.regularRooms[index]["room_name"],
+                                controller.regularRooms[index]["country_name"],
+                                controller.regularRooms[index]["flag"],
+                                controller.regularRooms[index]["description"],
+                                controller.regularRooms[index]["room_id"],
+                                controller.regularRooms[index]
+                                    ["owner_username"],
+                              );
+                            },
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-            );
+                  );
           }),
         ],
       ),
@@ -375,14 +395,30 @@ class ChatHomePage extends StatelessWidget {
     );
   }
 
-  Widget _builderRooms(BuildContext context, {Color color = Colors.white}) {
+  Widget _builderRooms(
+      BuildContext context,
+      String roomName,
+      String countryName,
+      String flag,
+      String description,
+      String roomId,
+      String owner,
+      {Color color = Colors.white}) {
     //bet5od color law mafesh color betb2a white
     //shayf el widget dy??
     return Directionality(
       textDirection: TextDirection.rtl,
       child: GestureDetector(
         onTap: () {
-          showAlert(context);
+          if (userName == owner) {
+            Get.toNamed('/room', arguments: {
+              "room_name": roomName,
+              "room_id": roomId,
+              "owner": owner,
+            });
+          } else {
+            showAlert(context, roomId, roomName);
+          }
         },
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
@@ -433,7 +469,7 @@ class ChatHomePage extends StatelessWidget {
                             Row(
                               children: [
                                 Image.asset(
-                                  "assets/images/flags/egypt.png",
+                                  "assets/images/flags/$flag.png",
                                   width: 14.w,
                                   height: 15.h,
                                 ),
@@ -441,7 +477,7 @@ class ChatHomePage extends StatelessWidget {
                                   width: 5.w,
                                 ),
                                 Text(
-                                  "القاهرة",
+                                  countryName,
                                   style: TextStyle(
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.bold,
@@ -451,7 +487,7 @@ class ChatHomePage extends StatelessWidget {
                               ],
                             ),
                             Text(
-                              "الهروب من الواقع",
+                              roomName,
                               style: TextStyle(
                                   fontSize: 13.sp,
                                   fontWeight: FontWeight.bold,
@@ -464,7 +500,7 @@ class ChatHomePage extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: 10.h,
+                    height: 25.h,
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -472,7 +508,7 @@ class ChatHomePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "الناس يعرفون معني الوفاء",
+                          description,
                           style: TextStyle(
                               fontSize: 12.sp,
                               color: Colors.black,
@@ -495,7 +531,7 @@ class ChatHomePage extends StatelessWidget {
     );
   }
 
-  void showAlert(BuildContext context) {
+  void showAlert(BuildContext context, String roomId, String roomName) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -572,7 +608,7 @@ class ChatHomePage extends StatelessWidget {
                   )
                 ],
               ),
-              content: Container(
+              content: SizedBox(
                 // width: MediaQuery.of(context).size.width * 0.8,
                 // height: MediaQuery.of(context).size.height * 0.5,
                 height: controller.alertIndex != 1 ? 135.h : 215.h,
@@ -688,7 +724,10 @@ class ChatHomePage extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.toNamed('/room');
+                        Get.toNamed('/room', arguments: {
+                          "room_name": roomName,
+                          "room_id": roomId,
+                        });
                       },
                       child: Padding(
                         padding: EdgeInsets.only(top: 30.h),
