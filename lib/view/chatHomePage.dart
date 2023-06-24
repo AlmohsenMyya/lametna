@@ -12,6 +12,7 @@ import 'package:lametna/controllers/bottomNavitionBar.dart';
 import 'package:lametna/controllers/chathomePageController.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/view/side%20pages/drawer.dart';
+import 'package:lametna/view/side%20pages/scrollText.dart';
 import 'package:lametna/view/store/test.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -56,7 +57,7 @@ class ChatHomePage extends StatelessWidget {
               backgroundColor: Colors.transparent,
               centerTitle: true,
               elevation: 0,
-              leadingWidth: 130.w,
+              leadingWidth: 100.w,
               leading: Row(
                 children: [
                   IconButton(
@@ -90,47 +91,56 @@ class ChatHomePage extends StatelessWidget {
                     },
                     icon: Icon(Icons.menu)),
               ],
-              // actions: [
-              //   Image.asset(
-              //     "assets/images/trophy.png",
-              //     width: 55.w,
-              //     height: 30.h,
-              //   ),
-              //   IconButton(
-              //       onPressed: () {
-              //         print("object");
-              //         Scaffold.of(context).openDrawer();
-              //         _scaffoldKey.currentState.openEndDrawer();
-              //       },
-              //       icon: Icon(Icons.menu)),
-              // ],
-
               bottom: PreferredSize(
                   preferredSize: Size.fromHeight(0.h),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 45.h),
-                    child: CarouselSlider(
-                      options: CarouselOptions(
-                        height: 150.h,
-                        enableInfiniteScroll: true,
-                        autoPlay: true,
-                        autoPlayInterval: Duration(seconds: 3),
-                        autoPlayAnimationDuration: Duration(milliseconds: 800),
-                        autoPlayCurve: Curves.fastOutSlowIn,
-                        enlargeCenterPage: true,
-                        scrollDirection: Axis.horizontal,
-                      ),
-                      items: [1, 2, 3, 4, 5].map((i) {
-                        return Builder(
-                          builder: (BuildContext context) {
-                            return Image.asset(
-                              "assets/images/banner.png",
-                              // width: 100.w,
-                              // height: 100.h,
+                    padding: EdgeInsets.symmetric(vertical: 20.h),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 40.h,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: ScrollingText(
+                            text: "مرحبا بكم في لامتنا",
+                            ratioOfBlankToScreen: 1,
+                            textStyle: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        CarouselSlider(
+                          options: CarouselOptions(
+                            height: 150.h,
+                            enableInfiniteScroll: true,
+                            autoPlay: true,
+                            autoPlayInterval: Duration(seconds: 3),
+                            autoPlayAnimationDuration:
+                                Duration(milliseconds: 800),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enlargeCenterPage: true,
+                            scrollDirection: Axis.horizontal,
+                          ),
+                          items: [1, 2, 3, 4, 5].map((i) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Image.asset(
+                                  "assets/images/banner.png",
+                                  // width: 100.w,
+                                  // height: 100.h,
+                                );
+                              },
                             );
-                          },
-                        );
-                      }).toList(),
+                          }).toList(),
+                        ),
+                      ],
                     ),
                   ))),
         ),
@@ -453,7 +463,7 @@ class ChatHomePage extends StatelessWidget {
                         width: 60.w,
                         child: ClipRRect(
                           borderRadius:
-                              BorderRadius.circular(10), // Image border
+                              BorderRadius.circular(10.r), // Image border
                           child: SizedBox.fromSize(
                             size: Size.fromRadius(30.r), // Image radius
                             child: Image.network(

@@ -18,9 +18,11 @@ class RoomsPageController extends GetxController {
   TextEditingController messageController = TextEditingController();
   bool scrollDownButton = false;
   ScrollController scrollController = ScrollController();
+  bool messageStatus = false;
   @override
   void onInit() {
     super.onInit();
+    onJoinOrLeave(false);
     _timer = Timer.periodic(Duration(seconds: 1), (timer) => getData());
 
     getData();
@@ -36,34 +38,56 @@ class RoomsPageController extends GetxController {
 
   @override
   void onClose() {
+    print("close");
+    // onJoinOrLeave(false);
     _timer.cancel();
     super.onClose();
   }
 
   Future<dynamic> getData() async {
-    var url = Uri.parse('${baseURL}/messages/showmessagegroup.php');
-    var response = await http.post(url, body: {
-      "roomId": Get.arguments["room_id"],
-    });
-    final dataBody = json.decode(response.body);
-    streamController.sink.add(dataBody);
+    try {
+      var url = Uri.parse('${baseURL}/messages/showmessagegroup.php');
+      var response = await http.post(url, body: {
+        "roomId": Get.arguments["room_id"],
+      });
+      final dataBody = json.decode(response.body);
+      streamController.sink.add(dataBody);
+    } catch (e) {}
   }
 
-  sendMessage(String message) async {
+  onJoinOrLeave(bool joinOrLeave) async {
     var url = Uri.parse('${baseURL}/messages/groupchat.php');
     var response = await http.post(url, body: {
       "roomId": Get.arguments["room_id"],
-      "senderName": userName,
-      "message": message,
+      "senderName": "roomAlert",
+      "message":
+          joinOrLeave ? "$userName انضم للغرفة" : "$userName غادر للغرفة",
+      "joinOrLeave": joinOrLeave ? "1" : "0",
     });
-    final dataBody = json.decode(response.body);
-    if (dataBody["status"] == "success") {
-      messageController.clear();
-      getData();
+    if (joinOrLeave) {
+      Get.back();
     }
+  }
 
-    // print(dataBody);
-    // getData();
+  sendMessage(String message) async {
+    if (message != "") {
+      messageStatus = true;
+      update();
+      var url = Uri.parse('${baseURL}/messages/groupchat.php');
+      var response = await http.post(url, body: {
+        "roomId": Get.arguments["room_id"],
+        "senderName": userName,
+        "message": message,
+      });
+
+      final dataBody = json.decode(response.body);
+      if (dataBody["status"] == "success") {
+        messageController.clear();
+        messageStatus = false;
+        update();
+        // getData();
+      }
+    }
   }
 
   scrollDownButtonStatus(bool status) {

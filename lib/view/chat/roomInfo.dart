@@ -1,194 +1,147 @@
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lametna/controllers/chat/roomInfoController.dart';
 import 'package:lametna/view/chat/appBar.dart';
+import 'package:get/get.dart';
 
 class RoomInfo extends StatelessWidget {
-  const RoomInfo({Key key}) : super(key: key);
+  RoomInfo({Key key}) : super(key: key);
 
+  var titles = [
+    {"إسم الغرفة", "room_name"},
+    {"إسم المالك", "owner_username"},
+    //  { "البريد",""}
+    {"سعة الغرفة", "capacity"},
+    {"المتصلين", "number_of_connections"},
+    {"رقم الغرفة", "room_id"},
+    {"تاريخ البداية", "start_date"},
+    {"تاريخ الإنتهاء", "expiry_date"}
+  ];
+  var tiers = [
+    {
+      "name": "ممبر",
+      "color": Color(0xFF7F52A3),
+    },
+    {
+      "name": "أدمن",
+      "color": Color(0xFF5D00FF),
+    },
+    {
+      "name": "سوبر أدمن",
+      "color": Color(0xFF00B041),
+    },
+    {
+      "name": "ماستر",
+      "color": Color(0xFFFF0000),
+    },
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appbarBuilder("معلومات الغرفة", true),
       body: SafeArea(
-        child: Column(
-          children: [
-            _builderRooms(context),
-            Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
-              child: Divider(
-                color: Color(0xff43D0CA),
-                thickness: 1.h,
+        child: GetBuilder<RoomInfoController>(
+          init: RoomInfoController(),
+          builder: (controller) {
+            return FutureBuilder(
+              future: controller.getData(),
+              builder: (context, snapshot) =>
+
+                  // Text(
+                  //       snapshot.data.toString(),
+                  //       style: TextStyle(
+                  //         color: Colors.black,
+                  //       ),
+                  //     )
+
+                  ListView(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                children: [
+                  _builderRooms(context, Get.arguments["room_name"],
+                      snapshot.data["data"][0]["country_name"].toString()),
+                  Divider(
+                    color: Color(0xFF43d0ca),
+                    thickness: 1,
+                  ),
+                  ListView.separated(
+                    separatorBuilder: (context, index) => Divider(
+                      color: Color(0xFF43d0ca),
+                      thickness: 1,
+                    ),
+                    shrinkWrap: true,
+                    itemCount: titles.length,
+                    itemBuilder: (context, index) {
+                      return infoSetting(
+                        titles[index].elementAt(0),
+                        snapshot.data["data"][0][titles[index].elementAt(1)]
+                            .toString(),
+                      );
+                    },
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 25.h),
+                    child: Divider(
+                      color: Colors.grey.withOpacity(0.3),
+                      thickness: 4,
+                    ),
+                  ),
+                  ListView.separated(
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) => infoSetting(
+                            tiers[index]["name"].toString(),
+                            "20",
+                            color1: tiers[index]["color"],
+                            color2: Colors.red,
+                            fontWeight1: FontWeight.w900,
+                          ),
+                      separatorBuilder: (context, index) => Divider(),
+                      itemCount: tiers.length)
+                ],
               ),
-            ),
-            infosetting("إسم الغرفة", "❤️هــروب مـــن الــواقــع❤️"),
-            Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
-              child: Divider(
-                color: Color(0xff43D0CA),
-                thickness: 1.h,
-              ),
-            ),
-            infosetting("إسم المالك", "Abed Al Majed"),
-            Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
-              child: Divider(
-                color: Color(0xff43D0CA),
-                thickness: 1.h,
-              ),
-            ),
-            infosetting("البريد", "Abed Al Majed@gmail.com"),
-            Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
-              child: Divider(
-                color: Color(0xff43D0CA),
-                thickness: 1.h,
-              ),
-            ),
-            infosetting("سعة الغرفة", "150"),
-            Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
-              child: Divider(
-                color: Color(0xff43D0CA),
-                thickness: 1.h,
-              ),
-            ),
-            infosetting("المتصلين", "25"),
-            Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
-              child: Divider(
-                color: Color(0xff43D0CA),
-                thickness: 1.h,
-              ),
-            ),
-            infosetting("رقم الغرفة", "226"),
-            Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
-              child: Divider(
-                color: Color(0xff43D0CA),
-                thickness: 1.h,
-              ),
-            ),
-            infosetting("تاريخ البداية", "03/3/2023"),
-            Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
-              child: Divider(
-                color: Color(0xff43D0CA),
-                thickness: 1.h,
-              ),
-            ),
-            infosetting("تاريخ الإنتهاء", "03/3/2023"),
-            Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
-              child: Divider(
-                color: Color(0xff43D0CA),
-                thickness: 1.h,
-              ),
-            ),
-            SizedBox(
-              height: 42,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
-              child: Divider(
-                color: Color(0xffE7E7E7),
-                thickness: 4.h,
-              ),
-            ),
-            infosetting("ممبر", "20",
-                color1: Color(0xff7F52A3),
-                color2: Color(0xffFF0000),
-                fontsize1: 15,
-                fontsize2: 15,
-                fontWeight1: FontWeight.bold),
-            Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
-              child: Divider(
-                color: Color(0xff43D0CA),
-                thickness: 1.h,
-              ),
-            ),
-            infosetting("أدمن", "20",
-                color1: Color(0xff5D00FF),
-                color2: Color(0xffFF0000),
-                fontsize1: 15,
-                fontsize2: 15,
-                fontWeight1: FontWeight.bold),
-            Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
-              child: Divider(
-                color: Color(0xff43D0CA),
-                thickness: 1.h,
-              ),
-            ),
-            infosetting("سوبر أدمن", "20",
-                color1: Color(0xff00B041),
-                color2: Color(0xffFF0000),
-                fontsize1: 15,
-                fontsize2: 15,
-                fontWeight1: FontWeight.bold),
-            Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
-              child: Divider(
-                color: Color(0xff43D0CA),
-                thickness: 1.h,
-              ),
-            ),
-            infosetting("ماستر", "20",
-                color1: Color(0xffFF0000),
-                color2: Color(0xffFF0000),
-                fontsize1: 15,
-                fontsize2: 15,
-                fontWeight1: FontWeight.bold),
-            Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
-              child: Divider(
-                color: Color(0xff43D0CA),
-                thickness: 1.h,
-              ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
   }
 
-  Padding infosetting(String title, String subtitle,
+  Widget infoSetting(String title, String subtitle,
       {Color color1 = Colors.black,
       Color color2 = Colors.black,
       int fontsize1 = 13,
       int fontsize2 = 15,
       FontWeight fontWeight1 = FontWeight.normal,
-      FontWeight fontWeight2 = FontWeight.bold}) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            subtitle,
+      FontWeight fontWeight2 = FontWeight.w900}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          subtitle,
+          style: TextStyle(
+              fontSize: fontsize1.sp,
+              color: color2,
+              fontWeight: fontWeight1,
+              fontFamily: "Segoe UI"),
+        ),
+        Text(title,
             style: TextStyle(
-                fontSize: fontsize1.sp,
-                color: color2,
-                fontWeight: fontWeight1,
-                fontFamily: "Segoe UI"),
-          ),
-          Text(title,
-              style: TextStyle(
-                  fontSize: fontsize2.sp,
-                  color: color1,
-                  fontWeight: fontWeight2,
-                  fontFamily: "Segoe UI")),
-        ],
-      ),
+                fontSize: fontsize2.sp,
+                color: color1,
+                fontWeight: fontWeight2,
+                fontFamily: "Segoe UI")),
+      ],
     );
   }
 
-  Widget _builderRooms(BuildContext context, {Color color = Colors.white}) {
+  Widget _builderRooms(BuildContext context, String name, String countryName,
+      {Color color = Colors.white}) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: GestureDetector(
         child: Container(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.symmetric(vertical: 15.h),
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.circular(20.r),
@@ -199,22 +152,42 @@ class RoomInfo extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    // color: Colors.red,
+                  Container(
                     height: 58.h,
                     width: 57.w,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(2), // Image border
-                      child: SizedBox.fromSize(
-                        child: Image.network(
-                          'https://media.istockphoto.com/id/1295072146/vector/mini-heart-korean-love-hand-finger-symbol-on-pink-background-vector-illustration.jpg?s=612x612&w=0&k=20&c=eihpG3p1GoSvMjlSAQjCft50iff2I1AweF2a1MLI1SQ=',
-                          fit: BoxFit.fill,
-                          // height: 30,
-                          // width: 30,
-                        ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.r),
+                      // color: Colors.red,
+                      border: Border.all(
+                        color: Color(0xFF43d0ca),
+                        width: 1,
+                      ),
+                      image: DecorationImage(
+                        image: NetworkImage(
+                            'https://media.istockphoto.com/id/1295072146/vector/mini-heart-korean-love-hand-finger-symbol-on-pink-background-vector-illustration.jpg?s=612x612&w=0&k=20&c=eihpG3p1GoSvMjlSAQjCft50iff2I1AweF2a1MLI1SQ='),
+                        fit: BoxFit.fill,
+                        // height: 30,
+                        // width: 30,
                       ),
                     ),
                   ),
+                  // SizedBox(
+                  //   // color: Colors.red,
+                  //   height: 58.h,
+                  //   width: 57.w,
+                  //   child: ClipRRect(
+                  //     borderRadius: BorderRadius.circular(2.r),
+                  //      // Image border
+                  //     child: SizedBox.fromSize(
+                  //       child: Image.network(
+                  //         'https://media.istockphoto.com/id/1295072146/vector/mini-heart-korean-love-hand-finger-symbol-on-pink-background-vector-illustration.jpg?s=612x612&w=0&k=20&c=eihpG3p1GoSvMjlSAQjCft50iff2I1AweF2a1MLI1SQ=',
+                  //         fit: BoxFit.fill,
+                  //         // height: 30,
+                  //         // width: 30,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(
                     width: 10.w,
                   ),
@@ -225,7 +198,7 @@ class RoomInfo extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "❤️🌸هــروب مـــن الــواقــع🌸❤️",
+                          name,
                           style: TextStyle(
                               fontSize: 15.sp,
                               color: Colors.black,
@@ -234,23 +207,24 @@ class RoomInfo extends StatelessWidget {
                         Row(
                           children: [
                             Container(
-                                child: Center(
-                                  child: Text("ID:0000000",
-                                      style: TextStyle(
-                                          fontSize: 7.sp,
-                                          color: Colors.black,
-                                          fontFamily: "Segoe UI")),
+                              child: Center(
+                                child: Text("ID:0000000",
+                                    style: TextStyle(
+                                        fontSize: 7.sp,
+                                        color: Colors.black,
+                                        fontFamily: "Segoe UI")),
+                              ),
+                              width: 54.w,
+                              height: 20.h,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Color(0xFF43D0CA),
+                                  style: BorderStyle.solid,
+                                  width: 1.0.w,
                                 ),
-                                width: 54.w,
-                                height: 20.h,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Color(0xFF43D0CA),
-                                    style: BorderStyle.solid,
-                                    width: 1.0.w,
-                                  ),
-                                  borderRadius: BorderRadius.circular(9.0.sp),
-                                )),
+                                borderRadius: BorderRadius.circular(9.0.sp),
+                              ),
+                            ),
                             SizedBox(
                               width: 4,
                             ),
@@ -263,7 +237,7 @@ class RoomInfo extends StatelessWidget {
                               width: 5.w,
                             ),
                             Text(
-                              "فلسطين",
+                              "| " + countryName,
                               style: TextStyle(
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.bold,

@@ -225,6 +225,7 @@ class LoginPage extends StatelessWidget {
                           ),
                           onPressed: () {
                             Get.offAllNamed("/home");
+                            // Get.offAllNamed("/countries");
                           },
                           label: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 25.w),

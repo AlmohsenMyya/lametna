@@ -12,6 +12,7 @@ import 'package:lametna/view/chat/roomInfo.dart';
 import 'package:lametna/view/chat/roomMangement.dart';
 import 'package:lametna/view/chat/roomPageSettings.dart';
 import 'package:lametna/view/chatHomePage.dart';
+import 'package:lametna/view/countries.dart';
 import 'package:lametna/view/customer%20service/ComplaintsSuggestions.dart';
 import 'package:lametna/view/customer%20service/customerServiceChat.dart';
 import 'package:lametna/view/customer%20service/customerServiceHomePage.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
             GetPage(name: '/loginPage', page: () => LoginPage()),
             GetPage(name: '/choosingPage', page: () => choosingPage()),
             GetPage(name: "/chatHomePage", page: () => ChatHomePage()),
+            GetPage(name: "/countries", page: () => Countries()),
             GetPage(name: "/home", page: () => Home()),
             GetPage(name: '/room', page: () => RoomPage()),
             GetPage(name: '/customerService', page: () => CustomerService()),

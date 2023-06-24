@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, missing_return
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, missing_return, use_full_hex_values_for_flutter_colors
 
 import 'dart:async';
 
@@ -22,12 +22,12 @@ class RoomPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      drawerScrimColor: Colors.transparent,
-      endDrawer: SafeArea(
-        child: Container(
-          height: Get.height - (72.h + 99.h),
+    return SafeArea(
+      child: Scaffold(
+        key: _scaffoldKey,
+        drawerScrimColor: Colors.transparent,
+        endDrawer: Container(
+          height: Get.height - (72.h + 125.h),
           width: 300.w,
           color: Colors.white,
           child: ListView(
@@ -168,419 +168,447 @@ class RoomPage extends StatelessWidget {
             ),
           ),
         ),
-      ),
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(72.h),
-        child: Container(
-          decoration: const BoxDecoration(
-            // LinearGradient
-            gradient: LinearGradient(
-              colors: [
-                const Color(0xFFF792F0),
-                const Color(0xFFFABD63),
-              ],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-          ),
-          child: AppBar(
-            leadingWidth: 105.w,
-            toolbarHeight: 72.35.h,
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            centerTitle: true,
-            title: Text(
-              Get.arguments['room_name'],
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontFamily: "Portada",
-                color: Colors.white,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(72.h),
+          child: Container(
+            decoration: const BoxDecoration(
+              // LinearGradient
+              gradient: LinearGradient(
+                colors: [
+                  const Color(0xFFF792F0),
+                  const Color(0xFFFABD63),
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
               ),
             ),
-            leading: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                SizedBox(width: 5.w),
-                GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: ImageIcon(
-                    AssetImage('assets/icons/login.png'),
-                  ),
+            child: AppBar(
+              leadingWidth: 105.w,
+              toolbarHeight: 72.35.h,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              centerTitle: true,
+              title: Text(
+                Get.arguments['room_name'],
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontFamily: "Portada",
+                  color: Colors.white,
                 ),
-                PopupMenuButton(
-                  onCanceled: () {
-                    print("You have canceled the menu.");
-                  },
-                  icon: Icon(
-                    Icons.settings,
-                    color: Colors.white,
-                  ),
-                  itemBuilder: (BuildContext context) {
-                    return [
-                      {
-                        "value": "0",
-                        "name": "الحالة",
-                        "mustBeAdmin": false,
-                        "icon": Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.black,
-                          size: 17,
-                        ),
-                      },
-                      {
-                        "value": "1",
-                        "name": "الاعدادات",
-                        "mustBeAdmin": false,
-                        "icon": Icon(
-                          Icons.settings,
-                          color: Colors.black,
-                          size: 17,
-                        ),
-                      },
-                      {
-                        "value": "2",
-                        "name": "اللحظات",
-                        "mustBeAdmin": false,
-                        "icon": Image.asset(
-                          "assets/icons/planet.png",
-                          color: Colors.black,
-                          width: 22,
-                        ),
-                      },
-                      {
-                        "value": "3",
-                        "name": "إدارة الغرفة",
-                        "mustBeAdmin": true,
-                        "icon": Icon(
-                          Icons.home,
-                          color: Colors.black,
-                          size: 17,
-                        ),
-                      },
-                      {
-                        "value": "4",
-                        "name": "مشاركة",
-                        "mustBeAdmin": false,
-                        "icon": Icon(
-                          Icons.share,
-                          color: Colors.black,
-                          size: 17,
-                        ),
-                      },
-                      {
-                        "value": "5",
-                        "name": "المفضلة",
-                        "mustBeAdmin": false,
-                        "icon": Icon(
-                          Icons.favorite_border,
-                          color: Colors.black,
-                          size: 17,
-                        ),
-                        "onTap": "/contact"
-                      },
-                      {
-                        "value": "6",
-                        "name": "عن البرنامج",
-                        "mustBeAdmin": false,
-                        "icon": Icon(
-                          Icons.help,
-                          color: Colors.black,
-                          size: 17,
-                        ),
-                      },
-                    ]
-                        .toList()
-                        .map((e) => PopupMenuItem(
-                              height: e["mustBeAdmin"] ? 0 : 40.h,
-                              child: e["mustBeAdmin"] && isOwner
-                                  ? SizedBox()
-                                  : Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Text(e["name"],
-                                            style: TextStyle(
-                                                fontSize: 15.sp,
-                                                fontFamily: "Segoe",
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black)),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 10.w),
-                                          child: e["icon"],
-                                        ),
-                                      ],
-                                    ),
-                              value: int.parse(e["value"]),
-                            ))
-                        .toList();
-                  },
-                  onSelected: (value) {
-                    if (value == 1) {
-                      Get.toNamed("/roomSettingsPage");
-                    } else if (value == 2) {
-                      Get.toNamed('/moments');
-                    } else if (value == 3) {
-                      Get.toNamed('/roomMangement');
-                    } else if (value == 6) {
-                      Get.toNamed('/about');
-                    }
-                  },
-                )
+              ),
+              leading: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  SizedBox(width: 5.w),
+                  GetBuilder<RoomsPageController>(
+                      init: RoomsPageController(),
+                      builder: (controller) {
+                        return GestureDetector(
+                          onTap: () {
+                            controller.onJoinOrLeave(true);
+                            // Get.back();
+                          },
+                          child: ImageIcon(
+                            AssetImage('assets/icons/login.png'),
+                          ),
+                        );
+                      }),
+                  PopupMenuButton(
+                    onCanceled: () {
+                      print("You have canceled the menu.");
+                    },
+                    icon: Icon(
+                      Icons.settings,
+                      color: Colors.white,
+                    ),
+                    itemBuilder: (BuildContext context) {
+                      return [
+                        {
+                          "value": "0",
+                          "name": "الحالة",
+                          "mustBeAdmin": false,
+                          "icon": Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black,
+                            size: 17,
+                          ),
+                        },
+                        {
+                          "value": "1",
+                          "name": "الاعدادات",
+                          "mustBeAdmin": false,
+                          "icon": Icon(
+                            Icons.settings,
+                            color: Colors.black,
+                            size: 17,
+                          ),
+                        },
+                        {
+                          "value": "2",
+                          "name": "اللحظات",
+                          "mustBeAdmin": false,
+                          "icon": Image.asset(
+                            "assets/icons/planet.png",
+                            color: Colors.black,
+                            width: 22,
+                          ),
+                        },
+                        {
+                          "value": "3",
+                          "name": "إدارة الغرفة",
+                          "mustBeAdmin": true,
+                          "icon": Icon(
+                            Icons.home,
+                            color: Colors.black,
+                            size: 17,
+                          ),
+                        },
+                        {
+                          "value": "4",
+                          "name": "مشاركة",
+                          "mustBeAdmin": false,
+                          "icon": Icon(
+                            Icons.share,
+                            color: Colors.black,
+                            size: 17,
+                          ),
+                        },
+                        {
+                          "value": "5",
+                          "name": "المفضلة",
+                          "mustBeAdmin": false,
+                          "icon": Icon(
+                            Icons.favorite_border,
+                            color: Colors.black,
+                            size: 17,
+                          ),
+                          "onTap": "/contact"
+                        },
+                        {
+                          "value": "6",
+                          "name": "عن البرنامج",
+                          "mustBeAdmin": false,
+                          "icon": Icon(
+                            Icons.help,
+                            color: Colors.black,
+                            size: 17,
+                          ),
+                        },
+                      ]
+                          .toList()
+                          .map((e) => PopupMenuItem(
+                                height: e["mustBeAdmin"] ? 0 : 40.h,
+                                child: e["mustBeAdmin"] && isOwner
+                                    ? SizedBox()
+                                    : Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Text(e["name"],
+                                              style: TextStyle(
+                                                  fontSize: 15.sp,
+                                                  fontFamily: "Segoe",
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black)),
+                                          Padding(
+                                            padding:
+                                                EdgeInsets.only(left: 10.w),
+                                            child: e["icon"],
+                                          ),
+                                        ],
+                                      ),
+                                value: int.parse(e["value"]),
+                              ))
+                          .toList();
+                    },
+                    onSelected: (value) {
+                      if (value == 1) {
+                        Get.toNamed("/roomSettingsPage");
+                      } else if (value == 2) {
+                        Get.toNamed('/moments');
+                      } else if (value == 3) {
+                        Get.toNamed('/roomMangement', arguments: {
+                          "room_id": Get.arguments['room_id'],
+                          "room_name": Get.arguments['room_name'],
+                        });
+                      } else if (value == 6) {
+                        Get.toNamed('/about');
+                      }
+                    },
+                  )
+                ],
+              ),
+              actions: <Widget>[
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.volume_up),
+                ),
+                ImageIcon(
+                  AssetImage('assets/icons/chat.png'),
+                  size: 23.sp,
+                ),
+                Builder(builder: (context) {
+                  return GestureDetector(
+                    onTap: () {
+                      Scaffold.of(context).openEndDrawer();
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.w),
+                      child: Image.asset(
+                        'assets/icons/group.png',
+                        width: 30.sp,
+                      ),
+                    ),
+                  );
+                })
               ],
             ),
-            actions: <Widget>[
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.volume_up),
-              ),
-              ImageIcon(
-                AssetImage('assets/icons/chat.png'),
-                size: 23.sp,
-              ),
-              Builder(builder: (context) {
-                return GestureDetector(
-                  onTap: () {
-                    Scaffold.of(context).openEndDrawer();
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15.w),
-                    child: Image.asset(
-                      'assets/icons/group.png',
-                      width: 30.sp,
-                    ),
-                  ),
-                );
-              })
-            ],
           ),
         ),
-      ),
 
-      body: Column(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                GetBuilder<RoomsPageController>(
-                    init: RoomsPageController(),
-                    builder: (controller) {
-                      return Container(
-                        height: 70.h,
-                        decoration: BoxDecoration(
-                          // LinearGradient
-                          gradient: controller.roomStatus
-                              ? LinearGradient(
-                                  colors: [
-                                    Color(0xFFFFFFFF),
-                                    Color(0xFFA2ACAC),
-                                  ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                )
-                              : LinearGradient(
-                                  colors: [
-                                    Color(0xFFFFFFFF),
-                                    Color(0xFFFABD63),
-                                  ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ),
-                        ),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 21.w,
-                            ),
-                            !isOwner
-                                ? SizedBox(
-                                    width: 65.w,
+        body: Column(
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  GetBuilder<RoomsPageController>(
+                      init: RoomsPageController(),
+                      builder: (controller) {
+                        return Container(
+                          height: 70.h,
+                          decoration: BoxDecoration(
+                            // LinearGradient
+                            gradient: controller.roomStatus
+                                ? LinearGradient(
+                                    colors: [
+                                      Color(0xFFFFFFFF),
+                                      Color(0xFFA2ACAC),
+                                    ],
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
                                   )
-                                : GestureDetector(
-                                    onTap: () {
-                                      // Get.toNamed('/VIPRoom');
-                                      controller.changeRoomStatus();
-                                    },
-                                    child: SizedBox(
+                                : LinearGradient(
+                                    colors: [
+                                      Color(0xFFFFFFFF),
+                                      Color(0xFFFABD63),
+                                    ],
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ),
+                          ),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 21.w,
+                              ),
+                              isOwner
+                                  ? SizedBox(
                                       width: 65.w,
-                                      child: Container(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 5.h),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20.r),
-                                          color: controller.roomStatus
-                                              ? Color(0xffF792F0)
-                                              : Color(0xFFFABD63),
-                                        ),
-                                        child: Text(
-                                          controller.roomStatus
-                                              ? 'الروم الحديث'
-                                              : "مظهر قديم",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 9.sp,
-                                              fontFamily: "Portada",
-                                              color: Colors.white),
+                                    )
+                                  : GestureDetector(
+                                      onTap: () {
+                                        // Get.toNamed('/VIPRoom');
+                                        controller.changeRoomStatus();
+                                      },
+                                      child: SizedBox(
+                                        width: 65.w,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 5.h),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20.r),
+                                            color: controller.roomStatus
+                                                ? Color(0xffF792F0)
+                                                : Color(0xFFFABD63),
+                                          ),
+                                          child: Text(
+                                            controller.roomStatus
+                                                ? 'الروم الحديث'
+                                                : "مظهر قديم",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 9.sp,
+                                                fontFamily: "Portada",
+                                                color: Colors.white),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                            SizedBox(
-                              width: 60.w,
+                              SizedBox(
+                                width: 60.w,
+                              ),
+                              Text("22:10",
+                                  style: TextStyle(
+                                      fontSize: 9.sp,
+                                      fontFamily: "Portada",
+                                      color: Colors.black)),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              SizedBox(
+                                width: 240.w,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    userInCall(),
+                                    userInCall(),
+                                    userInCall(),
+                                    userInCall(),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      }),
+                  GetBuilder<RoomsPageController>(builder: (controller) {
+                    return Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          // LinearGradient
+                          gradient: controller.roomStatus
+                              ? null
+                              : LinearGradient(
+                                  colors: [
+                                    Color(0xFFFABD63),
+                                    Color(0xFFFABB64),
+                                    Color(0xFFF792F0),
+                                  ],
+                                  begin: Alignment.centerRight,
+                                  end: Alignment.centerLeft,
+                                ),
+                        ),
+                        // child: Container(),
+                        child: StreamBuilder(
+                          builder: (context, snapshot) {
+                            // print(snapshot.data.length);
+                            return snapshot.hasData
+                                ? NotificationListener(
+                                    onNotification:
+                                        (ScrollNotification scrollInfo) {
+                                      scrollInfo.metrics.pixels < 80
+                                          ? controller
+                                              .scrollDownButtonStatus(true)
+                                          : controller
+                                              .scrollDownButtonStatus(false);
+                                    },
+                                    child: ListView.builder(
+                                      controller: controller.scrollController,
+                                      reverse: true,
+                                      itemBuilder: (context, index) {
+                                        return snapshot.data["data"][index]
+                                                    ["senderName"] ==
+                                                "roomAlert"
+                                            ? joinAndLeaveAlert(
+                                                controller.roomStatus,
+                                                snapshot.data["data"][index]
+                                                            ["joinOrLeave"] ==
+                                                        "0"
+                                                    ? true
+                                                    : false,
+                                                snapshot.data["data"][index]
+                                                        ["senderName"]
+                                                    .toString())
+                                            : !controller.roomStatus
+                                                ? messageVipNewRoomBuilder(
+                                                    context,
+                                                    snapshot.data["data"]
+                                                        [index])
+                                                : messageVIPBuilder(
+                                                    context,
+                                                    snapshot.data["data"]
+                                                        [index]);
+                                      },
+                                      itemCount: snapshot.data["data"].length,
+                                      // itemCount: 1,
+                                    ),
+                                  )
+                                : Center(child: CircularProgressIndicator());
+                          },
+                          stream: controller.streamController.stream,
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              ),
+            ),
+            buildMyNavBar(context)
+          ],
+        ),
+        floatingActionButton: GetBuilder<RoomsPageController>(
+          builder: (controller) {
+            return controller.scrollDownButton
+                ? SizedBox()
+                : Padding(
+                    padding: EdgeInsets.only(bottom: 60.h),
+                    child: GestureDetector(
+                      onTap: () {
+                        controller.scrollController.animateTo(0,
+                            duration: Duration(seconds: 1),
+                            curve: Curves.easeIn);
+                      },
+                      child: Container(
+                        width: 145.w,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.r),
+                          gradient: !controller.roomStatus
+                              ? LinearGradient(
+                                  colors: [
+                                    Color(0xFF00E54C),
+                                    Color(0xFFDADADC),
+                                  ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                )
+                              : LinearGradient(
+                                  colors: [
+                                    Color(0xFFF792F0),
+                                    Color(0xFFFABD63),
+                                  ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                ),
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 7.h),
+                              child: RotatedBox(
+                                quarterTurns: 3,
+                                child: Icon(
+                                  Icons.arrow_back_ios,
+                                  size: 20.sp,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
-                            Text("22:10",
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "الرسائل الجديدة",
                                 style: TextStyle(
-                                    fontSize: 9.sp,
-                                    fontFamily: "Portada",
-                                    color: Colors.black)),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            SizedBox(
-                              width: 240.w,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  userInCall(),
-                                  userInCall(),
-                                  userInCall(),
-                                  userInCall(),
-                                ],
+                                  fontSize: 14.sp,
+                                  fontFamily: 'Segoe UI',
+                                ),
                               ),
                             )
                           ],
                         ),
-                      );
-                    }),
-                GetBuilder<RoomsPageController>(builder: (controller) {
-                  return Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        // LinearGradient
-                        gradient: controller.roomStatus
-                            ? null
-                            : LinearGradient(
-                                colors: [
-                                  Color(0xFFFABD63),
-                                  Color(0xFFFABB64),
-                                  Color(0xFFF792F0),
-                                ],
-                                begin: Alignment.centerRight,
-                                end: Alignment.centerLeft,
-                              ),
-                      ),
-                      // child: Container(),
-                      child: StreamBuilder(
-                        builder: (context, snapshot) {
-                          // print(snapshot.data.length);
-                          return snapshot.hasData
-                              ? NotificationListener(
-                                  onNotification:
-                                      (ScrollNotification scrollInfo) {
-                                    scrollInfo.metrics.pixels < 80
-                                        ? controller
-                                            .scrollDownButtonStatus(true)
-                                        : controller
-                                            .scrollDownButtonStatus(false);
-                                  },
-                                  child: ListView.builder(
-                                    controller: controller.scrollController,
-                                    reverse: true,
-                                    itemBuilder: (context, index) {
-                                      return !controller.roomStatus
-                                          ? messageVipNewRoomBuilder(context,
-                                              snapshot.data["data"][index])
-                                          : messageVIPBuilder(context,
-                                              snapshot.data["data"][index]);
-                                    },
-                                    itemCount: snapshot.data["data"].length,
-                                    // itemCount: 1,
-                                  ),
-                                )
-                              : Center(child: CircularProgressIndicator());
-                        },
-                        stream: controller.streamController.stream,
                       ),
                     ),
                   );
-                }),
-              ],
-            ),
-          ),
-          buildMyNavBar(context)
-        ],
+          },
+        ),
+        // bottomNavigationBar: ,
+        resizeToAvoidBottomInset: false,
       ),
-      floatingActionButton: GetBuilder<RoomsPageController>(
-        builder: (controller) {
-          return controller.scrollDownButton
-              ? SizedBox()
-              : Padding(
-                  padding: EdgeInsets.only(bottom: 60.h),
-                  child: GestureDetector(
-                    onTap: () {
-                      controller.scrollController.animateTo(0,
-                          duration: Duration(seconds: 1), curve: Curves.easeIn);
-                    },
-                    child: Container(
-                      width: 145.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.r),
-                        gradient: !controller.roomStatus
-                            ? LinearGradient(
-                                colors: [
-                                  Color(0xFF00E54C),
-                                  Color(0xFFDADADC),
-                                ],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                              )
-                            : LinearGradient(
-                                colors: [
-                                  Color(0xFFF792F0),
-                                  Color(0xFFFABD63),
-                                ],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                              ),
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 8.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 7.h),
-                            child: RotatedBox(
-                              quarterTurns: 3,
-                              child: Icon(
-                                Icons.arrow_back_ios,
-                                size: 20.sp,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "الرسائل الجديدة",
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontFamily: 'Segoe UI',
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-        },
-      ),
-      // bottomNavigationBar: ,
-      resizeToAvoidBottomInset: false,
     );
   }
 
@@ -853,20 +881,35 @@ class RoomPage extends StatelessWidget {
         child: Row(
           children: [
             GetBuilder<RoomsPageController>(builder: (controller) {
-              return RotatedBox(
-                quarterTurns: 2,
-                child: IconButton(
-                  onPressed: () {
-                    controller
-                        .sendMessage(controller.messageController.text.trim());
-                  },
-                  icon: Icon(
-                    Icons.send,
-                    color: Colors.white,
-                    size: 25.sp,
-                  ),
-                ),
-              );
+              return controller.messageStatus
+                  ? Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.w),
+                      child: SizedBox(
+                        width: 20.w,
+                        height: 23.h,
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.black),
+                          backgroundColor: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      ),
+                    )
+                  : RotatedBox(
+                      quarterTurns: 2,
+                      child: IconButton(
+                        onPressed: () {
+                          controller.sendMessage(
+                              controller.messageController.text.trim());
+                        },
+                        icon: Icon(
+                          Icons.send,
+                          color: Colors.white,
+                          size: 25.sp,
+                        ),
+                      ),
+                    );
+              ;
             }),
             Text(
               "🙂",
@@ -889,8 +932,12 @@ class RoomPage extends StatelessWidget {
                           fontSize: 14.sp,
                           fontFamily: "Portada",
                         ),
-                        expands: true,
-                        maxLines: null,
+                        // expands: true,
+                        maxLines: 1,
+                        onFieldSubmitted: (value) => controller
+                            .sendMessage(controller.messageController.text),
+                        onTapOutside: (event) =>
+                            FocusScope.of(context).unfocus(),
                         decoration: InputDecoration(
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 10.w),
@@ -1005,8 +1052,8 @@ class RoomPage extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.only(
-              right: data["senderName"] == userName ? 70.w : 60.w,
-              left: data["senderName"] == userName ? 60.w : 70.w,
+              right: data["senderName"] == userName ? 70.w : 100.w,
+              left: data["senderName"] == userName ? 100.w : 70.w,
             ),
             child: Container(
               // height: 50.h,
@@ -1053,5 +1100,84 @@ class RoomPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget joinAndLeaveAlert(bool oldOrNew, bool joinOrLeave, String alert) {
+    return oldOrNew
+        ? Padding(
+            padding: EdgeInsets.symmetric(vertical: 5.h),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: joinOrLeave ? Color(0xFFE1FFE1) : Color(0xffFAE8E8),
+                border: Border.all(
+                  //#BABABA
+                  color: Color(0xFFBABABA),
+                  width: 1.w,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  joinOrLeave
+                      ? Padding(
+                          padding: EdgeInsets.only(left: 14.w),
+                          child: Image.asset(
+                            "assets/icons/in.png",
+                            width: 22.w,
+                          ),
+                        )
+                      : Image.asset(
+                          "assets/icons/out.png",
+                          width: 45.w,
+                        ),
+                  Padding(
+                    padding: EdgeInsets.only(right: joinOrLeave ? 0.w : 10.w),
+                    child: Text(
+                      joinOrLeave
+                          ? "$userName انضم للغرفة"
+                          : "$userName غادر للغرفة",
+                      // alert,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 10.sp,
+                        fontFamily: "Segoe UI",
+                      ),
+                    ),
+                  ),
+                  SizedBox(),
+                ],
+              ),
+            ),
+          )
+        : Padding(
+            padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 90.w),
+            child: Container(
+              padding: EdgeInsets.all(7.sp),
+              decoration: BoxDecoration(
+                color: joinOrLeave ? Color(0xff88d95d) : Color(0xffFf6472a),
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    joinOrLeave
+                        ? "$userName انضم للغرفة"
+                        : "$userName غادر للغرفة",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12.sp,
+                      fontFamily: "Segoe UI",
+                    ),
+                  ),
+                  SizedBox(width: 5.w),
+                  Icon(joinOrLeave ? Icons.person : Icons.logout,
+                      color: Colors.white, size: 20.sp),
+                ],
+              ),
+            ),
+          );
   }
 }

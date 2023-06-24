@@ -71,23 +71,25 @@ class RoomMangement extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 100.w),
-                    child: Text(
-                      "اسم الغرفة",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "Segoe UI",
-                      ),
+                  Spacer(),
+                  SizedBox(
+                    width: 40.w,
+                  ),
+                  Text(
+                    Get.arguments["room_name"],
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Segoe UI",
                     ),
                   ),
+                  Spacer(),
                   Image.asset(
                     "assets/icons/logo.png",
                     width: 50,
                     height: 50,
-                  )
+                  ),
                 ],
               ),
             ),
@@ -113,7 +115,10 @@ class RoomMangement extends StatelessWidget {
                       textDirection: TextDirection.rtl,
                       child: GestureDetector(
                         onTap: () {
-                          Get.toNamed('/roomInfo');
+                          Get.toNamed('/roomInfo', arguments: {
+                            "room_name": Get.arguments["room_name"],
+                            "room_id": Get.arguments["room_id"],
+                          });
                         },
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 10.h),

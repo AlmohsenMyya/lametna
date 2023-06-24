@@ -43,9 +43,9 @@ class LoginController extends GetxController {
       await storage.write(key: 'username', value: userNameController.text);
       await storage.write(key: 'password', value: passwordController.text);
 
-      // Get.offAllNamed("/chatHomePage");
-
       Get.offAllNamed("/home");
+
+      // Get.offAllNamed("/countries");
 
       print("done");
     } else {
