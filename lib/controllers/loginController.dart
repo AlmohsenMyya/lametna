@@ -14,6 +14,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class LoginController extends GetxController {
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool passwordVisibility = true;
   // List savedPassword = [];
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -72,5 +73,10 @@ class LoginController extends GetxController {
           snackPosition: SnackPosition.BOTTOM);
       // }
     }
+  }
+
+  void changePasswordVisibility() {
+    passwordVisibility = !passwordVisibility;
+    update();
   }
 }

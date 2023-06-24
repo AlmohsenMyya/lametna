@@ -93,6 +93,11 @@ class LoginPage extends StatelessWidget {
                                     child: TextFormField(
                                       controller: controller.userNameController,
                                       decoration: InputDecoration(
+                                        prefixIcon: Icon(
+                                          Icons.mail_outline,
+                                          size: 22.sp,
+                                          color: Colors.grey,
+                                        ),
                                         contentPadding: EdgeInsets.symmetric(
                                             horizontal: 20.w, vertical: 7.h),
                                         filled: true,
@@ -124,7 +129,25 @@ class LoginPage extends StatelessWidget {
                                         EdgeInsets.symmetric(horizontal: 40.w),
                                     child: TextFormField(
                                       controller: controller.passwordController,
+                                      obscureText:
+                                          !controller.passwordVisibility,
                                       decoration: InputDecoration(
+                                        prefixIcon: Icon(
+                                          Icons.lock_outline,
+                                          size: 22.sp,
+                                          color: Colors.grey,
+                                        ),
+                                        suffixIcon: IconButton(
+                                            icon: Icon(
+                                              controller.passwordVisibility
+                                                  ? Icons.visibility
+                                                  : Icons.visibility_off,
+                                              color: Colors.grey,
+                                            ),
+                                            onPressed: () {
+                                              controller
+                                                  .changePasswordVisibility();
+                                            }),
                                         contentPadding: EdgeInsets.symmetric(
                                             horizontal: 20.w, vertical: 7.h),
                                         filled: true,
