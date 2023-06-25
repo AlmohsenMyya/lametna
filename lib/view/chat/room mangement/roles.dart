@@ -10,21 +10,21 @@ import '../appBar.dart';
 
 var user = ["ممبر", "ادمن", "سوبر ادمن", "ماستر"];
 var icons = [
-  {"text": "مسح النص للجميع", "icon": Icons.cleaning_services},
-  {"text": "دور المايك", "icon": Icons.mic},
-  {"text": "طرد", "icon": Icons.star},
-  {"text": "ايقاف", "icon": Icons.highlight_remove},
-  {"text": "حظر الجهاز", "icon": Icons.not_interested},
-  {"text": "ادارة ممبر", "icon": Icons.person},
-  {"text": "ادارة الحسابات", "icon": Icons.group},
-  {"text": "سجل الخروج", "icon": Icons.sensor_door_outlined},
-  {"text": "الغاء الحظر", "icon": Icons.reply},
-  {"text": "رسالة عامة", "icon": Icons.email},
-  {"text": "تقارير المشرفين", "icon": Icons.sticky_note_2_outlined},
-  {"text": "اعدادات الغرفة", "icon": Icons.settings},
-  {"text": "ادارة ماستر", "icon": Icons.person},
-  {"text": "ادارة سوبر ادمن", "icon": Icons.person},
-  {"text": "ادارة ادمن", "icon": Icons.person},
+  {"text": "مسح النص للجميع", "icon": Icons.cleaning_services, "val": 1},
+  {"text": "دور المايك", "icon": Icons.mic, "val": 1},
+  {"text": "طرد", "icon": Icons.star, "val": 1},
+  {"text": "ايقاف", "icon": Icons.highlight_remove, "val": 1},
+  {"text": "حظر الجهاز", "icon": Icons.not_interested, "val": 1},
+  {"text": "ادارة ممبر", "icon": Icons.person, "val": 3},
+  {"text": "ادارة الحسابات", "icon": Icons.group, "val": 3},
+  {"text": "سجل الخروج", "icon": Icons.sensor_door_outlined, "val": 2},
+  {"text": "الغاء الحظر", "icon": Icons.reply, "val": 2},
+  {"text": "رسالة عامة", "icon": Icons.email, "val": 1},
+  {"text": "تقارير المشرفين", "icon": Icons.sticky_note_2_outlined, "val": 3},
+  {"text": "اعدادات الغرفة", "icon": Icons.settings, "val": 3},
+  {"text": "ادارة ماستر", "icon": Icons.person, "val": 3},
+  {"text": "ادارة سوبر ادمن", "icon": Icons.person, "val": 3},
+  {"text": "ادارة ادمن", "icon": Icons.person, "val": 3},
 ];
 
 class RolesPage extends StatelessWidget {
@@ -102,7 +102,8 @@ class RolesPage extends StatelessWidget {
               init: RolesController(),
               builder: (controller) {
                 return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 10.h),
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 28.w, vertical: 10.h),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -115,43 +116,49 @@ class RolesPage extends StatelessWidget {
                           itemCount: user.length,
                           itemBuilder: (context, index) => Padding(
                             padding: EdgeInsets.symmetric(horizontal: 3.5.w),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 18.w, vertical: 1.h),
-                              decoration:controller.selectedIndex == index
-                                  ? BoxDecoration(
-                                border: Border.all(
+                            child: GestureDetector(
+                              onTap: () {
+                                controller.changeSeletedIndex(index);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 18.w, vertical: 1.h),
+                                decoration: controller.selectedIndex == index
+                                    ? BoxDecoration(
+                                  border: Border.all(
+                                    color: Color(0xFFFABD63),
+                                    style: BorderStyle.solid,
+                                    width: 1.0.w,
+                                  ),
                                   color: Color(0xFFFABD63),
-                                  style: BorderStyle.solid,
-                                  width: 1.0.w,
+                                  borderRadius:
+                                  BorderRadius.circular(9.0.sp),
+                                )
+                                    : BoxDecoration(
+                                  border: Border.all(
+                                    color: Color(0xFFFABD63),
+                                    style: BorderStyle.solid,
+                                    width: 1.0.w,
+                                  ),
+                                  borderRadius:
+                                  BorderRadius.circular(9.0.sp),
                                 ),
-                                color: Color(0xFFFABD63),
-                                borderRadius: BorderRadius.circular(9.0.sp),
-                              )
-                                  : BoxDecoration(
-                                border: Border.all(
-                                  color: Color(0xFFFABD63),
-                                  style: BorderStyle.solid,
-                                  width: 1.0.w,
+                                child: Text(
+                                  user[index],
+                                  style: controller.selectedIndex == index
+                                      ? TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Segoe UI",
+                                    fontSize: 10.sp,
+                                  )
+                                      : TextStyle(
+                                    color: Color(0xFFFABD63),
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Segoe UI",
+                                    fontSize: 10.sp,
+                                  ),
                                 ),
-                                borderRadius: BorderRadius.circular(9.0.sp),
-                              ),
-                              child: GestureDetector(
-                                onTap: (){controller.changeIndex(index);},
-                                child: Text(user[index],
-                                    style:controller.selectedIndex == index
-                                        ?TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: "Segoe UI",
-                                      fontSize: 10.sp,
-                                    )
-                                        : TextStyle(
-                                      color: Color(0xFFFABD63),
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: "Segoe UI",
-                                      fontSize: 10.sp,
-                                    )),
                               ),
                             ),
                           ),
@@ -178,8 +185,7 @@ class RolesPage extends StatelessWidget {
                     ],
                   ),
                 );
-              }
-          ),
+              }),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Divider(
@@ -244,13 +250,54 @@ class RolesPage extends StatelessWidget {
                   color: Color(0xff6BE05B),
                   borderRadius: BorderRadius.circular(15.r),
                 ),
-                child: Text(
-                  "إضافة",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "Segoe UI",
+                child: GestureDetector(
+                  onTap: (){
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          Future.delayed(Duration(seconds: 2), () {
+                            Navigator.of(context).pop(true);
+                          });
+                          return AlertDialog(
+
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10.r)),
+                                      title: Container(
+                                        height: 183.h,
+                                        width: 387.w,
+                                        child: Center(
+                                          child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.check_box_outlined,
+                                                  size: 50.sp,
+                                                  color: Colors.green,
+                                                ),
+                                                Text(
+                                                  "تم إضافة الحساب بنجاح",
+                                                  style: TextStyle(
+                                                    color: Color(0xff2ABC42),
+                                                    fontSize: 20.sp,
+                                                    fontWeight: FontWeight.w900,
+                                                    fontFamily: "Segoe UI",
+                                                  ),
+                                                ),
+
+                                              ] ),
+                                        ),
+                                      )
+                                  );
+                        });
+                  },
+                  child: Text(
+                    "إضافة",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Segoe UI",
+                    ),
                   ),
                 ),
               ),
@@ -262,48 +309,79 @@ class RolesPage extends StatelessWidget {
   }
 
   Widget accessBuilder(int index, BuildContext context) {
-    return GetBuilder<RolesController>(
-        builder: (controller) {
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
-            child: GestureDetector(
-              onTap: () {},
-              child: Column(
+    return GetBuilder<RolesController>(builder: (controller) {
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
+        child: GestureDetector(
+          onTap: () {},
+          child: Column(
+            children: [
+              // CircleAvatar(
+              //   backgroundColor: Color(0xffE7E7E7),
+              //   child:
+              // ),
+              Container(
+                padding: EdgeInsets.all(10.sp),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Color(0xFF43D0CA),
+                    width: 1,
+                  ),
+                  color: controller.selectedIndex >= icons[index]["val"]
+                      ? Color(0xffFABD63)
+                      : Color(0xffE7E7E7),
+                  borderRadius: BorderRadius.circular(360.r),
+                ),
+                child: Icon(
+                  icons[index]["icon"],
+                  color: Colors.black,
+                  size: 22.sp,
+                ),
+              ),
+              Text(icons[index]["text"],
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 8.sp,
+                    fontFamily: "Portada",
+                  ))
+            ],
+          ),
+        ),
+      );
+    });
+  }
+  void showAlert(BuildContext context,) {
+    showDialog(
+      builder: (BuildContext context) {
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.r)),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // CircleAvatar(
-                  //   backgroundColor: Color(0xffE7E7E7),
-                  //   child:
-                  // ),
-                  Container(
-                    padding: EdgeInsets.all(10.sp),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Color(0xFF43D0CA),
-                        width: 1,
-                      ),
-                      color: controller.isIcon2Highlighted.value
-                          ? Color(0xffFABD63)
-                          : Color(0xffE7E7E7),
-                      borderRadius: BorderRadius.circular(360.r),
-                    ),
-                    child: Icon(
-                      icons[index]["icon"],
-                      color:Colors.black,
-                      size: 22.sp,
+                  GestureDetector(
+                    onTap: () {
+                    },
+                    child: Container(
+                      width: 90.w,
+                      height: 40.h,
+                      decoration:
+                          BoxDecoration(
+                        color: Color(0xFFEFA11B),
+                        borderRadius: BorderRadius.circular(10.r),
+                      )
+
                     ),
                   ),
-                  Text(icons[index]["text"],
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontSize: 8.sp,
-                        fontFamily: "Portada",
-                      ))
-                ],
-              ),
-            ),
-          );
-        }
+
+         ] )
+        ));
+      },
+
     );
-  }
 }
+}
+
