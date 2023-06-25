@@ -14,7 +14,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class LoginController extends GetxController {
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  bool passwordVisibility = true;
+  bool passwordVisibility = false;
   // List savedPassword = [];
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -30,48 +30,52 @@ class LoginController extends GetxController {
   }
 
   Future login(BuildContext context) async {
-    Map data = {
-      "username": userNameController.text,
-      "password": passwordController.text
-    };
-    FocusScope.of(context).unfocus();
+    try {
+      Map data = {
+        "username": userNameController.text,
+        "password": passwordController.text
+      };
+      FocusScope.of(context).unfocus();
 
-    var response = await crud.postRequest(data);
-    print(response.toString());
-    if (response['status'] == "success") {
-      userName = response["data"]['username'];
-      userId = response["data"]['userid'];
-      await storage.write(key: 'username', value: userNameController.text);
-      await storage.write(key: 'password', value: passwordController.text);
+      var response = await crud.postRequest(data);
+      print(response.toString());
+      if (response['status'] == "success") {
+        userName = response["data"]['username'];
+        userId = response["data"]['userid'];
+        await storage.write(key: 'username', value: userNameController.text);
+        await storage.write(key: 'password', value: passwordController.text);
 
-      Get.offAllNamed("/home");
+        Get.offAllNamed("/home");
 
-      // Get.offAllNamed("/countries");
+        // Get.offAllNamed("/countries");
 
-      print("done");
-    } else {
-      print("error");
-      Get.snackbar("", "",
-          titleText: Text(
-            "خطأ",
-            textAlign: TextAlign.right,
-            style: TextStyle(
-                fontSize: 15.sp,
-                fontWeight: FontWeight.bold,
-                fontFamily: "Portada"),
-          ),
-          messageText: Text(
-            "اسم المستخدم او كلمة المرور غير صحيحة",
-            textAlign: TextAlign.right,
-            style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.bold,
-                fontFamily: "Portada"),
-          ),
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          snackPosition: SnackPosition.BOTTOM);
-      // }
+        print("done");
+      } else {
+        print("error");
+        Get.snackbar("", "",
+            titleText: Text(
+              "خطأ",
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Portada"),
+            ),
+            messageText: Text(
+              "اسم المستخدم او كلمة المرور غير صحيحة",
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Portada"),
+            ),
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM);
+        // }
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 

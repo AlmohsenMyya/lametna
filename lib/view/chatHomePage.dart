@@ -57,7 +57,7 @@ class ChatHomePage extends StatelessWidget {
               backgroundColor: Colors.transparent,
               centerTitle: true,
               elevation: 0,
-              leadingWidth: 100.w,
+              leadingWidth: 110.w,
               leading: Row(
                 children: [
                   IconButton(

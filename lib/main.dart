@@ -8,6 +8,7 @@ import 'package:lametna/view/LoginPage.dart';
 import 'package:get/get.dart';
 import 'package:lametna/view/chat/about.dart';
 import 'package:lametna/view/chat/moments.dart';
+import 'package:lametna/view/chat/room%20mangement/roles.dart';
 import 'package:lametna/view/chat/roomInfo.dart';
 import 'package:lametna/view/chat/roomMangement.dart';
 import 'package:lametna/view/chat/roomPageSettings.dart';
@@ -78,7 +79,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: choosingPage(),
+      child: RolesPage(),
     );
   }
 }
