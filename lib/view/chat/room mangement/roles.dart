@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:get/get.dart';
+import 'package:lametna/controllers/chat/room%20managment/rolesController.dart';
 import '../appBar.dart';
+
 
 var user = ["ممبر", "ادمن", "سوبر ادمن", "ماستر"];
 var icons = [
@@ -43,7 +45,7 @@ class RolesPage extends StatelessWidget {
               child: TextFormField(
                 decoration: InputDecoration(
                   contentPadding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 7.h),
+                  EdgeInsets.symmetric(horizontal: 20.w, vertical: 7.h),
                   filled: true,
                   prefixIcon: Icon(
                     Icons.person,
@@ -77,7 +79,7 @@ class RolesPage extends StatelessWidget {
               child: TextFormField(
                 decoration: InputDecoration(
                   contentPadding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 7.h),
+                  EdgeInsets.symmetric(horizontal: 20.w, vertical: 7.h),
                   filled: true,
                   hintText: "كلمة المرور",
                   hintStyle: TextStyle(
@@ -96,61 +98,87 @@ class RolesPage extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 10.h),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  height: 25.h,
-                  child: ListView.builder(
-                    reverse: true,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: user.length,
-                    itemBuilder: (context, index) => Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 3.5.w),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 18.w, vertical: 1.h),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Color(0xFFFABD63),
-                            style: BorderStyle.solid,
-                            width: 1.0.w,
+          GetBuilder<RolesController>(
+              init: RolesController(),
+              builder: (controller) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 10.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        height: 25.h,
+                        child: ListView.builder(
+                          reverse: true,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: user.length,
+                          itemBuilder: (context, index) => Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 3.5.w),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 18.w, vertical: 1.h),
+                              decoration:controller.selectedIndex == index
+                                  ? BoxDecoration(
+                                border: Border.all(
+                                  color: Color(0xFFFABD63),
+                                  style: BorderStyle.solid,
+                                  width: 1.0.w,
+                                ),
+                                color: Color(0xFFFABD63),
+                                borderRadius: BorderRadius.circular(9.0.sp),
+                              )
+                                  : BoxDecoration(
+                                border: Border.all(
+                                  color: Color(0xFFFABD63),
+                                  style: BorderStyle.solid,
+                                  width: 1.0.w,
+                                ),
+                                borderRadius: BorderRadius.circular(9.0.sp),
+                              ),
+                              child: GestureDetector(
+                                onTap: (){controller.changeIndex(index);},
+                                child: Text(user[index],
+                                    style:controller.selectedIndex == index
+                                        ?TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Segoe UI",
+                                      fontSize: 10.sp,
+                                    )
+                                        : TextStyle(
+                                      color: Color(0xFFFABD63),
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Segoe UI",
+                                      fontSize: 10.sp,
+                                    )),
+                              ),
+                            ),
                           ),
-                          borderRadius: BorderRadius.circular(9.0.sp),
                         ),
-                        child: Text(user[index],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "قفل الجهاز",
                             style: TextStyle(
-                                fontSize: 10.sp,
-                                color: Color(0xffFABD63),
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Segoe UI")),
+                              color: Colors.black,
+                              fontSize: 10.sp,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5.w,
+                          ),
+                          Icon(
+                            Icons.lock_outline,
+                            size: 18.sp,
+                          )
+                        ],
                       ),
-                    ),
+                    ],
                   ),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "قفل الجهاز",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 10.sp,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 5.w,
-                    ),
-                    Icon(
-                      Icons.lock_outline,
-                      size: 18.sp,
-                    )
-                  ],
-                ),
-              ],
-            ),
+                );
+              }
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -234,42 +262,48 @@ class RolesPage extends StatelessWidget {
   }
 
   Widget accessBuilder(int index, BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
-      child: GestureDetector(
-        onTap: () {},
-        child: Column(
-          children: [
-            // CircleAvatar(
-            //   backgroundColor: Color(0xffE7E7E7),
-            //   child:
-            // ),
-            Container(
-              padding: EdgeInsets.all(10.sp),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Color(0xFF43D0CA),
-                  width: 1,
-                ),
-                color: Color(0xffE7E7E7),
-                borderRadius: BorderRadius.circular(360.r),
-              ),
-              child: Icon(
-                icons[index]["icon"],
-                color: Colors.black,
-                size: 22.sp,
+    return GetBuilder<RolesController>(
+        builder: (controller) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
+            child: GestureDetector(
+              onTap: () {},
+              child: Column(
+                children: [
+                  // CircleAvatar(
+                  //   backgroundColor: Color(0xffE7E7E7),
+                  //   child:
+                  // ),
+                  Container(
+                    padding: EdgeInsets.all(10.sp),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color(0xFF43D0CA),
+                        width: 1,
+                      ),
+                      color: controller.isIcon2Highlighted.value
+                          ? Color(0xffFABD63)
+                          : Color(0xffE7E7E7),
+                      borderRadius: BorderRadius.circular(360.r),
+                    ),
+                    child: Icon(
+                      icons[index]["icon"],
+                      color:Colors.black,
+                      size: 22.sp,
+                    ),
+                  ),
+                  Text(icons[index]["text"],
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 8.sp,
+                        fontFamily: "Portada",
+                      ))
+                ],
               ),
             ),
-            Text(icons[index]["text"],
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 8.sp,
-                  fontFamily: "Portada",
-                ))
-          ],
-        ),
-      ),
+          );
+        }
     );
   }
 }

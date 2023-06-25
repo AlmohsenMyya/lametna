@@ -58,7 +58,7 @@ dev_dependencies:
   flutter_colorpicker:
   carousel_slider:
   # agora_rtc_engine:
-  flutter_secure_storage:
+ # flutter_secure_storage:
 
 
 # For information on the generic Dart part of this file, see the

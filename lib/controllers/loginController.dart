@@ -9,7 +9,7 @@ import 'package:lametna/controllers/Crud.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+//import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginController extends GetxController {
   TextEditingController userNameController = TextEditingController();
@@ -20,13 +20,13 @@ class LoginController extends GetxController {
 
   Crud crud = Crud();
   //   SharedPreferences prefs = await prefs;
-  final storage = FlutterSecureStorage();
+  //final storage = FlutterSecureStorage();
 
   Future<void> getSavedPassword() async {
-    String username = await storage.read(key: 'username');
-    String password = await storage.read(key: 'password');
-    userNameController.text = username;
-    passwordController.text = password;
+   // String username = await storage.read(key: 'username');
+    //String password = await storage.read(key: 'password');
+   // userNameController.text = username;
+   // passwordController.text = password;
   }
 
   Future login(BuildContext context) async {
@@ -42,8 +42,8 @@ class LoginController extends GetxController {
       if (response['status'] == "success") {
         userName = response["data"]['username'];
         userId = response["data"]['userid'];
-        await storage.write(key: 'username', value: userNameController.text);
-        await storage.write(key: 'password', value: passwordController.text);
+       // await storage.write(key: 'username', value: userNameController.text);
+        //await storage.write(key: 'password', value: passwordController.text);
 
         Get.offAllNamed("/home");
 
