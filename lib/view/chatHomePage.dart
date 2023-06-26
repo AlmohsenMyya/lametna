@@ -643,6 +643,7 @@ class ChatHomePage extends StatelessWidget {
                             child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10.w),
                               child: TextFormField(
+                                controller: controller.guestController,
                                 decoration: InputDecoration(
                                   suffixIcon: Icon(
                                     Icons.person,
@@ -664,7 +665,7 @@ class ChatHomePage extends StatelessWidget {
                                   ),
                                 ),
                                 style: TextStyle(
-                                  color: Color(0xFFf1f1f1),
+                                  color: Colors.black,
                                 ),
                               ),
                             ),
@@ -713,7 +714,6 @@ class ChatHomePage extends StatelessWidget {
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 10.w),
                                   child: TextFormField(
-                                    // controller: ,
                                     decoration: InputDecoration(
                                       contentPadding: EdgeInsets.symmetric(
                                           horizontal: 20.w, vertical: 7.h),
@@ -731,7 +731,7 @@ class ChatHomePage extends StatelessWidget {
                                       ),
                                     ),
                                     style: TextStyle(
-                                      color: Color(0xFFf1f1f1),
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
@@ -744,14 +744,25 @@ class ChatHomePage extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         if (controller.alertIndex == 0) {
-                          print("0");
+                          print(userName);
+                          print("----------");
+                          controller.checkUsername();
+                          FocusScope.of(context).unfocus();
+                          Get.toNamed('/room', arguments: {
+                            "room_name": roomName,
+                            "room_id": roomId,
+                          });
                         } else {
-                          print("1");
+                          // print(isGuest);
+                          if (isGuest == false) {
+                            Get.toNamed('/room', arguments: {
+                              "room_name": roomName,
+                              "room_id": roomId,
+                            });
+                          } else {
+                            Get.snackbar("error", "login first");
+                          }
                         }
-                        Get.toNamed('/room', arguments: {
-                          "room_name": roomName,
-                          "room_id": roomId,
-                        });
                       },
                       child: Padding(
                         padding: EdgeInsets.only(top: 30.h),

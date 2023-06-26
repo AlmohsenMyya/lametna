@@ -23,10 +23,10 @@ class LoginController extends GetxController {
   //final storage = FlutterSecureStorage();
 
   Future<void> getSavedPassword() async {
-   // String username = await storage.read(key: 'username');
+    // String username = await storage.read(key: 'username');
     //String password = await storage.read(key: 'password');
-   // userNameController.text = username;
-   // passwordController.text = password;
+    // userNameController.text = username;
+    // passwordController.text = password;
   }
 
   Future login(BuildContext context) async {
@@ -42,7 +42,8 @@ class LoginController extends GetxController {
       if (response['status'] == "success") {
         userName = response["data"]['username'];
         userId = response["data"]['userid'];
-       // await storage.write(key: 'username', value: userNameController.text);
+        isGuest = false;
+        // await storage.write(key: 'username', value: userNameController.text);
         //await storage.write(key: 'password', value: passwordController.text);
 
         Get.offAllNamed("/home");

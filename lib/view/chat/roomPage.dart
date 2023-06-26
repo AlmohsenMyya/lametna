@@ -661,31 +661,43 @@ class RoomPage extends StatelessWidget {
                                         controller: controller.scrollController,
                                         reverse: true,
                                         itemBuilder: (context, index) {
-                                          return snapshot.data["data"][index]
-                                                      ["senderName"] ==
-                                                  "roomAlert"
-                                              ? joinAndLeaveAlert(
-                                                  controller.roomStatus,
-                                                  snapshot.data["data"][index]
-                                                              ["joinOrLeave"] ==
-                                                          "0"
-                                                      ? true
-                                                      : false,
-                                                  snapshot.data["data"][index]
-                                                          ["senderName"]
-                                                      .toString(),
-                                                  snapshot.data["data"][index]
-                                                          ["message"]
-                                                      .toString())
-                                              : !controller.roomStatus
-                                                  ? messageVipNewRoomBuilder(
-                                                      context,
-                                                      snapshot.data["data"]
-                                                          [index])
-                                                  : messageVIPBuilder(
-                                                      context,
-                                                      snapshot.data["data"]
-                                                          [index]);
+                                          if (snapshot.data["data"][index]
+                                                  ["senderName"] ==
+                                              "roomAlert") {
+                                            return joinAndLeaveAlert(
+                                                controller.roomStatus,
+                                                snapshot.data["data"][index]
+                                                            ["joinOrLeave"] ==
+                                                        "0"
+                                                    ? true
+                                                    : false,
+                                                snapshot.data["data"][index]
+                                                        ["senderName"]
+                                                    .toString(),
+                                                snapshot.data["data"][index]
+                                                        ["message"]
+                                                    .toString());
+                                          } else {
+                                            if (!controller.roomStatus) {
+                                              return messageVipNewRoomBuilder(
+                                                  context,
+                                                  snapshot.data["data"][index]);
+                                            } else {
+                                              if (snapshot.data["data"][index]
+                                                      ["isGuest"] ==
+                                                  "1") {
+                                                return messageBuilder(
+                                                    context,
+                                                    snapshot.data["data"]
+                                                        [index]);
+                                              } else {
+                                                return messageVIPBuilder(
+                                                    context,
+                                                    snapshot.data["data"]
+                                                        [index]);
+                                              }
+                                            }
+                                          }
                                         },
                                         itemCount: snapshot.data["data"].length,
                                         // itemCount: 1,
@@ -1328,9 +1340,7 @@ class RoomPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    joinOrLeave
-                        ? "$userName انضم للغرفة"
-                        : "$userName غادر للغرفة",
+                    message,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 12.sp,

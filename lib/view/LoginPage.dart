@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/loginController.dart';
+import 'package:lametna/controllers/userData/userCredentials.dart';
 
 class LoginPage extends StatelessWidget {
   // const LoginPage({super.key});
@@ -249,6 +250,7 @@ class LoginPage extends StatelessWidget {
                           onPressed: () {
                             Get.offAllNamed("/home");
                             // Get.offAllNamed("/countries");
+                            isGuest = true;
                           },
                           label: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 25.w),

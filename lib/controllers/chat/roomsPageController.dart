@@ -19,6 +19,7 @@ class RoomsPageController extends GetxController {
   bool scrollDownButton = false;
   ScrollController scrollController = ScrollController();
   bool messageStatus = false;
+
   @override
   void onInit() {
     super.onInit();
@@ -84,6 +85,16 @@ class RoomsPageController extends GetxController {
         "roomId": Get.arguments["room_id"],
       });
       final dataBody = json.decode(response.body);
+      // if (dataBody["roomPlan"][0]["room_plan"] == "0") {
+      //   print("room plan 0");
+      // } else {
+      //   print("room plan 1");
+      // }
+      // print(dataBody);
+      // if (dataBody["roomPlan"][0]["room_plan"] == "0") {
+
+      // }
+      // print();
       streamController.sink.add(dataBody);
     } catch (e) {}
   }
@@ -97,6 +108,7 @@ class RoomsPageController extends GetxController {
         "roomId": Get.arguments["room_id"],
         "senderName": userName,
         "message": message,
+        "isGuest": isGuest ? "1" : "0",
       });
 
       final dataBody = json.decode(response.body);
@@ -105,7 +117,6 @@ class RoomsPageController extends GetxController {
         messageController.clear();
         messageStatus = false;
         update();
-        // getData();
       }
     }
   }
@@ -129,8 +140,16 @@ class RoomsPageController extends GetxController {
     update();
   }
 
-  void changeRoomStatus() {
-    roomStatus = !roomStatus;
+  Future<void> changeRoomStatus() async {
+    var url = Uri.parse(changeRoomPlan);
+    var response = await http.post(url, body: {
+      "roomId": Get.arguments["room_id"],
+    });
+    final dataBody = json.decode(response.body);
+    print(dataBody);
+    if (dataBody["status"] == "success") {
+      roomStatus = !roomStatus;
+    }
     update();
     // print(roomStatus);
   }

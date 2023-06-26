@@ -9,3 +9,5 @@ String sendRoomMessage = baseURL + "messages/sendRoomMessage.php";
 String joinRoom = baseURL + "rooms/joinRoom.php";
 String leaveRoom = baseURL + "rooms/leaveRoom.php";
 String roomMember = baseURL + "rooms/roomMembers.php";
+String checkUser = baseURL + "users/checkUser.php";
+String changeRoomPlan = baseURL + "rooms/changeRoomPlan.php";

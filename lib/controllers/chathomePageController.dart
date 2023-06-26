@@ -1,10 +1,14 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:lametna/controllers/Crud.dart';
+import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/controllers/userData/variables.dart';
 import 'package:lametna/model/rooms.dart';
 
@@ -12,7 +16,7 @@ class ChatHomeController extends GetxController {
   PageController pageController = PageController();
   PageController alertPageController = PageController();
   TextEditingController guestController = TextEditingController();
-  TextEditingController Controller = TextEditingController();
+  // TextEditingController Controller = TextEditingController();
   List vipRooms = [];
   List regularRooms = [];
   Crud crud = Crud();
@@ -77,17 +81,55 @@ class ChatHomeController extends GetxController {
     update();
   }
 
-  checkUsername() {
-    // if(username == null){
-    //   Get.defaultDialog(
-    //     title: "تنبيه",
-    //     content: Text("يجب عليك تسجيل الدخول اولا"),
-    //     confirm: TextButton(
-    //       onPressed: () {
-    //         Get.back();
-    //       },
-    //       child: Text("حسنا"),
+  checkUsername() async {
+    // print("guest-${guestController.text.trim()}${Random().nextInt(9999)}");
+    userName = "guest-${guestController.text.trim()}${Random().nextInt(9999)}";
+    isGuest = true;
+    Get.back();
+    // if (guestController.text.trim().isNotEmpty) {
+    //   var url = Uri.parse(checkUser);
+    //   var response = await http.post(
+    //     url,
+    //     body: {
+    //       "username": guestController.text.trim(),
+    //     },
+    //   );
+    //   var res = json.decode(response.body);
+    //   if (res["status"] == true) {
+    //     Get.snackbar(
+    //       "",
+    //       "",
+    //       titleText: Text(
+    //         "تنبيه",
+    //         textDirection: TextDirection.rtl,
+    //       ),
+    //       messageText: Text(
+    //         "اسم المستخدم غير متاح",
+    //         textDirection: TextDirection.rtl,
+    //       ),
+    //       snackPosition: SnackPosition.BOTTOM,
+    //       backgroundColor: Colors.red,
+    //       colorText: Colors.white,
+    //     );
+    //   } else {
+    //     print("ok");
+    //   }
+    //   // print(res);
+    // } else {
+    //   Get.snackbar(
+    //     "",
+    //     "",
+    //     titleText: Text(
+    //       "تنبيه",
+    //       textDirection: TextDirection.rtl,
     //     ),
+    //     messageText: Text(
+    //       "يجب ادخال اسم المستخدم",
+    //       textDirection: TextDirection.rtl,
+    //     ),
+    //     snackPosition: SnackPosition.BOTTOM,
+    //     backgroundColor: Colors.red,
+    //     colorText: Colors.white,
     //   );
     // }
   }
