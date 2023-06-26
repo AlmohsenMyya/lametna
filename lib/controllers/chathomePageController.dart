@@ -11,11 +11,26 @@ import 'package:lametna/model/rooms.dart';
 class ChatHomeController extends GetxController {
   PageController pageController = PageController();
   PageController alertPageController = PageController();
+  TextEditingController guestController = TextEditingController();
+  TextEditingController Controller = TextEditingController();
   List vipRooms = [];
   List regularRooms = [];
   Crud crud = Crud();
   int selectedIndex = 0;
   int alertIndex = 0;
+
+  List countries = [
+    "algeria",
+    "egypt",
+    "sudan",
+    "iraq",
+    "morocco",
+    "yemen",
+    "syria",
+    "tunisia",
+    "spain",
+    "palestine",
+  ];
 
   @override
   void onInit() {
@@ -31,7 +46,7 @@ class ChatHomeController extends GetxController {
 
   Future<void> fetchAllRooms() async {
     // rooms = await _roomService.getAllRooms();
-    var response = await crud.get("${baseURL}/messages/room.php");
+    var response = await crud.get(getRooms);
     if (response["status"] == "success") {
       // rooms = respose["data"];
       // response = json.decode(response);
@@ -62,40 +77,18 @@ class ChatHomeController extends GetxController {
     update();
   }
 
-  List countries = [
-    "algeria",
-    "egypt",
-    "sudan",
-    "iraq",
-    "morocco",
-    "yemen",
-    "syria",
-    "tunisia",
-    "spain",
-    "palestine",
-  ];
+  checkUsername() {
+    // if(username == null){
+    //   Get.defaultDialog(
+    //     title: "تنبيه",
+    //     content: Text("يجب عليك تسجيل الدخول اولا"),
+    //     confirm: TextButton(
+    //       onPressed: () {
+    //         Get.back();
+    //       },
+    //       child: Text("حسنا"),
+    //     ),
+    //   );
+    // }
+  }
 }
-
-
-
-// vipRooms.add(Rooms(
-//               roomId: data["room_id"],
-//               ownerUsername: data["owner_username"],
-//               roomName: data["room_name"],
-//               channelName: data["Channel_Name"],
-//               token: data["Token"],
-//               roomImg: data["room_img"],
-//               backgroundImg: data["background_img"],
-//               backgroundColor: data["background_color"],
-//               status: data["status"],
-//               helloMsg: data["hello_msg"],
-//               password: data["password"],
-//               capacity: data["capacity"],
-//               numberOfConnections: data["number_of_connections"],
-//               startDate: data["start_date"],
-//               expiryDate: data["expiry_date"],
-//               roomType: data["room_type"],
-//               roomPlan: data["room_plan"],
-//               description: data["description"],
-//               countryName: data["country_name"],
-//               flag: data["flag"]));

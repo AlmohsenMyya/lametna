@@ -13,15 +13,17 @@ var table1 = [
   {
     "name": "معلومات الغرفة",
     "icon": Icons.info_outline,
-    "page": RoomInfo(),
+    // "page":
   },
   {
     "name": "إدارة الحسابات",
     "icon": Icons.people,
+    "page": "",
   },
   {
     "name": "الحظر",
     "icon": Icons.block,
+    "page": "",
   }
 ];
 var table2 = [
@@ -115,10 +117,15 @@ class RoomMangement extends StatelessWidget {
                       textDirection: TextDirection.rtl,
                       child: GestureDetector(
                         onTap: () {
-                          Get.toNamed('/roomInfo', arguments: {
-                            "room_name": Get.arguments["room_name"],
-                            "room_id": Get.arguments["room_id"],
-                          });
+                          // print(table1[index]["page"]);
+                          if (index == 0) {
+                            Get.toNamed('/roomInfo', arguments: {
+                              "room_name": Get.arguments["room_name"],
+                              "room_id": Get.arguments["room_id"],
+                            });
+                          } else if (index == 1) {
+                            print(1);
+                          }
                         },
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 10.h),

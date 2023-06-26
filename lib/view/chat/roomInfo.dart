@@ -47,59 +47,56 @@ class RoomInfo extends StatelessWidget {
           builder: (controller) {
             return FutureBuilder(
               future: controller.getData(),
-              builder: (context, snapshot) =>
-
-                  // Text(
-                  //       snapshot.data.toString(),
-                  //       style: TextStyle(
-                  //         color: Colors.black,
-                  //       ),
-                  //     )
-
-                  ListView(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                children: [
-                  _builderRooms(context, Get.arguments["room_name"],
-                      snapshot.data["data"][0]["country_name"].toString()),
-                  Divider(
-                    color: Color(0xFF43d0ca),
-                    thickness: 1,
-                  ),
-                  ListView.separated(
-                    separatorBuilder: (context, index) => Divider(
-                      color: Color(0xFF43d0ca),
-                      thickness: 1,
-                    ),
-                    shrinkWrap: true,
-                    itemCount: titles.length,
-                    itemBuilder: (context, index) {
-                      return infoSetting(
-                        titles[index].elementAt(0),
-                        snapshot.data["data"][0][titles[index].elementAt(1)]
-                            .toString(),
-                      );
-                    },
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 25.h),
-                    child: Divider(
-                      color: Colors.grey.withOpacity(0.3),
-                      thickness: 4,
-                    ),
-                  ),
-                  ListView.separated(
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) => infoSetting(
-                            tiers[index]["name"].toString(),
-                            "20",
-                            color1: tiers[index]["color"],
-                            color2: Colors.red,
-                            fontWeight1: FontWeight.w900,
+              builder: (context, snapshot) => snapshot.hasData
+                  ? ListView(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      children: [
+                        _builderRooms(
+                            context,
+                            Get.arguments["room_name"],
+                            snapshot.data["data"][0]["country_name"]
+                                .toString()),
+                        Divider(
+                          color: Color(0xFF43d0ca),
+                          thickness: 1,
+                        ),
+                        ListView.separated(
+                          separatorBuilder: (context, index) => Divider(
+                            color: Color(0xFF43d0ca),
+                            thickness: 1,
                           ),
-                      separatorBuilder: (context, index) => Divider(),
-                      itemCount: tiers.length)
-                ],
-              ),
+                          shrinkWrap: true,
+                          itemCount: titles.length,
+                          itemBuilder: (context, index) {
+                            return infoSetting(
+                              titles[index].elementAt(0),
+                              snapshot.data["data"][0]
+                                      [titles[index].elementAt(1)]
+                                  .toString(),
+                            );
+                          },
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 25.h),
+                          child: Divider(
+                            color: Colors.grey.withOpacity(0.3),
+                            thickness: 4,
+                          ),
+                        ),
+                        ListView.separated(
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) => infoSetting(
+                                  tiers[index]["name"].toString(),
+                                  "20",
+                                  color1: tiers[index]["color"],
+                                  color2: Colors.red,
+                                  fontWeight1: FontWeight.w900,
+                                ),
+                            separatorBuilder: (context, index) => Divider(),
+                            itemCount: tiers.length)
+                      ],
+                    )
+                  : Center(child: CircularProgressIndicator()),
             );
           },
         ),

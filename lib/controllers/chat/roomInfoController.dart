@@ -6,7 +6,7 @@ import 'dart:convert';
 class RoomInfoController extends GetxController {
   Future<dynamic> getData() async {
     try {
-      var url = Uri.parse('${baseURL}/messages/roomInfo.php');
+      var url = Uri.parse(roomInfoUrl);
       var response = await http.post(url, body: {
         "roomId": Get.arguments["room_id"],
       });

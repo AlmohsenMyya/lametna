@@ -290,7 +290,7 @@ class ChatHomePage extends StatelessWidget {
           SizedBox(
             height: 15.h,
           ),
-          _countriesBuilder(),
+          // _countriesBuilder(),
           GetBuilder<ChatHomeController>(builder: (controller) {
             return controller.vipRooms.isEmpty
                 ? Padding(
@@ -359,54 +359,54 @@ class ChatHomePage extends StatelessWidget {
     );
   }
 
-  Widget _countriesBuilder() {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "البلد:",
-              style: TextStyle(
-                  color: Colors.black, fontFamily: "Portada", fontSize: 12.sp),
-            ),
-            SizedBox(
-              width: 5.w,
-            ),
-            GetBuilder<ChatHomeController>(
-                init: ChatHomeController(),
-                builder: (controller) {
-                  return SizedBox(
-                    height: 25.h,
-                    width: Get.width * 0.8,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      physics: BouncingScrollPhysics(),
-                      itemCount: controller.countries.length,
-                      itemBuilder: (context, index) => Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 3.w),
-                        child: ClipOval(
-                          child: SizedBox.fromSize(
-                            size: Size.fromRadius(14.r), // Image radius
-                            child: Image.asset(
-                                'assets/images/flags/${controller.countries[index]}.png',
-                                fit: BoxFit.fill,
-                                width: 12.w,
-                                height: 12.h),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _countriesBuilder() {
+  //   return Directionality(
+  //     textDirection: TextDirection.rtl,
+  //     child: Padding(
+  //       padding: EdgeInsets.symmetric(horizontal: 20.w),
+  //       child: Row(
+  //         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           Text(
+  //             "البلد:",
+  //             style: TextStyle(
+  //                 color: Colors.black, fontFamily: "Portada", fontSize: 12.sp),
+  //           ),
+  //           SizedBox(
+  //             width: 5.w,
+  //           ),
+  //           GetBuilder<ChatHomeController>(
+  //               init: ChatHomeController(),
+  //               builder: (controller) {
+  //                 return SizedBox(
+  //                   height: 25.h,
+  //                   width: Get.width * 0.8,
+  //                   child: ListView.builder(
+  //                     shrinkWrap: true,
+  //                     scrollDirection: Axis.horizontal,
+  //                     physics: BouncingScrollPhysics(),
+  //                     itemCount: controller.countries.length,
+  //                     itemBuilder: (context, index) => Padding(
+  //                       padding: EdgeInsets.symmetric(horizontal: 3.w),
+  //                       child: ClipOval(
+  //                         child: SizedBox.fromSize(
+  //                           size: Size.fromRadius(14.r), // Image radius
+  //                           child: Image.asset(
+  //                               'assets/images/flags/${controller.countries[index]}.png',
+  //                               fit: BoxFit.fill,
+  //                               width: 12.w,
+  //                               height: 12.h),
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 );
+  //               }),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _builderRooms(
       BuildContext context,
@@ -713,6 +713,7 @@ class ChatHomePage extends StatelessWidget {
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 10.w),
                                   child: TextFormField(
+                                    // controller: ,
                                     decoration: InputDecoration(
                                       contentPadding: EdgeInsets.symmetric(
                                           horizontal: 20.w, vertical: 7.h),
@@ -742,6 +743,11 @@ class ChatHomePage extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
+                        if (controller.alertIndex == 0) {
+                          print("0");
+                        } else {
+                          print("1");
+                        }
                         Get.toNamed('/room', arguments: {
                           "room_name": roomName,
                           "room_id": roomId,

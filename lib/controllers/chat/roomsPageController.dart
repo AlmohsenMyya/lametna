@@ -22,7 +22,7 @@ class RoomsPageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    onJoinOrLeave(false);
+    onJoin();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) => getData());
 
     getData();
@@ -44,9 +44,42 @@ class RoomsPageController extends GetxController {
     super.onClose();
   }
 
+  onJoin() async {
+    var url = Uri.parse(joinRoom);
+    var url2 = Uri.parse(sendRoomMessage);
+    await http.post(url2, body: {
+      "roomId": Get.arguments["room_id"],
+      "senderName": "roomAlert",
+      "message": "$userName انضم للغرفة",
+      "joinOrLeave": "0", //left 1 joined 0
+    });
+
+    await http.post(url, body: {
+      "roomId": Get.arguments["room_id"],
+      "userName": userName,
+    });
+  }
+
+  onLeave() async {
+    var url = Uri.parse(leaveRoom);
+    var url2 = Uri.parse(sendRoomMessage);
+    await http.post(url2, body: {
+      "roomId": Get.arguments["room_id"],
+      "senderName": "roomAlert",
+      "message": "$userName غادر للغرفة",
+      "joinOrLeave": "1", //left 1 joined 0
+    });
+    await http.post(url, body: {
+      "roomId": Get.arguments["room_id"],
+      "userName": userName,
+    });
+    print("leave");
+    Get.back();
+  }
+
   Future<dynamic> getData() async {
     try {
-      var url = Uri.parse('${baseURL}/messages/showmessagegroup.php');
+      var url = Uri.parse(getRoomMessagesUrl);
       var response = await http.post(url, body: {
         "roomId": Get.arguments["room_id"],
       });
@@ -55,25 +88,11 @@ class RoomsPageController extends GetxController {
     } catch (e) {}
   }
 
-  onJoinOrLeave(bool joinOrLeave) async {
-    var url = Uri.parse('${baseURL}/messages/groupchat.php');
-    var response = await http.post(url, body: {
-      "roomId": Get.arguments["room_id"],
-      "senderName": "roomAlert",
-      "message":
-          joinOrLeave ? "$userName انضم للغرفة" : "$userName غادر للغرفة",
-      "joinOrLeave": joinOrLeave ? "1" : "0",
-    });
-    if (joinOrLeave) {
-      Get.back();
-    }
-  }
-
   sendMessage(String message) async {
     if (message != "") {
       messageStatus = true;
       update();
-      var url = Uri.parse('${baseURL}/messages/groupchat.php');
+      var url = Uri.parse(sendRoomMessage);
       var response = await http.post(url, body: {
         "roomId": Get.arguments["room_id"],
         "senderName": userName,
@@ -81,12 +100,27 @@ class RoomsPageController extends GetxController {
       });
 
       final dataBody = json.decode(response.body);
+      print(dataBody);
       if (dataBody["status"] == "success") {
         messageController.clear();
         messageStatus = false;
         update();
         // getData();
       }
+    }
+  }
+
+  getRoomMembers() async {
+    try {
+      var url = Uri.parse(roomMember);
+      var response = await http.post(url, body: {
+        "roomid": Get.arguments["room_id"],
+      });
+      final dataBody = json.decode(response.body);
+      print(dataBody);
+      return dataBody;
+    } catch (e) {
+      print("object");
     }
   }
 

@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: RolesPage(),
+      child: choosingPage(),
     );
   }
 }
