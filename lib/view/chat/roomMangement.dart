@@ -124,7 +124,9 @@ class RoomMangement extends StatelessWidget {
                               "room_id": Get.arguments["room_id"],
                             });
                           } else if (index == 1) {
-                            print(1);
+                            Get.toNamed('/addAccount',
+                                arguments:{"room_id": Get.arguments["room_id"],}
+                            );
                           }
                         },
                         child: Padding(

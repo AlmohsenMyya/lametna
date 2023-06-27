@@ -24,6 +24,8 @@ import 'package:lametna/view/chat/roomPage.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:lametna/view/messages/privateMessages.dart';
 
+import 'view/chat/addAccount.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
@@ -69,6 +71,8 @@ class MyApp extends StatelessWidget {
             GetPage(name: '/moments', page: () => Moments()),
             GetPage(name: '/roomInfo', page: () => RoomInfo()),
             GetPage(name: '/privateMessage', page: () => PrivateMessage()),
+            GetPage(name: '/addAccount', page: () => AddAccount()),
+            GetPage(name: '/roles', page: () => RolesPage()),
           ],
           title: 'First Method',
           // You can use the library anywhere in the app even in theme
