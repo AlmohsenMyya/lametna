@@ -21,23 +21,86 @@ class RolesController extends GetxController {
     selectedIndex = newIndex;
     update();
   }
- Future <dynamic>addRoles() async {
+ Future <dynamic>addRoles(BuildContext context) async {
     var url = Uri.parse(rolesRoom);
     var response = await http.post(url, body: {
       "roomId": Get.arguments["room_id"],
       "username":userNameController.text.trim(),
       "password":passwordController.text.trim(),
+
+
       //بيبعت كل حاجة لربيع ماعدا الحتة البضاان دى بيبعتلة كل حاجة ماعدا role
       //"roleType":selectedIndex,
     });
+    update();
+    FocusScope.of(context).unfocus();
     final dataBody = json.decode(response.body);
     if (dataBody['status'] == "success") {
-      Get.defaultDialog();
+      showAlert(context);
       update();
      // Navigator.of(context).push(MaterialPageRoute(builder: (context) =>MainView()));
     } else {
-      print("signup fail");
+      print("error");
+      Get.snackbar("", "",
+          titleText: Text(
+            "خطأ",
+            textAlign: TextAlign.right,
+            style: TextStyle(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Portada"),
+          ),
+          messageText: Text(
+            "اسم المستخدم او كلمة المرور غير صحيحة",
+            textAlign: TextAlign.right,
+            style: TextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Portada"),
+          ),
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM);
     }
+  }
+  void showAlert(BuildContext context,) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          Future.delayed(Duration(seconds: 2), () {
+            Navigator.of(context).pop(true);
+          });
+          return AlertDialog(
+
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.r)),
+              title: Container(
+                height: 183.h,
+                width: 387.w,
+                child: Center(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.check_box_outlined,
+                          size: 50.sp,
+                          color: Colors.green,
+                        ),
+                        Text(
+                          "تم إضافة الحساب بنجاح",
+                          style: TextStyle(
+                            color: Color(0xff2ABC42),
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w900,
+                            fontFamily: "Segoe UI",
+                          ),
+                        ),
+
+                      ] ),
+                ),
+              )
+          );
+        });
   }
 
 // void changePageColor(){
