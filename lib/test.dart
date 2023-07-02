@@ -180,36 +180,34 @@ class _VoiceChatState extends State<VoiceChat> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              TextFormField(
-                controller: callId,
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-                decoration: InputDecoration(
-                  hintText: "Enter Channel Name",
-                  border: OutlineInputBorder(),
-                ),
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            TextFormField(
+              controller: callId,
+              style: TextStyle(
+                color: Colors.black,
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CallPage(callId: callId.text),
-                      ),
-                    );
-                  },
-                  child: Text("Join")),
-            ],
-          ),
+              decoration: InputDecoration(
+                hintText: "Enter Channel Name",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CallPage(callId: callId.text),
+                    ),
+                  );
+                },
+                child: Text("Join")),
+          ],
         ),
       ),
     );
@@ -230,8 +228,8 @@ class CallPage extends StatelessWidget {
           1424211637, // Fill in the appID that you get from ZEGOCLOUD Admin Console.
       appSign:
           '550561384fe38cede999218a4dad780ca84e4b137a1a9e7fc5c7bf94771afa4e', // Fill in the appSign that you get from ZEGOCLOUD Admin Console.
-      userID: '1',
-      userName: 'user_1',
+      userID: userIdvoice,
+      userName: 'user_$userIdvoice',
       callID: callId,
       appDesignSize: Size(375, 812),
 
@@ -258,4 +256,8 @@ class CallPage extends StatelessWidget {
     // ..useSpeakerWhenJoining = true,
     // );
   }
+}
+
+f(BuildContext context) {
+  Navigator.of(context).pop();
 }

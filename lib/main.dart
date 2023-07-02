@@ -32,7 +32,7 @@ Future<void> main() async {
   // await Firebase.initializeApp();
   runApp(
     DevicePreview(
-      builder: (context) => VoiceChat(),
+      builder: (context) => MyApp(),
       enabled: false,
     ),
   );
@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: choosingPage(),
+      child: VoiceChat(),
     );
   }
 }
