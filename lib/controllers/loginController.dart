@@ -29,6 +29,12 @@ class LoginController extends GetxController {
     // passwordController.text = password;
   }
 
+  loginAsGuest() async {
+    isGuest = true;
+    update();
+    Get.offAllNamed("/home");
+  }
+
   Future login(BuildContext context) async {
     try {
       Map data = {
@@ -38,6 +44,7 @@ class LoginController extends GetxController {
       FocusScope.of(context).unfocus();
 
       var response = await crud.postRequest(data);
+      print(response.toString());
       print(response.toString());
       if (response['status'] == "success") {
         userName = response["data"]['username'];

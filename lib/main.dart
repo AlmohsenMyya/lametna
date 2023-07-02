@@ -7,8 +7,10 @@ import 'package:lametna/view/ChoosingPage.dart';
 import 'package:lametna/view/LoginPage.dart';
 import 'package:get/get.dart';
 import 'package:lametna/view/chat/about.dart';
+import 'package:lametna/view/chat/room%20mangement/accountMangement.dart';
 import 'package:lametna/view/chat/moments.dart';
 import 'package:lametna/view/chat/room%20mangement/roles.dart';
+import 'package:lametna/view/chat/room%20mangement/roomSettings.dart';
 import 'package:lametna/view/chat/roomInfo.dart';
 import 'package:lametna/view/chat/roomMangement.dart';
 import 'package:lametna/view/chat/roomPageSettings.dart';
@@ -23,13 +25,14 @@ import 'package:lametna/view/chat/roomPage.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:lametna/view/messages/privateMessages.dart';
+import 'package:lametna/view/side%20pages/search.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
   runApp(
     DevicePreview(
-      builder: (context) => MyApp(),
+      builder: (context) => VoiceChat(),
       enabled: false,
     ),
   );
@@ -69,6 +72,10 @@ class MyApp extends StatelessWidget {
             GetPage(name: '/moments', page: () => Moments()),
             GetPage(name: '/roomInfo', page: () => RoomInfo()),
             GetPage(name: '/privateMessage', page: () => PrivateMessage()),
+            GetPage(name: '/addAccount', page: () => AddAccount()),
+            GetPage(name: '/roles', page: () => RolesPage()),
+            GetPage(name: "/search", page: () => Search()),
+            GetPage(name: "/roomSetting", page: () => RoomSettings())
           ],
           title: 'First Method',
           // You can use the library anywhere in the app even in theme

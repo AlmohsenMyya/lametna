@@ -3,6 +3,14 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        // maven(
+        //     url = "https://android-sdk.is.com/"
+        // )
+        // maven {
+        //     url = uri("https://jitpack.io")
+        // }
+        maven { url "https://jitpack.io" }
+        jcenter()
     }
 
     dependencies {
@@ -16,6 +24,17 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        jcenter()
+        //  maven(
+        //     url = "https://android-sdk.is.com/"
+        // )
+        // maven {
+        //     url = uri("https://jitpack.io")
+        // }
+        maven { url "https://jitpack.io" }
+        maven {
+            url = "https://unityjddist.jfrog.io/artifactory/unity-mediation-mvn-prod-local/"
+        }
     }
 }
 

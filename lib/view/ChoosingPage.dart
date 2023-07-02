@@ -109,6 +109,7 @@ class choosingPage extends StatelessWidget {
                         colors: [
                           Color(0xFFF792F0),
                           Color(0xFFF792F0),
+                          // Colors.green,
                           Color(0xFFF6F6F6),
                         ],
                         begin: Alignment.bottomRight,

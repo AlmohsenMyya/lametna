@@ -124,7 +124,9 @@ class RoomMangement extends StatelessWidget {
                               "room_id": Get.arguments["room_id"],
                             });
                           } else if (index == 1) {
-                            print(1);
+                            Get.toNamed('/addAccount', arguments: {
+                              "room_id": Get.arguments["room_id"],
+                            });
                           }
                         },
                         child: Padding(
@@ -186,37 +188,46 @@ class RoomMangement extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Directionality(
                       textDirection: TextDirection.rtl,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10.h),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20.w),
-                              child: Icon(
-                                table2[index]["icon"],
-                                color: Colors.black,
-                                size: 25.sp,
+                      child: GestureDetector(
+                        onTap: () {
+                          if (index == 0) {
+                            Get.toNamed('/roomSetting', arguments: {
+                              "room_id": Get.arguments["room_id"],
+                            });
+                          }
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10.h),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                child: Icon(
+                                  table2[index]["icon"],
+                                  color: Colors.black,
+                                  size: 25.sp,
+                                ),
                               ),
-                            ),
-                            Text(
-                              table2[index]["name"],
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15.sp,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Segoe UI",
+                              Text(
+                                table2[index]["name"],
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Segoe UI",
+                                ),
                               ),
-                            ),
-                            Spacer(),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20.w),
-                              child: Icon(
-                                Icons.arrow_forward_ios,
-                                color: Colors.black,
-                                size: 20.sp,
+                              Spacer(),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                child: Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Colors.black,
+                                  size: 20.sp,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     );

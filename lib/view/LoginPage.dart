@@ -248,9 +248,10 @@ class LoginPage extends StatelessWidget {
                             size: 16.sp,
                           ),
                           onPressed: () {
-                            Get.offAllNamed("/home");
-                            // Get.offAllNamed("/countries");
-                            isGuest = true;
+                            controller.loginAsGuest();
+                            // Get.offAllNamed("/home");
+                            // // Get.offAllNamed("/countries");
+                            // isGuest = true;
                           },
                           label: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 25.w),

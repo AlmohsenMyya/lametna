@@ -22,6 +22,7 @@ class ChatHomeController extends GetxController {
   Crud crud = Crud();
   int selectedIndex = 0;
   int alertIndex = 0;
+  int roomNumber = 0;
 
   List countries = [
     "algeria",
@@ -54,6 +55,7 @@ class ChatHomeController extends GetxController {
     if (response["status"] == "success") {
       // rooms = respose["data"];
       // response = json.decode(response);
+      roomNumber = response["data"].length;
       for (var item in response["data"]) {
         if (item["room_type"] == "vip") {
           vipRooms.add(item);
@@ -83,7 +85,8 @@ class ChatHomeController extends GetxController {
 
   checkUsername() async {
     // print("guest-${guestController.text.trim()}${Random().nextInt(9999)}");
-    userName = "guest-${guestController.text.trim()}${Random().nextInt(9999)}";
+    guestUserName =
+        "guest-${guestController.text.trim()}${Random().nextInt(9999)}";
     isGuest = true;
     Get.back();
     // if (guestController.text.trim().isNotEmpty) {

@@ -154,3 +154,108 @@
 //     );
 //   }
 // }
+
+// ignore_for_file: prefer_const_constructors
+
+import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:lametna/controllers/userData/userCredentials.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+// import 'package:zego_express_engine/zego_express_engine.dart';
+import 'dart:math' as math;
+
+class VoiceChat extends StatefulWidget {
+  const VoiceChat({Key key}) : super(key: key);
+
+  @override
+  State<VoiceChat> createState() => _VoiceChatState();
+}
+
+final userIdvoice = math.Random().nextInt(1000000).toString();
+
+class _VoiceChatState extends State<VoiceChat> {
+  final callId = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextFormField(
+                controller: callId,
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+                decoration: InputDecoration(
+                  hintText: "Enter Channel Name",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CallPage(callId: callId.text),
+                      ),
+                    );
+                  },
+                  child: Text("Join")),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CallPage extends StatelessWidget {
+  final String callId;
+  const CallPage({Key key, this.callId}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return
+
+        // Container();
+        ZegoUIKitPrebuiltCall(
+      appID:
+          1424211637, // Fill in the appID that you get from ZEGOCLOUD Admin Console.
+      appSign:
+          '550561384fe38cede999218a4dad780ca84e4b137a1a9e7fc5c7bf94771afa4e', // Fill in the appSign that you get from ZEGOCLOUD Admin Console.
+      userID: '1',
+      userName: 'user_1',
+      callID: callId,
+      appDesignSize: Size(375, 812),
+
+      // You can also use groupVideo/groupVoice/oneOnOneVoice to make more types of calls.
+      config: ZegoUIKitPrebuiltCallConfig.groupVoiceCall()
+        // ..onOnlySelfInRoom = f(context),
+        ..turnOnCameraWhenJoining = false
+        ..turnOnMicrophoneWhenJoining = false
+        ..useSpeakerWhenJoining = true,
+    );
+
+    //     ZegoUIKitPrebuiltCall(
+    //   appID: 1424211637,
+    //   appSign:
+    //       '550561384fe38cede999218a4dad780ca84e4b137a1a9e7fc5c7bf94771afa4e',
+    //   userID: userIdvoice,
+    //   userName: 'user_$userIdvoice',
+    //   callID: callId,
+
+    //   // Modify your custom configurations here.
+    //   config: ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall()
+    // ..turnOnCameraWhenJoining = false
+    // ..turnOnMicrophoneWhenJoining = false
+    // ..useSpeakerWhenJoining = true,
+    // );
+  }
+}
