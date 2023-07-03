@@ -8,6 +8,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lametna/controllers/messages/messagesController.dart';
 
 class Messages extends StatelessWidget {
   Messages({Key key}) : super(key: key);
@@ -140,59 +141,82 @@ class Messages extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
             child: SizedBox(
               height: 50.h,
-              child: TextFormField(
-                textAlign: TextAlign.right,
-                textAlignVertical: TextAlignVertical.center,
-                style: TextStyle(
-                  fontSize: 15.sp,
-                  color: Colors.black,
-                ),
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
+              child: GetBuilder<MessagesController>(
+                  init: MessagesController(),
+                  builder: (controller) {
+                    return TextFormField(
+                      controller: controller.searchController,
+                      textAlign: TextAlign.right,
+                      textAlignVertical: TextAlignVertical.center,
+                      onChanged: (value) => controller.search(),
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                        color: Colors.black,
+                      ),
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
+                        hintText: "بحث",
+                        hintStyle: TextStyle(
+                          fontSize: 15.sp,
+                          // color: Colors.grey,s
+                        ),
 
-                  hintText: "بحث",
-                  hintStyle: TextStyle(
-                    fontSize: 15.sp,
-                    // color: Colors.grey,s
-                  ),
-
-                  prefixIcon: Icon(
-                    Icons.search,
-                    size: 20.sp,
-                    color: Color(0xff43D0CA),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.r),
-                    borderSide: BorderSide(
-                      color: Color(0xff43D0CA),
-                      width: 1,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.r),
-                    borderSide: BorderSide(
-                      color: Color(0xff43D0CA),
-                      width: 1,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.r),
-                    borderSide: BorderSide(
-                      color: Color(0xff43D0CA),
-                      width: 1,
-                    ),
-                  ),
-                  // filled: true,
-                  // fillColor: Colors.grey[200],
-                ),
-              ),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          size: 20.sp,
+                          color: Color(0xff43D0CA),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                          borderSide: BorderSide(
+                            color: Color(0xff43D0CA),
+                            width: 1,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                          borderSide: BorderSide(
+                            color: Color(0xff43D0CA),
+                            width: 1,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                          borderSide: BorderSide(
+                            color: Color(0xff43D0CA),
+                            width: 1,
+                          ),
+                        ),
+                        // filled: true,
+                        // fillColor: Colors.grey[200],
+                      ),
+                    );
+                  }),
             ),
           ),
-          ListView.builder(
-            shrinkWrap: true,
-            itemBuilder: (context, index) => userMessageBuilder(index, context),
-            itemCount: users.length,
-          ),
+          GetBuilder<MessagesController>(
+              builder: (controller) => controller.searchController.text.isEmpty
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) =>
+                          userMessageBuilder(index, context),
+                      itemCount: users.length,
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) => Card(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 20.w, vertical: 10.h),
+                        child: Padding(
+                          padding: EdgeInsets.all(12.sp),
+                          child: Text(
+                            controller.data[index]["username"].toString(),
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      itemCount: controller.data.length,
+                    ))
         ],
       ),
     );
