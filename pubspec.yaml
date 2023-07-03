@@ -57,11 +57,13 @@ dev_dependencies:
   flutter_colorpicker:
   carousel_slider:
   emoji_picker_flutter:
-  # agora_rtc_engine:
+  agora_rtc_engine:
+  # agora_uikit:
   # zego_express_engine:
   # zego_express_engine: 
   # zego_uikit: 
-  zego_uikit_prebuilt_call: 
+  # zego_uikit_prebuilt_call: 
+  # zego_uikit_prebuilt_live_audio_room:
   # zego_uikit_signaling_plugin: ^1.0.14
  # flutter_secure_storage:
 

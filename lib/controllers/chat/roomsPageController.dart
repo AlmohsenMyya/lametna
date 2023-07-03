@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:lametna/controllers/Crud.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/model/message.dart';
-// import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../userData/variables.dart';
@@ -24,91 +24,98 @@ class RoomsPageController extends GetxController {
   bool emojiStatus = true;
 
   //voice room
-  // String channelName = "";
-  // String token = "";
+  String channelName = "";
+  String token = "";
+  // String channelName = "2";
+  // String token =
+  //     "007eJxTYKh99aOr7HP0FNmPLzgVK1YnqwZP1vVbq75dyuf/pVtvzu5WYEg1NDVMTrYwM05JMTZJTEm2TDM3SzOwME01SUsyTzK30P28MKUhkJHhg74DEyMDBIL4jAxGDAwAlBAgUQ==";
 
-  // final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
-  //     GlobalKey<ScaffoldMessengerState>();
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
 
-  // int uid = 0; // uid of the local user
+  int uid = 0; // uid of the local user
 
-  // int _remoteUid; // uid of the remote user
-  // bool _isJoined = false; // Indicates if the local user has joined the channel
-  // RtcEngine agoraEngine; // Agora engine instance
-  // showMessage(String message) {
-  //   scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(
-  //     content: Text(message),
-  //   ));
-  // }
+  int _remoteUid; // uid of the remote user
+  bool _isJoined = false; // Indicates if the local user has joined the channel
+  RtcEngine agoraEngine; // Agora engine instance
+  showMessage(String message) {
+    scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(
+      content: Text(message),
+    ));
+  }
 
-  // Future<void> setupVoiceSDKEngine() async {
-  //   // retrieve or request microphone permission
-  //   await [Permission.microphone].request();
+  Future<void> setupVoiceSDKEngine() async {
+    // retrieve or request microphone permission
+    await [Permission.microphone].request();
 
-  //   //create an instance of the Agora engine
-  //   agoraEngine = createAgoraRtcEngine();
-  //   await agoraEngine.initialize(
-  //       const RtcEngineContext(appId: 'e151cc863dd34adc9f76f085e4fb7b78'));
+    //create an instance of the Agora engine
+    agoraEngine = createAgoraRtcEngine();
+    await agoraEngine.initialize(
+        const RtcEngineContext(appId: 'e151cc863dd34adc9f76f085e4fb7b78'));
 
-  //   // Register the event handler
-  //   agoraEngine.registerEventHandler(
-  //     RtcEngineEventHandler(
-  //       onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
-  //         showMessage(
-  //             "Local user uid:${connection.localUid} joined the channel");
-  //         _isJoined = true;
-  //         update();
-  //       },
-  //       onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
-  //         showMessage("Remote user uid:$remoteUid joined the channel");
+    // Register the event handler
+    agoraEngine.registerEventHandler(
+      RtcEngineEventHandler(
+        onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
+          showMessage(
+              "Local user uid:${connection.localUid} joined the channel");
+          _isJoined = true;
+          update();
+        },
+        onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
+          showMessage("Remote user uid:$remoteUid joined the channel");
 
-  //         _remoteUid = remoteUid;
-  //         update();
-  //       },
-  //       onUserOffline: (RtcConnection connection, int remoteUid,
-  //           UserOfflineReasonType reason) {
-  //         showMessage("Remote user uid:$remoteUid left the channel");
+          _remoteUid = remoteUid;
+          update();
+        },
+        onUserOffline: (RtcConnection connection, int remoteUid,
+            UserOfflineReasonType reason) {
+          showMessage("Remote user uid:$remoteUid left the channel");
 
-  //         _remoteUid = null;
-  //         update();
-  //       },
-  //     ),
-  //   );
-  // }
+          _remoteUid = null;
+          update();
+        },
+      ),
+    );
+  }
 
-  // void join() async {
-  //   // Set channel options including the client role and channel profile
-  //   ChannelMediaOptions options = const ChannelMediaOptions(
-  //     clientRoleType: ClientRoleType.clientRoleBroadcaster,
-  //     channelProfile: ChannelProfileType.channelProfileCommunication,
-  //   );
-  //   Get.snackbar("تم الانضمام", "تم الانضمام للغرفة بنجاح",
-  //       snackPosition: SnackPosition.BOTTOM);
+  void join() async {
+    // Set channel options including the client role and channel profile
+    ChannelMediaOptions options = const ChannelMediaOptions(
+      clientRoleType: ClientRoleType.clientRoleBroadcaster,
+      channelProfile: ChannelProfileType.channelProfileCommunication,
+    );
+    Get.snackbar("تم الانضمام", "تم الانضمام للغرفة بنجاح",
+        snackPosition: SnackPosition.BOTTOM);
 
-  //   await agoraEngine.joinChannel(
-  //     token: token,
-  //     channelId: channelName,
-  //     options: options,
-  //     uid: uid,
-  //   );
-  // }
+    await agoraEngine.joinChannel(
+      token: token,
+      channelId: channelName,
+      options: options,
+      uid: uid,
+    );
+  }
 
-  // void leave() {
-  //   _isJoined = false;
-  //   _remoteUid = null;
-  //   update();
-  //   Get.snackbar("sucess", "leave");
-  //   agoraEngine.leaveChannel();
-  // }
+  void leave() {
+    _isJoined = false;
+    _remoteUid = null;
+    update();
+    Get.snackbar("sucess", "leave");
+    agoraEngine.leaveChannel();
+  }
 
   @override
   Future<void> onInit() async {
     super.onInit();
     onJoin();
     await getRoomInformation();
-    // setupVoiceSDKEngine();
+    setupVoiceSDKEngine();
 
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) => getData());
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      // print(channelName);
+      // print(token);
+      return getData();
+    });
 
     // getData();
   }
@@ -138,8 +145,8 @@ class RoomsPageController extends GetxController {
       "roomId": Get.arguments["room_id"],
     });
     final dataBody = json.decode(response.body);
-    // channelName = dataBody["data"][0]["Channel_Name"];
-    // token = dataBody["data"][0]["Token"];
+    channelName = dataBody["data"][0]["Channel_Name"];
+    token = dataBody["data"][0]["Token"];
     update();
     // print();
   }

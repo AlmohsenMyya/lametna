@@ -1266,7 +1266,7 @@ class RoomPage extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // controller.leave();
+                      controller.leave();
                     },
                     child: Padding(
                       padding: EdgeInsets.only(right: 20.w),
@@ -1278,7 +1278,7 @@ class RoomPage extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // controller.join();
+                      controller.join();
                     },
                     child: Icon(
                       Icons.mic,

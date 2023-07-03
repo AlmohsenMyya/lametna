@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: VoiceChat(),
+      child: choosingPage(),
     );
   }
 }
