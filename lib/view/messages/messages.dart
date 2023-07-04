@@ -195,16 +195,24 @@ class Messages extends StatelessWidget {
             ),
           ),
           GetBuilder<MessagesController>(
-              builder: (controller) => controller.searchController.text.isEmpty
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) =>
-                          userMessageBuilder(index, context),
-                      itemCount: users.length,
-                    )
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) => Card(
+            builder: (controller) => controller.searchController.text.isEmpty
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) =>
+                        userMessageBuilder(index, context),
+                    itemCount: users.length,
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        Get.toNamed("/privateMessage", arguments: [
+                          controller.data[index]["image"],
+                          controller.data[index]["username"],
+                          controller.data[index]["userid"]
+                        ]);
+                      },
+                      child: Card(
                         margin: EdgeInsets.symmetric(
                             horizontal: 20.w, vertical: 10.h),
                         child: Padding(
@@ -215,8 +223,10 @@ class Messages extends StatelessWidget {
                           ),
                         ),
                       ),
-                      itemCount: controller.data.length,
-                    ))
+                    ),
+                    itemCount: controller.data.length,
+                  ),
+          )
         ],
       ),
     );

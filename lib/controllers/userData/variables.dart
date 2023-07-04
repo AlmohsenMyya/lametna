@@ -16,3 +16,5 @@ String rolesRoom = baseURL + "users/addRoomRole.php";
 String userSearch = baseURL + "search/searchUser.php";
 String roomSearch = baseURL + "search/searchRoom.php";
 String allSearch = baseURL + "search/searchAll.php";
+String sendPrivateMessage = baseURL + "messages/message.php";
+String getPrivateMessages = baseURL + "messages/showmessage.php";

@@ -109,7 +109,7 @@ class RoomsPageController extends GetxController {
     super.onInit();
     onJoin();
     await getRoomInformation();
-    setupVoiceSDKEngine();
+    // setupVoiceSDKEngine();
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       // print(channelName);

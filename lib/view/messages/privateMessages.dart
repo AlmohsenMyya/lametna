@@ -6,6 +6,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lametna/controllers/messages/privateMessagesController.dart';
+import 'package:lametna/controllers/userData/userCredentials.dart';
 
 class PrivateMessage extends StatelessWidget {
   const PrivateMessage({Key key}) : super(key: key);
@@ -61,10 +63,10 @@ class PrivateMessage extends StatelessWidget {
                       height: 50.h,
                       decoration: BoxDecoration(
                         // color: const Color(0xff7c94b6),
-                        image: DecorationImage(
-                          image: NetworkImage(Get.arguments[0]),
-                          fit: BoxFit.cover,
-                        ),
+                        // image: DecorationImage(
+                        //   image: NetworkImage(Get.arguments[0]),
+                        //   fit: BoxFit.cover,
+                        // ),
                         borderRadius: BorderRadius.all(Radius.circular(50.0)),
                         border: Border.all(
                           color: Color(0xff43D0CA),
@@ -83,7 +85,32 @@ class PrivateMessage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Expanded(child: Placeholder()),
+          Expanded(
+            child: GetBuilder<PrivateMessagesController>(
+                init: PrivateMessagesController(),
+                builder: (controller) {
+                  return StreamBuilder(
+                    builder: (context, snapshot) => snapshot.data == null
+                        ? Center(child: CircularProgressIndicator())
+                        : ListView.builder(
+                            reverse: true,
+                            itemBuilder: (context, index) => Text(
+                              snapshot.data["data"][index]["text"].toString(),
+                              textAlign: snapshot.data["data"][index]
+                                          ["sender"] ==
+                                      userId
+                                  ? TextAlign.right
+                                  : TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                            itemCount: snapshot.data["data"].length,
+                          ),
+                    stream: controller.streamController.stream,
+                  );
+                }),
+          ),
           textFormBuilder(),
         ],
       ),
@@ -93,97 +120,109 @@ class PrivateMessage extends StatelessWidget {
   Row textFormBuilder() {
     return Row(
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15.w),
-          child: Container(
-            // width: 46.w,
-            // height: 46.h,
-            padding: EdgeInsets.all(10.sp),
-            decoration: BoxDecoration(
-              color: Color(0xffEFA11B),
-              borderRadius: BorderRadius.circular(360.r),
-            ),
-            child: Image.asset(
-              'assets/icons/send.png',
-              width: 24.sp,
-              height: 24.sp,
-            ),
-          ),
-        ),
+        GetBuilder<PrivateMessagesController>(
+            init: PrivateMessagesController(),
+            builder: (controller) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                child: GestureDetector(
+                  onTap: () {
+                    controller.sendMsg();
+                  },
+                  child: Container(
+                    // width: 46.w,
+                    // height: 46.h,
+                    padding: EdgeInsets.all(10.sp),
+                    decoration: BoxDecoration(
+                      color: Color(0xffEFA11B),
+                      borderRadius: BorderRadius.circular(360.r),
+                    ),
+                    child: Image.asset(
+                      'assets/icons/send.png',
+                      width: 24.sp,
+                      height: 24.sp,
+                    ),
+                  ),
+                ),
+              );
+            }),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 30.h),
           child: SizedBox(
             height: 50.h,
             width: 340.w,
-            child: TextFormField(
-              textAlign: TextAlign.right,
-              textAlignVertical: TextAlignVertical.center,
-              style: TextStyle(
-                fontSize: 15.sp,
-                color: Colors.black,
-              ),
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Color(0xffF5F5F5),
-                // fillColor: Colors.green,
-                contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
-
-                hintText: "اكتب رسالتك",
-                hintStyle: TextStyle(
+            child: GetBuilder<PrivateMessagesController>(builder: (controller) {
+              return TextFormField(
+                controller: controller.messageController,
+                textAlign: TextAlign.right,
+                textAlignVertical: TextAlignVertical.center,
+                style: TextStyle(
                   fontSize: 15.sp,
-                  // color: Colors.grey,s
+                  color: Colors.black,
                 ),
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Color(0xffF5F5F5),
+                  // fillColor: Colors.green,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
 
-                prefixIcon: Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween, // added line
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Icon(
-                      Icons.mic,
-                      size: 25.sp,
-                      // color: Color(0xff43D0CA),
-                      color: Colors.red[700],
-                    ),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Icon(
-                      Icons.image,
-                      size: 25.sp,
-                      // color: Color(0xff43D0CA),
-                      color: Colors.orange[700],
-                    ),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Icon(
-                      Icons.emoji_emotions,
-                      size: 25.sp,
-                      // color: Color(0xff43D0CA),
-                      color: Colors.yellow[700],
-                    ),
-                  ],
+                  hintText: "اكتب رسالتك",
+                  hintStyle: TextStyle(
+                    fontSize: 15.sp,
+                    // color: Colors.grey,s
+                  ),
+
+                  prefixIcon: Row(
+                    mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween, // added line
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        width: 3.w,
+                      ),
+                      Icon(
+                        Icons.mic,
+                        size: 25.sp,
+                        // color: Color(0xff43D0CA),
+                        color: Colors.red[700],
+                      ),
+                      SizedBox(
+                        width: 3.w,
+                      ),
+                      Icon(
+                        Icons.image,
+                        size: 25.sp,
+                        // color: Color(0xff43D0CA),
+                        color: Colors.orange[700],
+                      ),
+                      SizedBox(
+                        width: 3.w,
+                      ),
+                      Icon(
+                        Icons.emoji_emotions,
+                        size: 25.sp,
+                        // color: Color(0xff43D0CA),
+                        color: Colors.yellow[700],
+                      ),
+                    ],
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(23.r),
+                    borderSide: BorderSide.none,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(23.r),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(23.r),
+                    borderSide: BorderSide.none,
+                  ),
+                  // filled: true,
+                  // fillColor: Colors.grey[200],
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(23.r),
-                  borderSide: BorderSide.none,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(23.r),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(23.r),
-                  borderSide: BorderSide.none,
-                ),
-                // filled: true,
-                // fillColor: Colors.grey[200],
-              ),
-            ),
+              );
+            }),
           ),
         ),
       ],

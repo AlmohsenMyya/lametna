@@ -42,7 +42,7 @@ class RoomPage extends StatelessWidget {
                   child: GetBuilder<RoomsPageController>(
                       init: RoomsPageController(),
                       builder: (controller) {
-                        return FutureBuilder(
+                        return StreamBuilder(
                           builder: (context, snapshot) => snapshot.data == null
                               ? Center(child: CircularProgressIndicator())
                               : ListView.builder(
@@ -186,7 +186,7 @@ class RoomPage extends StatelessWidget {
                                   ),
                                   itemCount: snapshot.data["data"].length,
                                 ),
-                          future: controller.getRoomMembers(),
+                          stream: controller.getRoomMembers(),
                         );
                       })
                   //     ListView(
