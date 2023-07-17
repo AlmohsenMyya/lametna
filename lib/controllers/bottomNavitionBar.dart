@@ -3,6 +3,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:lametna/view/chat/moments.dart';
 import 'package:lametna/view/chatHomePage.dart';
 import 'package:lametna/view/messages/messages.dart';
+import 'userData/userCredentials.dart';
 import 'package:lametna/view/store/test.dart';
 
 class BottomNavitionBarController extends GetxController {
@@ -22,10 +23,13 @@ class BottomNavitionBarController extends GetxController {
 
   List<Widget> pages = <Widget>[
     ChatHomePage(),
-    Moments(),
-    Messages(),
+    // Moments(),
+    Container(),
+    !isGuest ? Messages() : null,
     test(),
+    // Container()
   ];
+
   void onItemTapped(int index) {
     selectedIndex = index;
     update();

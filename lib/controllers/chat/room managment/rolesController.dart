@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
+import 'package:lametna/controllers/chat/room%20managment/accountMangementController.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/controllers/Crud.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lametna/controllers/userData/variables.dart';
 import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
 
 class RolesController extends GetxController {
   PageController pageController = PageController();
@@ -36,7 +38,9 @@ class RolesController extends GetxController {
     FocusScope.of(context).unfocus();
     final dataBody = json.decode(response.body);
     if (dataBody['status'] == "success") {
+      await Get.put(AccountMangementController()).getRoles();
       showAlert(context);
+      print("object");
       update();
       // Navigator.of(context).push(MaterialPageRoute(builder: (context) =>MainView()));
     } else {
@@ -51,7 +55,7 @@ class RolesController extends GetxController {
                 fontFamily: "Portada"),
           ),
           messageText: Text(
-            "اسم المستخدم او كلمة المرور غير صحيحة",
+            "الرجاء ادخال اسم مستخدم اخر",
             textAlign: TextAlign.right,
             style: TextStyle(
                 fontSize: 12.sp,

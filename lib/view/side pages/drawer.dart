@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lametna/controllers/userData/userCredentials.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Widget homeDrawer() => Drawer(
       child: Container(
@@ -26,24 +28,30 @@ Widget homeDrawer() => Drawer(
                 height: 160.h,
               ),
             ),
-            drawerItem(
-              'الملف الشخصي',
-              Icon(
-                Icons.person,
-                color: Colors.white,
-                size: 30.sp,
-              ),
-              () {},
-            ),
-            drawerItem(
-              'لوحة التحكم',
-              Icon(
-                Icons.person,
-                color: Colors.white,
-                size: 30.sp,
-              ),
-              () {},
-            ),
+            !isGuest
+                ? drawerItem(
+                    'الملف الشخصي',
+                    Icon(
+                      Icons.person,
+                      color: Colors.white,
+                      size: 30.sp,
+                    ),
+                    () {
+                      Get.toNamed('/profile');
+                    },
+                  )
+                : SizedBox(),
+            !isGuest
+                ? drawerItem(
+                    'لوحة التحكم',
+                    Icon(
+                      Icons.person,
+                      color: Colors.white,
+                      size: 30.sp,
+                    ),
+                    () {},
+                  )
+                : SizedBox(),
             drawerItem(
               'المتجر',
               Image.asset(
@@ -64,6 +72,26 @@ Widget homeDrawer() => Drawer(
               ),
               () {
                 Get.toNamed('/customerService');
+              },
+            ),
+            drawerItem(
+              'خروج',
+              RotatedBox(
+                quarterTurns: 2,
+                child: Image.asset(
+                  "assets/icons/login.png",
+                  color: Colors.white,
+                  width: 28.w,
+                  height: 28.h,
+                ),
+              ),
+              () async {
+                final SharedPreferences prefs =
+                    await SharedPreferences.getInstance();
+                // prefs.('username', null);
+                prefs.remove('username');
+                prefs.remove('password');
+                Get.offAllNamed('/choosingPage');
               },
             ),
           ],

@@ -194,6 +194,10 @@ class RoomMangement extends StatelessWidget {
                             Get.toNamed('/roomSetting', arguments: {
                               "room_id": Get.arguments["room_id"],
                             });
+                          } else if (index == 1) {
+                            Get.toNamed('/advancedSettings', arguments: {
+                              "room_id": Get.arguments["room_id"],
+                            });
                           }
                         },
                         child: Padding(

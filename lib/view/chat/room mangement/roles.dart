@@ -31,6 +31,7 @@ class RolesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: appbarBuilder("تعديل الحساب", true),
       // body: Column(
       //   children: [
@@ -72,15 +73,15 @@ class RolesPage extends StatelessWidget {
       //         }),
       //   ],
       // ),
-      body: GetBuilder<RolesController>(
-          init: RolesController(),
-          builder: (controller) {
-            return Column(
-              children: [
-                SizedBox(
-                  height: 14.h,
-                ),
-                Directionality(
+      body: ListView(
+        children: [
+          SizedBox(
+            height: 14.h,
+          ),
+          GetBuilder<RolesController>(
+              init: RolesController(),
+              builder: (controller) {
+                return Directionality(
                   textDirection: TextDirection.rtl,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40.w),
@@ -111,216 +112,216 @@ class RolesPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 14.h,
-                ),
-                Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 40.w),
-                    child: TextFormField(
-                      controller: controller.passwordController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                            horizontal: 20.w, vertical: 7.h),
-                        filled: true,
-                        hintText: "كلمة المرور",
-                        hintStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12.sp,
-                          fontFamily: "Segoe UI",
-                        ),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(14.r),
-                        ),
-                      ),
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
+                );
+              }),
+          SizedBox(
+            height: 14.h,
+          ),
+          GetBuilder<RolesController>(builder: (controller) {
+            return Directionality(
+              textDirection: TextDirection.rtl,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 40.w),
+                child: TextFormField(
+                  controller: controller.passwordController,
+                  decoration: InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 7.h),
+                    filled: true,
+                    hintText: "كلمة المرور",
+                    hintStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12.sp,
+                      fontFamily: "Segoe UI",
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(14.r),
                     ),
                   ),
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
                 ),
-                GetBuilder<RolesController>(
-                    init: RolesController(),
-                    builder: (controller) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 28.w, vertical: 10.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              height: 25.h,
-                              child: ListView.builder(
-                                reverse: true,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: user.length,
-                                itemBuilder: (context, index) => Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 3.5.w),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      controller.changeSeletedIndex(index);
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 18.w, vertical: 1.h),
-                                      decoration: controller.selectedIndex ==
-                                              index
-                                          ? BoxDecoration(
-                                              border: Border.all(
-                                                color: Color(0xFFFABD63),
-                                                style: BorderStyle.solid,
-                                                width: 1.0.w,
-                                              ),
-                                              color: Color(0xFFFABD63),
-                                              borderRadius:
-                                                  BorderRadius.circular(9.0.sp),
-                                            )
-                                          : BoxDecoration(
-                                              border: Border.all(
-                                                color: Color(0xFFFABD63),
-                                                style: BorderStyle.solid,
-                                                width: 1.0.w,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(9.0.sp),
-                                            ),
-                                      child: Text(
-                                        user[index],
-                                        style: controller.selectedIndex == index
-                                            ? TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: "Segoe UI",
-                                                fontSize: 10.sp,
-                                              )
-                                            : TextStyle(
-                                                color: Color(0xFFFABD63),
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: "Segoe UI",
-                                                fontSize: 10.sp,
-                                              ),
+              ),
+            );
+          }),
+          GetBuilder<RolesController>(
+              init: RolesController(),
+              builder: (controller) {
+                return Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 28.w, vertical: 10.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        height: 25.h,
+                        child: ListView.builder(
+                          reverse: true,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: user.length,
+                          itemBuilder: (context, index) => Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 3.5.w),
+                            child: GestureDetector(
+                              onTap: () {
+                                controller.changeSeletedIndex(index);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 18.w, vertical: 1.h),
+                                decoration: controller.selectedIndex == index
+                                    ? BoxDecoration(
+                                        border: Border.all(
+                                          color: Color(0xFFFABD63),
+                                          style: BorderStyle.solid,
+                                          width: 1.0.w,
+                                        ),
+                                        color: Color(0xFFFABD63),
+                                        borderRadius:
+                                            BorderRadius.circular(9.0.sp),
+                                      )
+                                    : BoxDecoration(
+                                        border: Border.all(
+                                          color: Color(0xFFFABD63),
+                                          style: BorderStyle.solid,
+                                          width: 1.0.w,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(9.0.sp),
                                       ),
-                                    ),
-                                  ),
+                                child: Text(
+                                  user[index],
+                                  style: controller.selectedIndex == index
+                                      ? TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Segoe UI",
+                                          fontSize: 10.sp,
+                                        )
+                                      : TextStyle(
+                                          color: Color(0xFFFABD63),
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Segoe UI",
+                                          fontSize: 10.sp,
+                                        ),
                                 ),
                               ),
                             ),
-                            Row(
-                              children: [
-                                Text(
-                                  "قفل الجهاز",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 10.sp,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5.w,
-                                ),
-                                Icon(
-                                  Icons.lock_outline,
-                                  size: 18.sp,
-                                )
-                              ],
+                          ),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "قفل الجهاز",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 10.sp,
                             ),
-                          ],
-                        ),
-                      );
-                    }),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: Divider(
-                    color: Color(0xffE7E7E7),
-                    thickness: 4.h,
-                  ),
-                ),
-                Directionality(
-                  textDirection: TextDirection.rtl,
-                  // height: 120.h,
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 5,
-                    ),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) =>
-                        accessBuilder(index, context),
-                    itemCount: icons.length,
-                  ),
-                ),
-                SizedBox(
-                  height: 50.h,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 23.w, vertical: 6.h),
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 0.5,
-                            blurRadius: 6,
-                            offset: Offset(0, 3),
                           ),
+                          SizedBox(
+                            width: 5.w,
+                          ),
+                          Icon(
+                            Icons.lock_outline,
+                            size: 18.sp,
+                          )
                         ],
-                        color: Color(0xffDA8080),
-                        borderRadius: BorderRadius.circular(15.r),
                       ),
-                      child: Text(
-                        "إلغاء",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "Segoe UI",
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 30.w),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 23.w, vertical: 6.h),
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 0.5,
-                            blurRadius: 6,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                        color: Color(0xff6BE05B),
-                        borderRadius: BorderRadius.circular(15.r),
-                      ),
-                      child: GestureDetector(
-                        onTap: () {
-                          controller.addRoles(context);
-                          controller.userNameController.clear();
-                          controller.passwordController.clear();
-                        },
-                        child: Text(
-                          "إضافة",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "Segoe UI",
-                          ),
-                        ),
-                      ),
+                    ],
+                  ),
+                );
+              }),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Divider(
+              color: Color(0xffE7E7E7),
+              thickness: 4.h,
+            ),
+          ),
+          Directionality(
+            textDirection: TextDirection.rtl,
+            // height: 120.h,
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 5,
+              ),
+              shrinkWrap: true,
+              itemBuilder: (context, index) => accessBuilder(index, context),
+              itemCount: icons.length,
+            ),
+          ),
+          SizedBox(
+            height: 50.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 23.w, vertical: 6.h),
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 0.5,
+                      blurRadius: 6,
+                      offset: Offset(0, 3),
                     ),
                   ],
-                )
-              ],
-            );
-          }),
+                  color: Color(0xffDA8080),
+                  borderRadius: BorderRadius.circular(15.r),
+                ),
+                child: Text(
+                  "إلغاء",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Segoe UI",
+                  ),
+                ),
+              ),
+              SizedBox(width: 30.w),
+              GetBuilder<RolesController>(builder: (controller) {
+                return Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 23.w, vertical: 6.h),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 0.5,
+                        blurRadius: 6,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                    color: Color(0xff6BE05B),
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      controller.addRoles(context);
+                      // controller.userNameController.clear();
+                      // controller.passwordController.clear();
+                    },
+                    child: Text(
+                      "إضافة",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "Segoe UI",
+                      ),
+                    ),
+                  ),
+                );
+              }),
+            ],
+          )
+        ],
+      ),
     );
   }
 

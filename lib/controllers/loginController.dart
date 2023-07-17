@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:lametna/controllers/Crud.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
+import 'package:lametna/view/store/test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -16,11 +17,17 @@ class LoginController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   bool passwordVisibility = false;
   // List savedPassword = [];
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Crud crud = Crud();
   //   SharedPreferences prefs = await prefs;
   //final storage = FlutterSecureStorage();
+  @override
+  void onInit() {
+    super.onInit();
+    // getSavedPassword();
+    autoLogIn();
+  }
 
   Future<void> getSavedPassword() async {
     // String username = await storage.read(key: 'username');
@@ -31,16 +38,29 @@ class LoginController extends GetxController {
 
   loginAsGuest() async {
     isGuest = true;
+    // userName = null;
     update();
     Get.offAllNamed("/home");
   }
 
-  Future login(BuildContext context) async {
+  void autoLogIn() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String username = prefs.getString('username');
+    final String password = prefs.getString('password');
+    if (username != null && password != null) {
+      userNameController.text = username;
+      passwordController.text = password;
+      // login(Get.context);
+      print("saved data");
+      login(Get.context, username, password);
+    } else {
+      print("no data");
+    }
+  }
+
+  Future login(BuildContext context, String email, String password) async {
     try {
-      Map data = {
-        "username": userNameController.text,
-        "password": passwordController.text
-      };
+      Map data = {"username": email, "password": password};
       FocusScope.of(context).unfocus();
 
       var response = await crud.postRequest(data);
@@ -49,12 +69,16 @@ class LoginController extends GetxController {
       if (response['status'] == "success") {
         userName = response["data"]['username'];
         userId = response["data"]['userid'];
+        userImage = response["data"]["image"];
         isGuest = false;
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('username', email);
+
+        prefs.setString('password', password);
         // await storage.write(key: 'username', value: userNameController.text);
         //await storage.write(key: 'password', value: passwordController.text);
-
+        // print();
         Get.offAllNamed("/home");
-
         // Get.offAllNamed("/countries");
 
         print("done");

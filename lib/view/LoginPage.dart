@@ -192,7 +192,11 @@ class LoginPage extends StatelessWidget {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        controller.login(context);
+                                        controller.login(
+                                            context,
+                                            controller.userNameController.text
+                                                .trim(),
+                                            controller.passwordController.text);
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(

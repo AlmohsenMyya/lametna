@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, missing_return, use_full_hex_values_for_flutter_colors
 
 import 'dart:async';
+import 'package:floating_draggable_widget/floating_draggable_widget.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,41 +13,100 @@ import 'package:lametna/view/messages/messages.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 
 import '../../controllers/userData/userCredentials.dart';
+import 'package:lametna/controllers/userData/variables.dart';
 
-class RoomPage extends StatelessWidget {
+class RoomPage extends StatefulWidget {
+  // RoomPage({Key key}) : super(key: key);
+
+  @override
+  State<RoomPage> createState() => _RoomPageState();
+}
+
+class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
+  AppLifecycleState _lastLifecycleState;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) return;
+    bool isBackground = state == AppLifecycleState.paused;
+    if (isBackground) {
+      // Get.put(RoomsPageController()).onLeave();
+    }
+
+    // setState(() {
+    //   _lastLifecycleState = state;
+    // });
+  }
+
   bool isOwner = Get.arguments["owner"] != userName;
-  // const RoomPage({super.key});
 
-  RoomPage({Key key}) : super(key: key);
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  // final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: WillPopScope(
-        onWillPop: () {
-          Get.put(RoomsPageController()).onLeave();
-          // return true;
-        },
-        child: Scaffold(
-          key: _scaffoldKey,
-          drawerScrimColor: Colors.transparent,
-          endDrawer: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 70.h),
-              child: Container(
-                  height: double.infinity,
-                  width: 300.w,
-                  color: Colors.white,
-                  child: GetBuilder<RoomsPageController>(
-                      init: RoomsPageController(),
-                      builder: (controller) {
-                        return StreamBuilder(
-                          builder: (context, snapshot) => snapshot.data == null
-                              ? Center(child: CircularProgressIndicator())
-                              : ListView.builder(
+    return FloatingDraggableWidget(
+      screenHeight: Get.height,
+      screenWidth: Get.width,
+      floatingWidgetHeight: 150.h,
+      floatingWidgetWidth: 150.w,
+      speed: 5,
+      autoAlign: false,
+      dx: 0,
+      dy: 80,
+      floatingWidget: GetBuilder<RoomsPageController>(
+        init: RoomsPageController(),
+        builder: (controller) => Container(
+          child: controller.videoPanel(),
+        ),
+      ),
+      mainScreenWidget: SafeArea(
+        child: WillPopScope(
+          onWillPop: () {
+            Get.put(RoomsPageController()).onLeave();
+            // return true;
+          },
+          child: Builder(builder: (context) {
+            return Scaffold(
+              // key: _scaffoldKey,
+              drawerScrimColor: Colors.transparent,
+              endDrawer: Padding(
+                padding: EdgeInsets.symmetric(vertical: 70.h),
+                child: Container(
+                    height: double.infinity,
+                    width: 300.w,
+                    color: Colors.white,
+                    child: GetBuilder<RoomsPageController>(
+                        init: RoomsPageController(),
+                        builder: (controller) {
+                          return StreamBuilder(
+                              initialData: controller.getRoomMembers(),
+                              stream: null,
+                              builder: (context, snapshot) {
+                                // return Text(
+                                //   controller.userInRoom.toString(),
+                                //   style: TextStyle(
+                                //     color: Colors.black,
+                                //   ),
+                                // );
+
+                                return ListView.builder(
                                   shrinkWrap: true,
+                                  itemCount:
+                                      controller.userInRoom["data"].length,
                                   itemBuilder: (context, index) =>
                                       PopupMenuButton(
                                     child: Container(
@@ -64,8 +124,9 @@ class RoomPage extends StatelessWidget {
                                             MainAxisAlignment.end,
                                         children: [
                                           Text(
-                                            snapshot.data["data"][index]
-                                                ["username"],
+                                            controller.userInRoom["data"][index]
+                                                    ["username"]
+                                                .toString(),
                                             style: TextStyle(
                                               fontSize: 14.sp,
                                               fontFamily: "Segoe UI",
@@ -85,754 +146,963 @@ class RoomPage extends StatelessWidget {
                                       ),
                                     ),
                                     itemBuilder: (context) => [
-                                      PopupMenuItem(
-                                        value: 0,
-                                        height: 25.h,
-                                        textStyle: TextStyle(
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Portada",
-                                          color: Color(0xFF43D0CA),
-                                        ),
-                                        child: PopupMenuButton(
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              "معلومات المستخدم",
+                                      usersPopUpMenu("محادثة خاصة"),
+                                      usersPopUpMenu(
+                                          controller.userInRoom["data"][index]
+                                              ["username"]),
+                                      usersPopUpMenu("الإبلاغ عن الستخدم"),
+                                      isOwner
+                                          ? null
+                                          : PopupMenuItem(
+                                              value: 0,
+                                              height: 25.h,
+                                              textStyle: TextStyle(
+                                                fontSize: 10.sp,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: "Portada",
+                                                color: Color(0xFF43D0CA),
+                                              ),
+                                              child: PopupMenuButton(
+                                                child: Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    "خيارات الإشراف",
+                                                  ),
+                                                ),
+                                                itemBuilder: (context) => [
+                                                  // usersPopUpMenu('معلومات المستخدم'),
+                                                  PopupMenuItem(
+                                                    value: 0,
+                                                    height: 25.h,
+                                                    textStyle: TextStyle(
+                                                      fontSize: 10.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontFamily: "Portada",
+                                                      color: Color(0xFF43D0CA),
+                                                    ),
+                                                    child: PopupMenuButton(
+                                                      child: Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          "معلومات المستخدم",
+                                                        ),
+                                                      ),
+                                                      itemBuilder: (context) =>
+                                                          [
+                                                        usersPopUpMenu(
+                                                          'اسم المستخدم',
+                                                        ),
+                                                        usersPopUpMenu(
+                                                            'رقم الاي بي',
+                                                            f: () {
+                                                          controller
+                                                              .getUserIP();
+                                                        }),
+                                                        usersPopUpMenu(
+                                                            'نوع الجهاز',
+                                                            f: () {
+                                                          controller
+                                                              .getUserDeviceType();
+                                                        }),
+                                                        usersPopUpMenu('الدول',
+                                                            f: () {
+                                                          controller
+                                                              .getUserCountry();
+                                                        }),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  // usersPopUpMenu('طرد'),
+                                                  PopupMenuItem(
+                                                    height: 25.h,
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Text("طرد",
+                                                          style: TextStyle(
+                                                            fontSize: 10.sp,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontFamily:
+                                                                "Portada",
+                                                            color: Color(
+                                                                0xFF43D0CA),
+                                                          )),
+                                                    ),
+                                                    textStyle: TextStyle(
+                                                      fontSize: 10.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontFamily: "Portada",
+                                                      color: Color(0xFF43D0CA),
+                                                    ),
+                                                    onTap: () {
+                                                      controller.kickUser(
+                                                          controller.userInRoom[
+                                                                  "data"][index]
+                                                              ["username"]);
+                                                      // controller.blockUser(
+                                                      //     controller.userInRoom[
+                                                      //             "data"][index]
+                                                      //         ["username"]);
+                                                    },
+                                                  ),
+                                                  // usersPopUpMenu(''),
+                                                  PopupMenuItem(
+                                                    value: 0,
+                                                    height: 25.h,
+                                                    textStyle: TextStyle(
+                                                      fontSize: 10.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontFamily: "Portada",
+                                                      color: Color(0xFF43D0CA),
+                                                    ),
+                                                    child: PopupMenuButton(
+                                                      child: Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          "حظر",
+                                                        ),
+                                                      ),
+                                                      itemBuilder: (context) =>
+                                                          [
+                                                        usersPopUpMenu(
+                                                            '١٥  دقيقة', f: () {
+                                                          controller.blockUser(
+                                                              controller.userInRoom[
+                                                                          "data"]
+                                                                      [index]
+                                                                  ["username"],
+                                                              0);
+                                                        }),
+                                                        usersPopUpMenu('ساعة',
+                                                            f: () {
+                                                          controller.blockUser(
+                                                              controller.userInRoom[
+                                                                          "data"]
+                                                                      [index]
+                                                                  ["username"],
+                                                              1);
+                                                        }),
+                                                        usersPopUpMenu('٦ ساعة',
+                                                            f: () {
+                                                          controller.blockUser(
+                                                              controller.userInRoom[
+                                                                          "data"]
+                                                                      [index]
+                                                                  ["username"],
+                                                              2);
+                                                        }),
+                                                        usersPopUpMenu('يوم',
+                                                            f: () {
+                                                          controller.blockUser(
+                                                              controller.userInRoom[
+                                                                          "data"]
+                                                                      [index]
+                                                                  ["username"],
+                                                              3);
+                                                        }),
+                                                        usersPopUpMenu('اسبوع',
+                                                            f: () {
+                                                          controller.blockUser(
+                                                              controller.userInRoom[
+                                                                          "data"]
+                                                                      [index]
+                                                                  ["username"],
+                                                              4);
+                                                        }),
+                                                        usersPopUpMenu('شهر',
+                                                            f: () {
+                                                          controller.blockUser(
+                                                              controller.userInRoom[
+                                                                          "data"]
+                                                                      [index]
+                                                                  ["username"],
+                                                              5);
+                                                        }),
+                                                        usersPopUpMenu('دائم',
+                                                            f: () {
+                                                          controller.blockUser(
+                                                              controller.userInRoom[
+                                                                          "data"]
+                                                                      [index]
+                                                                  ["username"],
+                                                              6);
+                                                        }),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  usersPopUpMenu('إيقاف'),
+                                                  usersPopUpMenu('إرسال تحذير'),
+                                                  usersPopUpMenu(
+                                                      'مسح النص للجميع'),
+
+                                                  // usersPopUpMenu('دائم'),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          itemBuilder: (context) => [
-                                            usersPopUpMenu('اسم المستخدم'),
-                                            usersPopUpMenu('رقم الاي بي'),
-                                            usersPopUpMenu('نوع الجهاز'),
-                                            usersPopUpMenu('الدول'),
-                                          ],
-                                        ),
-                                      ),
-                                      PopupMenuItem(
-                                        value: 0,
-                                        height: 25.h,
-                                        textStyle: TextStyle(
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Portada",
-                                          color: Color(0xFF43D0CA),
-                                        ),
-                                        child: PopupMenuButton(
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              "طرد",
-                                            ),
-                                          ),
-                                          itemBuilder: (context) => [
-                                            usersPopUpMenu('محادثة خاصة'),
-                                            usersPopUpMenu('watan'),
-                                            usersPopUpMenu('تجاهل'),
-                                            usersPopUpMenu(
-                                                'الابلاغ عن المسخدم'),
-                                            usersPopUpMenu('خيارات الأشراف'),
-                                          ],
-                                        ),
-                                      ),
-                                      PopupMenuItem(
-                                        value: 0,
-                                        height: 25.h,
-                                        textStyle: TextStyle(
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Portada",
-                                          color: Color(0xFF43D0CA),
-                                        ),
-                                        child: PopupMenuButton(
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              "حظر",
-                                            ),
-                                          ),
-                                          itemBuilder: (context) => [
-                                            usersPopUpMenu('١٥  دقيقة'),
-                                            usersPopUpMenu('ساعة'),
-                                            usersPopUpMenu('٦ ساعة'),
-                                            usersPopUpMenu('يوم'),
-                                            usersPopUpMenu('اسبوع'),
-                                            usersPopUpMenu('شهر'),
-                                            usersPopUpMenu('دائم'),
-                                          ],
-                                        ),
-                                      ),
-                                      PopupMenuItem(
-                                        value: 0,
-                                        height: 25.h,
-                                        textStyle: TextStyle(
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Portada",
-                                          color: Color(0xFF43D0CA),
-                                        ),
-                                        child: PopupMenuButton(
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              "ايقاف",
-                                            ),
-                                          ),
-                                          itemBuilder: (context) => [],
-                                        ),
-                                      ),
-                                      usersPopUpMenu("إرسال تحذير"),
                                     ],
                                   ),
-                                  itemCount: snapshot.data["data"].length,
-                                ),
-                          stream: controller.getRoomMembers(),
-                        );
-                      })
-                  //     ListView(
-                  //   children: List.generate(
-                  //     40,
-                  //     (index) => PopupMenuButton(
-                  //       child: Container(
-                  //         padding: EdgeInsets.symmetric(
-                  //             horizontal: 10.w, vertical: 10.h),
-                  //         decoration: BoxDecoration(
-                  //           color: Colors.white,
-                  //           border: Border.all(
-                  //             color: Color(0xFF43D0CA),
-                  //             width: 2.0,
-                  //           ),
-                  //         ),
-                  //         child: Row(
-                  //           mainAxisAlignment: MainAxisAlignment.end,
-                  //           children: [
-                  //             Text(
-                  //               'محمود',
-                  //               style: TextStyle(
-                  //                 fontSize: 14.sp,
-                  //                 fontFamily: "Segoe UI",
-                  //                 color: Colors.black,
-                  //               ),
-                  //             ),
-                  //             Padding(
-                  //               padding: EdgeInsets.symmetric(horizontal: 10.w),
-                  //               child: Image.asset(
-                  //                 'assets/icons/profile.png',
-                  //                 width: 25.w,
-                  //                 height: 30.h,
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //       itemBuilder: (context) => [
-                  //         PopupMenuItem(
-                  //           value: 0,
-                  //           height: 25.h,
-                  //           textStyle: TextStyle(
-                  //             fontSize: 10.sp,
-                  //             fontWeight: FontWeight.bold,
-                  //             fontFamily: "Portada",
-                  //             color: Color(0xFF43D0CA),
-                  //           ),
-                  //           child: PopupMenuButton(
-                  //             child: Align(
-                  //               alignment: Alignment.center,
-                  //               child: Text(
-                  //                 "معلومات المستخدم",
-                  //               ),
-                  //             ),
-                  //             itemBuilder: (context) => [
-                  //               usersPopUpMenu('اسم المستخدم'),
-                  //               usersPopUpMenu('رقم الاي بي'),
-                  //               usersPopUpMenu('نوع الجهاز'),
-                  //               usersPopUpMenu('الدول'),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //         PopupMenuItem(
-                  //           value: 0,
-                  //           height: 25.h,
-                  //           textStyle: TextStyle(
-                  //             fontSize: 10.sp,
-                  //             fontWeight: FontWeight.bold,
-                  //             fontFamily: "Portada",
-                  //             color: Color(0xFF43D0CA),
-                  //           ),
-                  //           child: PopupMenuButton(
-                  //             child: Align(
-                  //               alignment: Alignment.center,
-                  //               child: Text(
-                  //                 "طرد",
-                  //               ),
-                  //             ),
-                  //             itemBuilder: (context) => [
-                  //               usersPopUpMenu('محادثة خاصة'),
-                  //               usersPopUpMenu('watan'),
-                  //               usersPopUpMenu('تجاهل'),
-                  //               usersPopUpMenu('الابلاغ عن المسخدم'),
-                  //               usersPopUpMenu('خيارات الأشراف'),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //         PopupMenuItem(
-                  //           value: 0,
-                  //           height: 25.h,
-                  //           textStyle: TextStyle(
-                  //             fontSize: 10.sp,
-                  //             fontWeight: FontWeight.bold,
-                  //             fontFamily: "Portada",
-                  //             color: Color(0xFF43D0CA),
-                  //           ),
-                  //           child: PopupMenuButton(
-                  //             child: Align(
-                  //               alignment: Alignment.center,
-                  //               child: Text(
-                  //                 "حظر",
-                  //               ),
-                  //             ),
-                  //             itemBuilder: (context) => [
-                  //               usersPopUpMenu('١٥  دقيقة'),
-                  //               usersPopUpMenu('ساعة'),
-                  //               usersPopUpMenu('٦ ساعة'),
-                  //               usersPopUpMenu('يوم'),
-                  //               usersPopUpMenu('اسبوع'),
-                  //               usersPopUpMenu('شهر'),
-                  //               usersPopUpMenu('دائم'),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //         PopupMenuItem(
-                  //           value: 0,
-                  //           height: 25.h,
-                  //           textStyle: TextStyle(
-                  //             fontSize: 10.sp,
-                  //             fontWeight: FontWeight.bold,
-                  //             fontFamily: "Portada",
-                  //             color: Color(0xFF43D0CA),
-                  //           ),
-                  //           child: PopupMenuButton(
-                  //             child: Align(
-                  //               alignment: Alignment.center,
-                  //               child: Text(
-                  //                 "ايقاف",
-                  //               ),
-                  //             ),
-                  //             itemBuilder: (context) => [],
-                  //           ),
-                  //         ),
-                  //         usersPopUpMenu("إرسال تحذير"),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                  ),
-            ),
-          ),
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(72.h),
-            child: Container(
-              decoration: const BoxDecoration(
-                // LinearGradient
-                gradient: LinearGradient(
-                  colors: [
-                    const Color(0xFFF792F0),
-                    const Color(0xFFFABD63),
-                  ],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
+                                );
+                              });
+                        })),
               ),
-              child: AppBar(
-                leadingWidth: 105.w,
-                toolbarHeight: 72.35.h,
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                centerTitle: true,
-                title: Text(
-                  Get.arguments['room_name'],
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontFamily: "Portada",
-                    color: Colors.white,
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(72.h),
+                child: Container(
+                  decoration: BoxDecoration(
+                    // LinearGradient
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xFFF792F0),
+                        Color(0xFFFABD63),
+                      ],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ),
                   ),
-                ),
-                leading: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SizedBox(width: 5.w),
-                    GetBuilder<RoomsPageController>(
-                        init: RoomsPageController(),
-                        builder: (controller) {
-                          return GestureDetector(
-                            onTap: () {
-                              controller.onLeave();
-                              // Get.back();
-                            },
-                            child: ImageIcon(
-                              AssetImage('assets/icons/login.png'),
-                            ),
-                          );
-                        }),
-                    PopupMenuButton(
-                      onCanceled: () {
-                        print("You have canceled the menu.");
-                      },
-                      icon: Icon(
-                        Icons.settings,
+                  child: AppBar(
+                    leadingWidth: 105.w,
+                    toolbarHeight: 72.35.h,
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    centerTitle: true,
+                    title: Text(
+                      Get.arguments['room_name'],
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontFamily: "Portada",
                         color: Colors.white,
                       ),
-                      itemBuilder: (BuildContext context) {
-                        return [
-                          {
-                            "value": "0",
-                            "name": "الحالة",
-                            "mustBeAdmin": false,
-                            "icon": Icon(
-                              Icons.arrow_forward_ios,
-                              color: Colors.black,
-                              size: 17,
-                            ),
+                    ),
+                    leading: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        SizedBox(width: 5.w),
+                        GetBuilder<RoomsPageController>(
+                            init: RoomsPageController(),
+                            builder: (controller) {
+                              return GestureDetector(
+                                onTap: () {
+                                  controller.onLeave();
+                                  // Get.back();
+                                },
+                                child: ImageIcon(
+                                  AssetImage('assets/icons/login.png'),
+                                ),
+                              );
+                            }),
+                        PopupMenuButton(
+                          onCanceled: () {
+                            print("You have canceled the menu.");
                           },
-                          {
-                            "value": "1",
-                            "name": "الاعدادات",
-                            "mustBeAdmin": false,
-                            "icon": Icon(
-                              Icons.settings,
-                              color: Colors.black,
-                              size: 17,
-                            ),
-                          },
-                          {
-                            "value": "2",
-                            "name": "اللحظات",
-                            "mustBeAdmin": false,
-                            "icon": Image.asset(
-                              "assets/icons/planet.png",
-                              color: Colors.black,
-                              width: 22,
-                            ),
-                          },
-                          {
-                            "value": "3",
-                            "name": "إدارة الغرفة",
-                            "mustBeAdmin": true,
-                            "icon": Icon(
-                              Icons.home,
-                              color: Colors.black,
-                              size: 17,
-                            ),
-                          },
-                          {
-                            "value": "4",
-                            "name": "مشاركة",
-                            "mustBeAdmin": false,
-                            "icon": Icon(
-                              Icons.share,
-                              color: Colors.black,
-                              size: 17,
-                            ),
-                          },
-                          {
-                            "value": "5",
-                            "name": "المفضلة",
-                            "mustBeAdmin": false,
-                            "icon": Icon(
-                              Icons.favorite_border,
-                              color: Colors.black,
-                              size: 17,
-                            ),
-                            "onTap": "/contact"
-                          },
-                          {
-                            "value": "6",
-                            "name": "عن البرنامج",
-                            "mustBeAdmin": false,
-                            "icon": Icon(
-                              Icons.help,
-                              color: Colors.black,
-                              size: 17,
-                            ),
-                          },
-                        ]
-                            .toList()
-                            .map((e) => PopupMenuItem(
-                                  height: e["mustBeAdmin"] ? 0 : 40.h,
-                                  child: e["mustBeAdmin"] && isOwner
-                                      ? SizedBox()
-                                      : Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Text(e["name"],
-                                                style: TextStyle(
-                                                    fontSize: 15.sp,
-                                                    fontFamily: "Segoe",
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black)),
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 10.w),
-                                              child: e["icon"],
+                          icon: Icon(
+                            Icons.settings,
+                            color: Colors.white,
+                          ),
+                          itemBuilder: (BuildContext context) {
+                            return [
+                              {
+                                "value": "0",
+                                "name": "الحالة",
+                                "mustBeAdmin": false,
+                                "icon": Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Colors.black,
+                                  size: 17,
+                                ),
+                              },
+                              {
+                                "value": "1",
+                                "name": "الاعدادات",
+                                "mustBeAdmin": false,
+                                "icon": Icon(
+                                  Icons.settings,
+                                  color: Colors.black,
+                                  size: 17,
+                                ),
+                              },
+                              {
+                                "value": "2",
+                                "name": "اللحظات",
+                                "mustBeAdmin": false,
+                                "icon": Image.asset(
+                                  "assets/icons/planet.png",
+                                  color: Colors.black,
+                                  width: 22,
+                                ),
+                              },
+                              {
+                                "value": "3",
+                                "name": "إدارة الغرفة",
+                                "mustBeAdmin": true,
+                                "icon": Icon(
+                                  Icons.home,
+                                  color: Colors.black,
+                                  size: 17,
+                                ),
+                              },
+                              {
+                                "value": "4",
+                                "name": "مشاركة",
+                                "mustBeAdmin": false,
+                                "icon": Icon(
+                                  Icons.share,
+                                  color: Colors.black,
+                                  size: 17,
+                                ),
+                              },
+                              {
+                                "value": "5",
+                                "name": "المفضلة",
+                                "mustBeAdmin": false,
+                                "icon": Icon(
+                                  Icons.favorite_border,
+                                  color: Colors.black,
+                                  size: 17,
+                                ),
+                                "onTap": "/contact"
+                              },
+                              {
+                                "value": "6",
+                                "name": "عن البرنامج",
+                                "mustBeAdmin": false,
+                                "icon": Icon(
+                                  Icons.help,
+                                  color: Colors.black,
+                                  size: 17,
+                                ),
+                              },
+                            ]
+                                .toList()
+                                .map((e) => PopupMenuItem(
+                                      height: e["mustBeAdmin"] ? 0 : 40.h,
+                                      child: e["mustBeAdmin"] && isOwner
+                                          ? SizedBox()
+                                          : Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Text(e["name"],
+                                                    style: TextStyle(
+                                                        fontSize: 15.sp,
+                                                        fontFamily: "Segoe",
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black)),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 10.w),
+                                                  child: e["icon"],
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                  value: int.parse(e["value"]),
-                                ))
-                            .toList();
-                      },
-                      onSelected: (value) {
-                        if (value == 1) {
-                          Get.toNamed("/roomSettingsPage");
-                        } else if (value == 2) {
-                          Get.toNamed('/moments');
-                        } else if (value == 3) {
-                          Get.toNamed('/roomMangement', arguments: {
-                            "room_id": Get.arguments['room_id'],
-                            "room_name": Get.arguments['room_name'],
-                          });
-                        } else if (value == 6) {
-                          Get.toNamed('/about');
-                        }
-                      },
-                    )
-                  ],
+                                      value: int.parse(e["value"]),
+                                    ))
+                                .toList();
+                          },
+                          onSelected: (value) {
+                            if (value == 1) {
+                              Get.toNamed("/roomSettingsPage");
+                            } else if (value == 2) {
+                              Get.toNamed('/moments');
+                            } else if (value == 3) {
+                              Get.toNamed('/roomMangement', arguments: {
+                                "room_id": Get.arguments['room_id'],
+                                "room_name": Get.arguments['room_name'],
+                              });
+                            } else if (value == 6) {
+                              Get.toNamed('/about');
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                    actions: <Widget>[
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.volume_up),
+                      ),
+                      ImageIcon(
+                        AssetImage('assets/icons/chat.png'),
+                        size: 23.sp,
+                      ),
+                      Builder(builder: (context) {
+                        return GestureDetector(
+                          onTap: () {
+                            Scaffold.of(context).openEndDrawer();
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.w),
+                            child: Image.asset(
+                              'assets/icons/group.png',
+                              width: 30.sp,
+                            ),
+                          ),
+                        );
+                      })
+                    ],
+                  ),
                 ),
-                actions: <Widget>[
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.volume_up),
-                  ),
-                  ImageIcon(
-                    AssetImage('assets/icons/chat.png'),
-                    size: 23.sp,
-                  ),
-                  Builder(builder: (context) {
-                    return GestureDetector(
-                      onTap: () {
-                        Scaffold.of(context).openEndDrawer();
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15.w),
-                        child: Image.asset(
-                          'assets/icons/group.png',
-                          width: 30.sp,
+              ),
+
+              body: Stack(
+                children: [
+                  Column(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            GetBuilder<RoomsPageController>(
+                                init: RoomsPageController(),
+                                builder: (controller) {
+                                  return Container(
+                                    height: 70.h,
+                                    decoration: BoxDecoration(
+                                      // LinearGradient
+                                      gradient: controller.roomStatus
+                                          ? LinearGradient(
+                                              colors: [
+                                                Color(0xFFFFFFFF),
+                                                Color(0xFFA2ACAC),
+                                              ],
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.centerRight,
+                                            )
+                                          : LinearGradient(
+                                              colors: [
+                                                Color(0xFFFFFFFF),
+                                                Color(0xFFFABD63),
+                                              ],
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.centerRight,
+                                            ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 21.w,
+                                        ),
+                                        isOwner
+                                            ? SizedBox(
+                                                width: 65.w,
+                                              )
+                                            : GestureDetector(
+                                                onTap: () {
+                                                  // Get.toNamed('/VIPRoom');
+
+                                                  controller.changeRoomStatus();
+                                                },
+                                                child: SizedBox(
+                                                  width: 65.w,
+                                                  child: Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 5.h),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20.r),
+                                                      color: controller
+                                                              .roomStatus
+                                                          ? Color(0xffF792F0)
+                                                          : Color(0xFFFABD63),
+                                                    ),
+                                                    child: Text(
+                                                      controller.roomStatus
+                                                          ? 'الروم الحديث'
+                                                          : "مظهر قديم",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontSize: 9.sp,
+                                                          fontFamily: "Portada",
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                        SizedBox(
+                                          width: 60.w,
+                                        ),
+                                        Text("22:10",
+                                            style: TextStyle(
+                                                fontSize: 9.sp,
+                                                fontFamily: "Portada",
+                                                color: Colors.black)),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        SizedBox(
+                                          width: 240.w,
+                                          child: StreamBuilder(
+                                              stream: controller
+                                                  .membersController.stream,
+                                              builder: (context, snapshot) {
+                                                return snapshot.data != null
+                                                    ? ListView.builder(
+                                                        shrinkWrap: true,
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          return Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        8.w),
+                                                            child: Column(
+                                                              children: [
+                                                                ClipRRect(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              50.r),
+                                                                  child:
+                                                                      Container(
+                                                                    padding: EdgeInsets
+                                                                        .all(10
+                                                                            .sp),
+                                                                    color: Colors
+                                                                        .white,
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .person,
+                                                                      color: Colors
+                                                                          .black,
+                                                                      size:
+                                                                          24.sp,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  snapshot.data[
+                                                                          index]
+                                                                          [
+                                                                          "name"]
+                                                                      .toString(),
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .black),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        },
+                                                        itemCount: snapshot
+                                                            .data.length,
+                                                      )
+                                                    : SizedBox();
+                                              }),
+                                        ),
+                                        // SizedBox(
+                                        //   width: 240.w,
+                                        //   child: Row(
+                                        //     mainAxisAlignment:
+                                        //         MainAxisAlignment.spaceAround,
+                                        //     crossAxisAlignment:
+                                        //         CrossAxisAlignment.center,
+                                        //     children: [
+                                        //       userInCall(),
+                                        //       userInCall(),
+                                        //       userInCall(),
+                                        //       userInCall(),
+                                        //     ],
+                                        //   ),
+                                        // )
+                                      ],
+                                    ),
+                                  );
+                                }),
+                            GetBuilder<RoomsPageController>(
+                                builder: (controller) {
+                              return Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    // LinearGradient
+                                    gradient: controller.roomStatus
+                                        ? null
+                                        : LinearGradient(
+                                            colors: [
+                                              Color(0xFFFABD63),
+                                              Color(0xFFFABB64),
+                                              Color(0xFFF792F0),
+                                            ],
+                                            begin: Alignment.centerRight,
+                                            end: Alignment.centerLeft,
+                                          ),
+                                  ),
+                                  // child: Container(),
+                                  child: StreamBuilder(
+                                    builder: (context, snapshot) {
+                                      // print(snapshot.data.length);
+                                      return snapshot.hasData
+                                          ? NotificationListener(
+                                              onNotification:
+                                                  (ScrollNotification
+                                                      scrollInfo) {
+                                                scrollInfo.metrics.pixels > 80
+                                                    ? controller
+                                                        .scrollDownButtonStatus(
+                                                            false)
+                                                    : controller
+                                                        .scrollDownButtonStatus(
+                                                            true);
+                                              },
+                                              child: ListView.builder(
+                                                controller:
+                                                    controller.scrollController,
+                                                reverse: true,
+                                                itemBuilder: (context, index) {
+                                                  if (snapshot.data["data"]
+                                                              [index]
+                                                          ["senderName"] ==
+                                                      "roomAlert") {
+                                                    return joinAndLeaveAlert(
+                                                        controller.roomStatus,
+                                                        snapshot.data["data"]
+                                                                        [index][
+                                                                    "joinOrLeave"] ==
+                                                                "0"
+                                                            ? true
+                                                            : false,
+                                                        snapshot.data["data"]
+                                                                [index]
+                                                                ["senderName"]
+                                                            .toString(),
+                                                        snapshot.data["data"]
+                                                                [index]
+                                                                ["message"]
+                                                            .toString());
+                                                  } else {
+                                                    if (controller.roomStatus) {
+                                                      return GestureDetector(
+                                                        onTap: () {
+                                                          print(snapshot.data[
+                                                                  "data"][index]
+                                                              ["isGuest"]);
+                                                        },
+                                                        child: messageBuilder(
+                                                            context,
+                                                            snapshot.data[
+                                                                "data"][index],
+                                                            snapshot.data["data"]
+                                                                            [
+                                                                            index]
+                                                                        [
+                                                                        "isGuest"] ==
+                                                                    "0"
+                                                                ? true
+                                                                : false),
+                                                      );
+                                                    } else {
+                                                      return messageVIPBuilder(
+                                                          context,
+                                                          snapshot.data["data"]
+                                                              [index],
+                                                          snapshot.data["data"][
+                                                                          index]
+                                                                      [
+                                                                      "isGuest"] ==
+                                                                  "0"
+                                                              ? true
+                                                              : false);
+                                                      // return messageVIPBuilder(
+                                                      //     context,
+                                                      //     snapshot.data["data"][index],
+                                                      //     snapshot.data["data"][index]
+                                                      //                 ["isGuest"] ==
+                                                      //             "0"
+                                                      //         ? true
+                                                      //         : false);
+                                                    }
+                                                  }
+                                                },
+                                                itemCount: snapshot
+                                                    .data["data"].length,
+                                                // itemCount: 1,
+                                              ),
+                                            )
+                                          : Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                    },
+                                    stream: controller.streamController.stream,
+                                  ),
+                                ),
+                              );
+                            }),
+                          ],
                         ),
                       ),
-                    );
-                  })
-                ],
-              ),
-            ),
-          ),
-
-          body: Column(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    GetBuilder<RoomsPageController>(
-                        init: RoomsPageController(),
-                        builder: (controller) {
-                          return Container(
-                            height: 70.h,
-                            decoration: BoxDecoration(
-                              // LinearGradient
-                              gradient: controller.roomStatus
-                                  ? LinearGradient(
-                                      colors: [
-                                        Color(0xFFFFFFFF),
-                                        Color(0xFFA2ACAC),
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    )
-                                  : LinearGradient(
-                                      colors: [
-                                        Color(0xFFFFFFFF),
-                                        Color(0xFFFABD63),
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
+                      buildMyNavBar(context),
+                      emojiPickerBuilder()
+                    ],
+                  ),
+                  GetBuilder<RoomsPageController>(builder: (controller) {
+                    return !controller.micWidget
+                        ? SizedBox()
+                        : Positioned(
+                            bottom: 73.h,
+                            right: 0.w,
+                            child: Container(
+                              height: 80.h,
+                              width: 250.w,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15.r),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 0,
+                                      blurRadius: 10.r,
+                                      offset: Offset(
+                                          0, 3), // changes position of shadow
                                     ),
-                            ),
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 21.w,
-                                ),
-                                isOwner
-                                    ? SizedBox(
-                                        width: 65.w,
-                                      )
-                                    : GestureDetector(
-                                        onTap: () {
-                                          // Get.toNamed('/VIPRoom');
-                                          controller.changeRoomStatus();
-                                        },
-                                        child: SizedBox(
-                                          width: 65.w,
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 5.h),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.r),
-                                              color: controller.roomStatus
-                                                  ? Color(0xffF792F0)
-                                                  : Color(0xFFFABD63),
-                                            ),
-                                            child: Text(
-                                              controller.roomStatus
-                                                  ? 'الروم الحديث'
-                                                  : "مظهر قديم",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontSize: 9.sp,
-                                                  fontFamily: "Portada",
-                                                  color: Colors.white),
-                                            ),
+                                  ]),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      controller.joinLeaveCalls();
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Center(
+                                          child: Icon(
+                                            Icons.mic,
+                                            color: Colors.black,
                                           ),
                                         ),
-                                      ),
-                                SizedBox(
-                                  width: 60.w,
-                                ),
-                                Text("22:10",
-                                    style: TextStyle(
-                                        fontSize: 9.sp,
-                                        fontFamily: "Portada",
-                                        color: Colors.black)),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                SizedBox(
-                                  width: 240.w,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      userInCall(),
-                                      userInCall(),
-                                      userInCall(),
-                                      userInCall(),
-                                    ],
+                                        Text(
+                                          "التحدث",
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              color: Colors.black),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                )
-                              ],
+                                  GestureDetector(
+                                    onTap: () {
+                                      controller.micStatus();
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Center(
+                                          child: Icon(
+                                            Icons.mic_off,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        Text(
+                                          "كتم المايك",
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              color: Colors.black),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      controller.agoraEngineVideo
+                                          .disableVideo();
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Center(
+                                          child: Icon(
+                                            Icons.music_note,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        Text(
+                                          "موسيقي",
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              color: Colors.black),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           );
-                        }),
-                    GetBuilder<RoomsPageController>(builder: (controller) {
-                      return Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            // LinearGradient
-                            gradient: controller.roomStatus
-                                ? null
-                                : LinearGradient(
-                                    colors: [
-                                      Color(0xFFFABD63),
-                                      Color(0xFFFABB64),
-                                      Color(0xFFF792F0),
-                                    ],
-                                    begin: Alignment.centerRight,
-                                    end: Alignment.centerLeft,
+                  }),
+                  GetBuilder<RoomsPageController>(builder: (controller) {
+                    return !controller.cameraWidget
+                        ? SizedBox()
+                        : Positioned(
+                            bottom: 73.h,
+                            right: 40.w,
+                            child: Container(
+                              height: 80.h,
+                              width: 180.w,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15.r),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 0,
+                                      blurRadius: 10.r,
+                                      offset: Offset(
+                                          0, 3), // changes position of shadow
+                                    ),
+                                  ]),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      controller.joinVideoChannel();
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Center(
+                                          child: Icon(
+                                            Icons.videocam_sharp,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                        Text(
+                                          "الكاميرا",
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: Colors.black,
+                                            fontFamily: 'Segoe UI',
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                          ),
-                          // child: Container(),
-                          child: StreamBuilder(
-                            builder: (context, snapshot) {
-                              // print(snapshot.data.length);
-                              return snapshot.hasData
-                                  ? NotificationListener(
-                                      onNotification:
-                                          (ScrollNotification scrollInfo) {
-                                        scrollInfo.metrics.pixels > 80
-                                            ? controller
-                                                .scrollDownButtonStatus(false)
-                                            : controller
-                                                .scrollDownButtonStatus(true);
-                                      },
-                                      // child: Text(snapshot.data.toString()),
-                                      // child: ListView.builder(
-                                      //   controller: controller.scrollController,
-                                      //   reverse: true,
-                                      //   shrinkWrap: true,
-                                      //   itemCount: snapshot.data["data"].length,
-                                      //   itemBuilder: (context, index) => snapshot
-                                      //                   .data["data"][index]
-                                      //               ["senderName"] ==
-                                      //           "roomAlert"
-                                      //       ? joinAndLeaveAlert(
-                                      //           controller.roomStatus,
-                                      //           snapshot.data["data"][index]["joinOrLeave"] == "0"
-                                      //               ? true
-                                      //               : false,
-                                      //           "alert",
-                                      //           snapshot.data["data"][index]
-                                      //               ["message"])
-                                      //       : controller.roomStatus
-                                      //           ? messageBuilder(
-                                      //               context,
-                                      //               snapshot.data["data"]
-                                      //                   [index],
-                                      //               snapshot.data["data"][index]["isGuest"] == "0"
-                                      //                   ? true
-                                      //                   : false)
-                                      //           : messageVIPBuilder(
-                                      //               context,
-                                      //               snapshot.data["data"][index],
-                                      //               snapshot.data["data"][index]["isGuest"] == "0" ? true : false),
-
-                                      //   //  Text(snapshot.data["data"][index]
-                                      //   //         ["senderName"]
-                                      //   //     .toString()),
-                                      // ),
-                                      child: ListView.builder(
-                                        controller: controller.scrollController,
-                                        reverse: true,
-                                        itemBuilder: (context, index) {
-                                          if (snapshot.data["data"][index]
-                                                  ["senderName"] ==
-                                              "roomAlert") {
-                                            return joinAndLeaveAlert(
-                                                controller.roomStatus,
-                                                snapshot.data["data"][index]
-                                                            ["joinOrLeave"] ==
-                                                        "0"
-                                                    ? true
-                                                    : false,
-                                                snapshot.data["data"][index]
-                                                        ["senderName"]
-                                                    .toString(),
-                                                snapshot.data["data"][index]
-                                                        ["message"]
-                                                    .toString());
-                                          } else {
-                                            if (controller.roomStatus) {
-                                              return messageBuilder(
-                                                  context,
-                                                  snapshot.data["data"][index],
-                                                  snapshot.data["data"][index]
-                                                              ["isGuest"] ==
-                                                          "0"
-                                                      ? true
-                                                      : false);
-                                            } else {
-                                              return messageVIPBuilder(
-                                                  context,
-                                                  snapshot.data["data"][index],
-                                                  snapshot.data["data"][index]
-                                                              ["isGuest"] ==
-                                                          "0"
-                                                      ? true
-                                                      : false);
-                                              // return messageVIPBuilder(
-                                              //     context,
-                                              //     snapshot.data["data"][index],
-                                              //     snapshot.data["data"][index]
-                                              //                 ["isGuest"] ==
-                                              //             "0"
-                                              //         ? true
-                                              //         : false);
-                                            }
-                                          }
-                                        },
-                                        itemCount: snapshot.data["data"].length,
-                                        // itemCount: 1,
-                                      ),
-                                    )
-                                  : Center(child: CircularProgressIndicator());
-                            },
-                            stream: controller.streamController.stream,
-                          ),
-                        ),
-                      );
-                    }),
-                  ],
-                ),
-              ),
-              buildMyNavBar(context),
-              emojiPickerBuilder()
-            ],
-          ),
-          floatingActionButton: GetBuilder<RoomsPageController>(
-            builder: (controller) {
-              return !controller.scrollDownButton
-                  ? Padding(
-                      padding:
-                          EdgeInsets.only(bottom: 60.h, right: 5.w, left: 10.w),
-                      child: GestureDetector(
-                        onTap: () {
-                          controller.scrollController.animateTo(0,
-                              duration: Duration(seconds: 1),
-                              curve: Curves.easeIn);
-                        },
-                        child: Container(
-                          // width: 148.w,
-                          constraints: BoxConstraints(
-                            maxWidth: Get.width * 0.35,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.r),
-                            gradient: !controller.roomStatus
-                                ? LinearGradient(
-                                    colors: [
-                                      Color(0xFF00E54C),
-                                      Color(0xFFDADADC),
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                  )
-                                : LinearGradient(
-                                    colors: [
-                                      Color(0xFFF792F0),
-                                      Color(0xFFFABD63),
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
+                                  GestureDetector(
+                                    onTap: () {
+                                      controller.leaveVideoChannel();
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Center(
+                                          child: Icon(
+                                            Icons.photo_library,
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                        Text(
+                                          "إرسال صورة",
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: Colors.black,
+                                            fontFamily: 'Segoe UI',
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 8.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 7.h),
-                                child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Icon(
-                                    Icons.arrow_back_ios,
-                                    size: 20.sp,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                                ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "الرسائل الجديدة",
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontFamily: 'Segoe UI',
+                            ),
+                          );
+                  }),
+                ],
+              ),
+              floatingActionButton: GetBuilder<RoomsPageController>(
+                builder: (controller) {
+                  return controller.scrollDownButton
+                      ? SizedBox()
+                      : Padding(
+                          padding: EdgeInsets.only(
+                              bottom: 60.h, right: 5.w, left: 10.w),
+                          child: GestureDetector(
+                            onTap: () {
+                              controller.scrollController.animateTo(0,
+                                  duration: Duration(seconds: 1),
+                                  curve: Curves.easeIn);
+                            },
+                            child: Container(
+                              // width: 148.w,
+                              constraints: BoxConstraints(
+                                maxWidth: Get.width * 0.35,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.r),
+                                gradient: !controller.roomStatus
+                                    ? LinearGradient(
+                                        colors: [
+                                          Color(0xFF00E54C),
+                                          Color(0xFFDADADC),
+                                        ],
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                      )
+                                    : LinearGradient(
+                                        colors: [
+                                          Color(0xFFF792F0),
+                                          Color(0xFFFABD63),
+                                        ],
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                      ),
+                              ),
+                              padding: EdgeInsets.symmetric(horizontal: 8.w),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(bottom: 7.h),
+                                    child: RotatedBox(
+                                      quarterTurns: 3,
+                                      child: Icon(
+                                        Icons.arrow_back_ios,
+                                        size: 20.sp,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              )
-                            ],
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "الرسائل الجديدة",
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontFamily: 'Segoe UI',
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    )
-                  : SizedBox();
-            },
-          ),
-          // bottomNavigationBar: ,
-          resizeToAvoidBottomInset: false,
+                        );
+                },
+              ),
+              // bottomNavigationBar: ,
+              resizeToAvoidBottomInset: false,
+            );
+          }),
         ),
       ),
     );
@@ -892,12 +1162,6 @@ class RoomPage extends StatelessWidget {
   }
 
   Widget messageBuilder(BuildContext context, dynamic data, bool guest) {
-    // return Text(
-    //   data["message"],
-    //   style: TextStyle(
-    //     color: Colors.black,
-    //   ),
-    // );
     return guest
         ? Padding(
             padding: EdgeInsets.symmetric(vertical: 5.h),
@@ -995,15 +1259,31 @@ class RoomPage extends StatelessWidget {
                     height: 40.h,
                     decoration: BoxDecoration(
                       // color: const Color(0xff7c94b6),
-                      image: DecorationImage(
-                        image: NetworkImage(
-                            'https://www.wilsoncenter.org/sites/default/files/styles/large/public/media/images/person/james-person-1.jpg'),
-                        fit: BoxFit.cover,
-                      ),
+                      // image: DecorationImage(
+                      //   onError: (exception, stackTrace) => NetworkImage(
+                      //     "https://lametnachat.com/upload/imageUser/anonymous.jpg",
+                      //   ),
+                      //   image: NetworkImage(
+                      //       "https://lametnachat.com/upload/imageUser/" +
+                      //           data["userImage"]),
+                      // fit: BoxFit.cover,
+                      // ),
                       borderRadius: BorderRadius.all(Radius.circular(50.0)),
                       border: Border.all(
                         color: Color(0xff43D0CA),
                         width: 1.5,
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(360.r),
+                      child: Image.network(
+                        imageURL + data["senderName"] + ".jpeg",
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Image.network(
+                          "https://lametnachat.com/upload/imageUser/anonymous.jpg",
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
@@ -1121,8 +1401,9 @@ class RoomPage extends StatelessWidget {
           );
   }
 
-  PopupMenuItem<int> usersPopUpMenu(String name) {
+  PopupMenuItem<int> usersPopUpMenu(String name, {Function f}) {
     return PopupMenuItem(
+      onTap: f,
       height: 30.h,
       textStyle: TextStyle(
         fontSize: 10.sp,
@@ -1141,25 +1422,27 @@ class RoomPage extends StatelessWidget {
   }
 
   Widget userInCall() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(50.r),
-      child: Container(
-        padding: EdgeInsets.all(10.sp),
-        color: Colors.white,
-        child: Icon(
-          Icons.lock,
-          color: Colors.black,
-          size: 24.sp,
+    return SizedBox(
+      width: 50.w,
+      height: 50.h,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(50.r),
+        child: Container(
+          padding: EdgeInsets.all(10.sp),
+          color: Colors.white,
+          child: Icon(
+            Icons.lock,
+            color: Colors.black,
+            size: 24.sp,
+          ),
         ),
       ),
     );
   }
 
   Widget buildMyNavBar(BuildContext context) {
-    return Padding(
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: Container(
+    return GetBuilder<RoomsPageController>(builder: (controller) {
+      return Container(
         height: 71.h,
         decoration: const BoxDecoration(
           // LinearGradient
@@ -1172,36 +1455,37 @@ class RoomPage extends StatelessWidget {
             end: Alignment.topCenter,
           ),
         ),
-        child: GetBuilder<RoomsPageController>(
-            init: RoomsPageController(),
-            builder: (controller) {
-              return Row(
+        child: Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  controller.messageStatus
-                      ? Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15.w),
-                          child: SizedBox(
-                            width: 20.w,
-                            height: 23.h,
-                            child: CircularProgressIndicator(
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(Colors.black),
-                              backgroundColor: Colors.white,
-                              strokeWidth: 2,
-                            ),
-                          ),
-                        )
-                      : RotatedBox(
+                  !controller.messageStatus
+                      ? RotatedBox(
                           quarterTurns: 2,
-                          child: IconButton(
-                            onPressed: () {
+                          child: GestureDetector(
+                            onTap: () {
                               controller.sendMessage(
-                                  controller.messageController.text.trim());
+                                  controller.messageController.text);
                             },
-                            icon: Icon(
+                            child: Icon(
                               Icons.send,
                               color: Colors.white,
                               size: 25.sp,
+                            ),
+                          ),
+                        )
+                      : Padding(
+                          padding: EdgeInsets.all(0.0),
+                          child: SizedBox(
+                            // width: 30.w,
+                            // height: 30.h,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                              // valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           ),
                         ),
@@ -1214,71 +1498,75 @@ class RoomPage extends StatelessWidget {
                       style: TextStyle(fontSize: 25.sp),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15.w),
-                    child: SizedBox(
-                      width: 230.w,
-                      height: 40.h,
-                      child: Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: GetBuilder<RoomsPageController>(
-                          builder: (controller) {
-                            return TextFormField(
-                              cursorColor: Colors.black,
-                              controller: controller.messageController,
-                              style: TextStyle(
-                                color: Colors.black, //Color(0xff9A8B8B),
-                                fontSize: 14.sp,
-                                fontFamily: "Portada",
-                              ),
-                              // expands: true,
-                              maxLines: 1,
-                              onFieldSubmitted: (value) =>
-                                  controller.sendMessage(
-                                      controller.messageController.text),
-                              onTapOutside: (event) =>
-                                  FocusScope.of(context).unfocus(),
-                              onTap: () {
-                                if (!controller.emojiStatus) {
-                                  controller.changeEmojiStatus(true);
-                                }
-                              },
-                              decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 10.w),
-                                hintText: 'اكتب رسالة',
-
-                                hintStyle: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontFamily: "Portada",
-                                ),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    borderRadius: BorderRadius.circular(50.r)),
-                                filled: true,
-                                fillColor: Colors.white, // Color(0xff00000029),
-                              ),
-                            );
-                          },
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 7,
+              child: SizedBox(
+                // width: 230.w,
+                height: 40.h,
+                child: Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: GetBuilder<RoomsPageController>(
+                    builder: (controller) {
+                      return TextFormField(
+                        cursorColor: Colors.black,
+                        controller: controller.messageController,
+                        style: TextStyle(
+                          color: Colors.black, //Color(0xff9A8B8B),
+                          fontSize: 14.sp,
+                          fontFamily: "Portada",
                         ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      controller.leave();
+                        // expands: true,
+                        maxLines: 1,
+                        onFieldSubmitted: (value) => controller
+                            .sendMessage(controller.messageController.text),
+                        onTapOutside: (event) =>
+                            FocusScope.of(context).unfocus(),
+                        onTap: () {
+                          if (!controller.emojiStatus) {
+                            controller.changeEmojiStatus(true);
+                          }
+                        },
+                        decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 10.w),
+                          hintText: 'اكتب رسالة',
+                          hintStyle: TextStyle(
+                            fontSize: 12.sp,
+                            fontFamily: "Portada",
+                          ),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(50.r)),
+                          filled: true,
+                          fillColor: Colors.white, // Color(0xff00000029),
+                        ),
+                      );
                     },
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 20.w),
-                      child: Icon(
-                        Icons.add_circle_outline,
-                        size: 25.sp,
-                      ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      controller.toggleCamera();
+                    },
+                    child: Icon(
+                      Icons.add_circle_outline,
+                      size: 25.sp,
                     ),
                   ),
                   GestureDetector(
                     onTap: () {
-                      controller.join();
+                      // controller.join();
+                      controller.toggleMic();
                     },
                     child: Icon(
                       Icons.mic,
@@ -1286,10 +1574,12 @@ class RoomPage extends StatelessWidget {
                     ),
                   ),
                 ],
-              );
-            }),
-      ),
-    );
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   Widget messageVIPBuilder(BuildContext context, dynamic data, bool guest) {
@@ -1303,14 +1593,39 @@ class RoomPage extends StatelessWidget {
                 children: [
                   Row(
                     children: [
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //     borderRadius: BorderRadius.circular(50.r),
+                      //     color: Colors.white,
+                      //     image: DecorationImage(
+
+                      //       image: NetworkImage(
+                      //         imageURL +
+                      //             (data["senderName"] + ".jpeg").toString(),
+                      //       ),
+                      //       fit: BoxFit.cover,
+                      //     ),
+                      //   ),
+                      // ),
                       Stack(
                         alignment: Alignment.center,
                         children: [
-                          Image.asset(
-                            "assets/icons/logo.png",
-                            width: 70.w,
-                            height: 70.h,
-                            // fit: BoxFit.cover,
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(360.r),
+                            child: Image.network(
+                              imageURL +
+                                  (data["senderName"] + ".jpeg").toString(),
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Image.network(
+                                "https://lametnachat.com/upload/imageUser/anonymous.jpg",
+                                width: 50.w,
+                                height: 50.h,
+                                fit: BoxFit.cover,
+                              ),
+                              width: 50.w,
+                              height: 50.h,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                           Image.asset(
                             "assets/images/badge4.png",
@@ -1367,6 +1682,7 @@ class RoomPage extends StatelessWidget {
                     ),
                     child: Text(
                       data["message"],
+                      // "",
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: "Portada",
@@ -1392,7 +1708,7 @@ class RoomPage extends StatelessWidget {
                         child: Text(
                           data["senderName"]
                               .toString()
-                              .substring(6, 7)
+                              .substring(0, userName.length - 4)
                               .toUpperCase(),
                           style: TextStyle(color: Colors.white),
                         ),
@@ -1438,147 +1754,6 @@ class RoomPage extends StatelessWidget {
               ),
             ),
           );
-
-    //  Padding(
-    //   padding: EdgeInsets.symmetric(vertical: 5.h),
-    //   child: Column(
-    //     children: [
-    //       SizedBox(
-    //         height: 70.h,
-    //         width: double.infinity,
-    //         // color: Color(0xFFCAF8ED),
-    //         child: Padding(
-    //           padding: EdgeInsets.fromLTRB(
-    //               data["senderName"] == userName ? 0.w : 10.w,
-    //               5.h,
-    //               data["senderName"] == userName ? 10.w : 0,
-    //               5.h),
-    //           child: Directionality(
-    //             textDirection: data["senderName"] == userName
-    //                 ? TextDirection.rtl
-    //                 : TextDirection.ltr,
-    //             child: Row(
-    //               children: [
-    //                 !isGuest
-    //                     ? Stack(
-    //                         alignment: Alignment.center,
-    //                         children: [
-    //                           Image.asset(
-    //                             "assets/icons/logo.png",
-    //                             width: 70.w,
-    //                             height: 70.h,
-    //                             // fit: BoxFit.cover,
-    //                           ),
-    //                           Image.asset(
-    //                             "assets/images/badge4.png",
-    //                             width: 70.w,
-    //                             height: 70.h,
-    //                             // fit: BoxFit.cover,
-    //                           ),
-    //                         ],
-    //                       )
-    //                     : Container(
-    //                         padding: EdgeInsets.symmetric(
-    //                             horizontal: 20.w, vertical: 14.h),
-    //                         decoration: BoxDecoration(
-    //                           color: Color(0xFF2CCFB6),
-    //                           borderRadius: BorderRadius.circular(360.r),
-    //                         ),
-    //                         child: Text(
-    //                           data["senderName"].toString().substring(6, 7) ??
-    //                               "",
-    //                           style: TextStyle(
-    //                             fontSize: 20.sp,
-    //                             fontWeight: FontWeight.bold,
-    //                           ),
-    //                         ),
-    //                       ),
-    //                 Stack(
-    //                   children: [
-    //                     Text(
-    //                       data["senderName"],
-    //                       textAlign: data["senderName"] == userName
-    //                           ? TextAlign.right
-    //                           : TextAlign.left,
-    //                       style: TextStyle(
-    //                         fontSize: 12.sp,
-    //                         fontWeight: FontWeight.w900,
-    //                         fontFamily: "Portada",
-    //                         foreground: Paint()
-    //                           ..style = PaintingStyle.stroke
-    //                           ..strokeWidth = 1.5
-    //                           ..color = Colors.yellow,
-    //                       ),
-    //                     ),
-    //                     Text(
-    //                       data["senderName"],
-    //                       textAlign: data["senderName"] == userName
-    //                           ? TextAlign.right
-    //                           : TextAlign.left,
-    //                       style: TextStyle(
-    //                         fontSize: 12.sp,
-    //                         fontWeight: FontWeight.w900,
-    //                         fontFamily: "Portada",
-    //                         color: Colors.red,
-    //                       ),
-    //                     ),
-    //                   ],
-    //                 ),
-    //               ],
-    //             ),
-    //           ),
-    //         ),
-    //       ),
-    //       Padding(
-    //         padding: EdgeInsets.only(
-    //           right: data["senderName"] == userName ? 70.w : 100.w,
-    //           left: data["senderName"] == userName ? 100.w : 70.w,
-    //         ),
-    //         child: Container(
-    //           // height: 50.h,
-    //           width: double.infinity,
-    //           decoration: BoxDecoration(
-    //             color: Colors.white,
-    //             border: Border.all(
-    //               color: Color(0xFFFBF205),
-    //               width: 4.w,
-    //             ),
-    //             borderRadius: data["senderName"] == userName
-    //                 ? BorderRadius.only(
-    //                     bottomLeft: Radius.circular(20.r),
-    //                     bottomRight: Radius.circular(20.r),
-    //                     topLeft: Radius.circular(20.r),
-    //                   )
-    //                 : BorderRadius.only(
-    //                     bottomRight: Radius.circular(20.r),
-    //                     bottomLeft: Radius.circular(20.r),
-    //                     topRight: Radius.circular(20.r),
-    //                   ),
-    //           ),
-    //           child: Padding(
-    //             padding: EdgeInsets.fromLTRB(
-    //                 data["senderName"] == userName ? 0.w : 30.w,
-    //                 15.h,
-    //                 data["senderName"] == userName ? 30.w : 0.w,
-    //                 15.h),
-    //             child: Text(
-    //               data["message"],
-    //               textAlign: data["senderName"] == userName
-    //                   ? TextAlign.right
-    //                   : TextAlign.left,
-    //               style: TextStyle(
-    //                 fontSize: 12.sp,
-    //                 fontWeight: FontWeight.bold,
-    //                 fontFamily: "Portada",
-    //                 color: Colors.black,
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 
   Widget joinAndLeaveAlert(
@@ -1602,7 +1777,7 @@ class RoomPage extends StatelessWidget {
                 children: [
                   joinOrLeave
                       ? Padding(
-                          padding: EdgeInsets.only(left: 14.w),
+                          padding: EdgeInsets.only(left: 10.w),
                           child: Image.asset(
                             "assets/icons/in.png",
                             width: 22.w,
@@ -1620,7 +1795,7 @@ class RoomPage extends StatelessWidget {
                       // alert,
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 10.sp,
+                        fontSize: 12.sp,
                         fontFamily: "Segoe UI",
                       ),
                     ),

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
 import 'dart:math';
 
@@ -9,6 +9,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/messages/messagesController.dart';
+import 'package:lametna/controllers/userData/userCredentials.dart';
+import 'package:lametna/controllers/userData/variables.dart';
 
 class Messages extends StatelessWidget {
   Messages({Key key}) : super(key: key);
@@ -194,53 +196,108 @@ class Messages extends StatelessWidget {
                   }),
             ),
           ),
-          GetBuilder<MessagesController>(
-            builder: (controller) => controller.searchController.text.isEmpty
-                ? ListView.builder(
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) =>
-                        userMessageBuilder(index, context),
-                    itemCount: users.length,
-                  )
-                : ListView.builder(
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {
-                        Get.toNamed("/privateMessage", arguments: [
-                          controller.data[index]["image"],
-                          controller.data[index]["username"],
-                          controller.data[index]["userid"]
-                        ]);
+          Stack(
+            children: [
+              GetBuilder<MessagesController>(
+                builder: (controller) => FutureBuilder(
+                  future: controller.getData(),
+                  builder: (context, snapshot) {
+                    return StreamBuilder(
+                      stream: controller.peopleMessagedController.stream,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData == false) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) => userMessageBuilder(
+                              imageURL +
+                                  snapshot.data["participants"][index]
+                                      ["participant_name"] +
+                                  ".jpeg",
+                              snapshot.data["participants"][index]
+                                  ["participant_name"],
+                              snapshot.data["participants"][index]
+                                  ["participant_id"],
+                              snapshot.data["participants"][index]
+                                  ["last_message"],
+                            ),
+
+                            // Text(
+                            //   snapshot.data["participants"][index]["participant_name"]
+                            //       .toString(),
+                            //   style: TextStyle(color: Colors.black),
+                            // ),
+                            itemCount: snapshot.data["participants"].length,
+                          );
+                        }
                       },
-                      child: Card(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 20.w, vertical: 10.h),
-                        child: Padding(
-                          padding: EdgeInsets.all(12.sp),
-                          child: Text(
-                            controller.data[index]["username"].toString(),
-                            style: TextStyle(color: Colors.black),
+                    );
+                  },
+                ),
+              ),
+              GetBuilder<MessagesController>(
+                builder: (controller) {
+                  return controller.searchController.text != ""
+                      ? Container(
+                          color: Colors.white,
+                          height: Get.height,
+                          width: Get.width,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) => controller
+                                            .data[index]["username"] !=
+                                        userName &&
+                                    controller.data[index]["type"] == ""
+                                ? GestureDetector(
+                                    onTap: () {
+                                      // print(controller.data[index]["type"]);
+                                      controller.searchController.clear();
+                                      Get.toNamed("/privateMessage",
+                                          arguments: [
+                                            controller.data[index]["image"],
+                                            controller.data[index]["username"],
+                                            controller.data[index]["userid"]
+                                          ]);
+                                    },
+                                    child: Card(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 20.w, vertical: 10.h),
+                                      child: Padding(
+                                        padding: EdgeInsets.all(12.sp),
+                                        child: Text(
+                                          controller.data[index]["username"]
+                                              .toString(),
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox(),
+                            itemCount: controller.data.length,
                           ),
-                        ),
-                      ),
-                    ),
-                    itemCount: controller.data.length,
-                  ),
+                        )
+                      : SizedBox();
+                },
+              ),
+            ],
           )
         ],
       ),
     );
   }
 
-  Widget userMessageBuilder(int position, BuildContext context) {
+  Widget userMessageBuilder(
+      String image, String name, String id, String lastMessage) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: GestureDetector(
           onTap: () {
-            Get.toNamed("/privateMessage",
-                arguments: [users[position]["image"], users[position]["name"]]);
+            Get.toNamed("/privateMessage", arguments: [image, name, id]);
           },
           child: Container(
             color: Colors.transparent,
@@ -253,15 +310,24 @@ class Messages extends StatelessWidget {
                       width: 75.w,
                       height: 85.h,
                       decoration: BoxDecoration(
-                        // color: const Color(0xff7c94b6),
-                        image: DecorationImage(
-                          image: NetworkImage(users[position]["image"]),
-                          fit: BoxFit.cover,
-                        ),
                         borderRadius: BorderRadius.all(Radius.circular(50.0)),
                         border: Border.all(
                           color: Color(0xff43D0CA),
                           width: 1.5,
+                        ),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(360.r),
+                        child: Image.network(
+                          image,
+                          errorBuilder: (context, error, stackTrace) =>
+                              ClipRRect(
+                            borderRadius: BorderRadius.circular(360.r),
+                            child: Image.network(
+                              'https://lametnachat.com/upload/imageUser/anonymous.jpg',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -269,26 +335,24 @@ class Messages extends StatelessWidget {
                       width: 6.w,
                     ),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 29.h,
-                          child: Text(
-                            users[position]["name"],
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: 15.sp,
-                              fontFamily: "Portada",
-                            ),
+                        Text(
+                          name,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 15.sp,
+                            fontFamily: "Portada",
                           ),
                         ),
                         Text(
-                          "السلام عليكم",
+                          lastMessage,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Color(0xff707070),
-                            fontSize: 8.sp,
+                            fontSize: 11.sp,
                             fontFamily: "Portada",
                           ),
                         ),
@@ -312,7 +376,7 @@ class Messages extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        _showMyDialog(context, position);
+                        _showMyDialog(Get.context);
                       },
                       child: Icon(
                         Icons.more_vert,
@@ -369,7 +433,7 @@ class Messages extends StatelessWidget {
     );
   }
 
-  Future<void> _showMyDialog(BuildContext context, int position) async {
+  Future<void> _showMyDialog(BuildContext context) async {
     return showDialog<void>(
       context: context,
 

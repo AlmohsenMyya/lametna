@@ -15,9 +15,9 @@ class PrivateMessagesController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    _timer = Timer.periodic(Duration(seconds: 2), (timer) {
-      return getData();
-    });
+    // _timer = Timer.periodic(Duration(seconds: 2), (timer) {
+    //   return getData();
+    // });
   }
 
   Future<dynamic> getData() async {
@@ -36,17 +36,20 @@ class PrivateMessagesController extends GetxController {
 
   Future sendMsg() async {
     var url = Uri.parse(sendPrivateMessage);
-    var response = await http.post(url, body: {
-      "sender": userId,
-      "reciever": Get.arguments[2],
-      "text": messageController.text.trim(),
-    });
-    final dataBody = json.decode(response.body);
-    if (dataBody['status'] == "success") {
-      messageController.text = "";
-      print("success");
-    } else {
-      print("error");
+
+    if (messageController.text.trim() != "") {
+      var response = await http.post(url, body: {
+        "sender": userId,
+        "reciever": Get.arguments[2],
+        "text": messageController.text.trim(),
+      });
+      final dataBody = json.decode(response.body);
+      if (dataBody['status'] == "success") {
+        messageController.text = "";
+        print("success");
+      } else {
+        print("error");
+      }
     }
   }
 }

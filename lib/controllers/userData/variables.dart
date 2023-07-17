@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
-
 String baseURL = "https://lametnachat.com/";
+String imageURL = "$baseURL/upload/imageUser/";
+String roomImagesURL = "$baseURL/upload/roomImage/";
 String loginUrl = baseURL + "auth/login.php";
 String roomInfoUrl = baseURL + "rooms/roomInfo.php";
 String getRoomMessagesUrl = baseURL + "messages/getRoomMessages.php";
@@ -18,3 +19,21 @@ String roomSearch = baseURL + "search/searchRoom.php";
 String allSearch = baseURL + "search/searchAll.php";
 String sendPrivateMessage = baseURL + "messages/message.php";
 String getPrivateMessages = baseURL + "messages/showmessage.php";
+String favoriteRoom = baseURL + "rooms/favoriteRooms.php";
+String viewFavoriteRooms = baseURL + "rooms/viewFavoriteRooms.php";
+String membersInCall = baseURL + "messages/membersInCall.php";
+String deleteMemberInCall = baseURL + "messages/deleteMembersInCall.php";
+String roomSettings = baseURL + "rooms/editRoom.php";
+String userInfo = baseURL + "users/userInfo.php";
+String editUserInfo = baseURL + "users/editUserProfile.php";
+String changePassword = baseURL + "users/updateUserPassword.php";
+String updateUserImage = baseURL + "users/updateUserImage.php";
+String banUser = baseURL + "rooms/banUser.php";
+String viewBannedUsers = baseURL + "rooms/viewBanUser.php";
+String removeBanUser = baseURL + "rooms/removeBanUser.php";
+String advancedSettings = baseURL + "rooms/advancedSettings.php";
+String roomImageUrl = baseURL + "rooms/roomImage.php";
+String roomBackgroundImage = baseURL + "rooms/roomBackgroundImage.php";
+String loginRole = baseURL + "users/loginUserRole.php";
+String deleteRole = baseURL + "users/deleteRoomRole.php";
+String peopleMessaged = baseURL + 'messages/getNameUserMessage.php';

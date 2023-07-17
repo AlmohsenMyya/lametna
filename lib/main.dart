@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lametna/controllers/side%20pages/trophy..dart';
 import 'package:lametna/test.dart';
 import 'package:lametna/view/ChoosingPage.dart';
 import 'package:lametna/view/LoginPage.dart';
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:lametna/view/chat/about.dart';
 import 'package:lametna/view/chat/room%20mangement/accountMangement.dart';
 import 'package:lametna/view/chat/moments.dart';
+import 'package:lametna/view/chat/room%20mangement/advancedSettings.dart';
 import 'package:lametna/view/chat/room%20mangement/roles.dart';
 import 'package:lametna/view/chat/room%20mangement/roomSettings.dart';
 import 'package:lametna/view/chat/roomInfo.dart';
@@ -20,11 +22,17 @@ import 'package:lametna/view/customer%20service/ComplaintsSuggestions.dart';
 import 'package:lametna/view/customer%20service/customerServiceChat.dart';
 import 'package:lametna/view/customer%20service/customerServiceHomePage.dart';
 import 'package:lametna/view/customer%20service/salesChat.dart';
+import 'package:lametna/view/favourite/favourite.dart';
 import 'package:lametna/view/home.dart';
 import 'package:lametna/view/chat/roomPage.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:lametna/view/messages/privateMessages.dart';
+import 'package:lametna/view/profile/changeBackground.dart';
+import 'package:lametna/view/profile/editBackground.dart';
+import 'package:lametna/view/profile/editPerson.dart';
+import 'package:lametna/view/profile/profile.dart';
+import 'package:lametna/view/profile/editProfile.dart';
 import 'package:lametna/view/side%20pages/search.dart';
 
 Future<void> main() async {
@@ -75,7 +83,15 @@ class MyApp extends StatelessWidget {
             GetPage(name: '/addAccount', page: () => AddAccount()),
             GetPage(name: '/roles', page: () => RolesPage()),
             GetPage(name: "/search", page: () => Search()),
-            GetPage(name: "/roomSetting", page: () => RoomSettings())
+            GetPage(name: "/roomSetting", page: () => RoomSettings()),
+            GetPage(name: "/favourite", page: () => Favourite()),
+            GetPage(name: "/trophy", page: () => Trophy()),
+            GetPage(name: "/changeBackground", page: () => ChangeBackground()),
+            GetPage(name: "/editBackground", page: () => EditBackground()),
+            GetPage(name: "/editPerson", page: () => EditPerson()),
+            GetPage(name: "/profile", page: () => Profile()),
+            GetPage(name: "/editProfile", page: () => EditProfileAccount()),
+            GetPage(name: "/advancedSettings", page: () => AdvancedSettings()),
           ],
           title: 'First Method',
           // You can use the library anywhere in the app even in theme

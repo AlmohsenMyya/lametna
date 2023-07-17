@@ -35,6 +35,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  floating_draggable_widget: ^2.1.2
+
 
 dev_dependencies:
   flutter_test:
@@ -53,12 +55,16 @@ dev_dependencies:
   get:
   device_preview:
   http:
+  # floating_draggable_widget:
   flutter_launcher_icons:
   flutter_colorpicker:
   carousel_slider:
   emoji_picker_flutter:
   agora_rtc_engine:
-  # agora_uikit:
+  agora_uikit:
+  image_picker:
+  shared_preferences:
+  get_ip_address: 
   # zego_express_engine:
   # zego_express_engine: 
   # zego_uikit: 
@@ -87,6 +93,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/icons/profile/
     - assets/images/flags/
 
   

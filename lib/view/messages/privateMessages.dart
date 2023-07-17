@@ -1,5 +1,6 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/messages/privateMessagesController.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
+import 'package:lametna/controllers/userData/variables.dart';
 
 class PrivateMessage extends StatelessWidget {
   const PrivateMessage({Key key}) : super(key: key);
@@ -62,15 +64,25 @@ class PrivateMessage extends StatelessWidget {
                       width: 45.w,
                       height: 50.h,
                       decoration: BoxDecoration(
-                        // color: const Color(0xff7c94b6),
-                        // image: DecorationImage(
-                        //   image: NetworkImage(Get.arguments[0]),
-                        //   fit: BoxFit.cover,
-                        // ),
+                        color: const Color(0xff7c94b6),
                         borderRadius: BorderRadius.all(Radius.circular(50.0)),
                         border: Border.all(
                           color: Color(0xff43D0CA),
                           width: 1.5,
+                        ),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(360.r),
+                        child: Image.network(
+                          Get.arguments[0],
+                          errorBuilder: (context, error, stackTrace) =>
+                              ClipRRect(
+                            borderRadius: BorderRadius.circular(360.r),
+                            child: Image.network(
+                              'https://lametnachat.com/upload/imageUser/anonymous.jpg',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -89,26 +101,121 @@ class PrivateMessage extends StatelessWidget {
             child: GetBuilder<PrivateMessagesController>(
                 init: PrivateMessagesController(),
                 builder: (controller) {
-                  return StreamBuilder(
-                    builder: (context, snapshot) => snapshot.data == null
-                        ? Center(child: CircularProgressIndicator())
-                        : ListView.builder(
-                            reverse: true,
-                            itemBuilder: (context, index) => Text(
-                              snapshot.data["data"][index]["text"].toString(),
-                              textAlign: snapshot.data["data"][index]
-                                          ["sender"] ==
-                                      userId
-                                  ? TextAlign.right
-                                  : TextAlign.left,
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                            ),
-                            itemCount: snapshot.data["data"].length,
-                          ),
-                    stream: controller.streamController.stream,
-                  );
+                  return FutureBuilder(
+                      future: controller.getData(),
+                      builder: (context, snapshot) {
+                        return StreamBuilder(
+                          stream: controller.streamController.stream,
+                          builder: (context, snapshot) {
+                            if (snapshot.data == null) {
+                              return Center(child: CircularProgressIndicator());
+                            } else {
+                              return ListView.builder(
+                                reverse: true,
+                                itemBuilder: (context, index) {
+                                  final message = snapshot.data["data"][index];
+                                  final isSentByMe =
+                                      message["sender"] == userId;
+                                  return Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10.h, horizontal: 16.w),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment: isSentByMe
+                                          ? CrossAxisAlignment.start
+                                          : CrossAxisAlignment.end,
+                                      children: [
+                                        isSentByMe
+                                            ? ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        360.r),
+                                                child: Image.network(
+                                                  imageURL + userName + ".jpeg",
+                                                  width: 50.w,
+                                                  height: 50.h,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              )
+                                            : ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        360.r),
+                                                child: Image.network(
+                                                  imageURL +
+                                                      Get.arguments[1] +
+                                                      ".jpeg",
+                                                  width: 50.w,
+                                                  height: 50.h,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            left: isSentByMe ? 50.w : 0.w,
+                                            right: isSentByMe ? 0.w : 50.w,
+                                          ),
+                                          child: Container(
+                                            constraints: BoxConstraints(
+                                              maxWidth: Get.width * 0.75,
+                                            ),
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 24.w,
+                                              vertical: 6.h,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: isSentByMe
+                                                  ? Color(0xffecd2ab)
+                                                  : Colors.white,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.5),
+                                                  spreadRadius: 1,
+                                                  blurRadius: 6,
+                                                  offset: Offset(0,
+                                                      3), // changes position of shadow
+                                                ),
+                                              ],
+                                              borderRadius: isSentByMe
+                                                  ? BorderRadius.only(
+                                                      bottomRight:
+                                                          Radius.circular(13.r),
+                                                      topRight:
+                                                          Radius.circular(13.r),
+                                                      bottomLeft:
+                                                          Radius.circular(13.r),
+                                                    )
+                                                  : BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(13.r),
+                                                      bottomLeft:
+                                                          Radius.circular(13.r),
+                                                      bottomRight:
+                                                          Radius.circular(13.r),
+                                                    ),
+                                            ),
+                                            child: Text(
+                                              message["text"].toString(),
+                                              textAlign: !isSentByMe
+                                                  ? TextAlign.right
+                                                  : TextAlign.left,
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                itemCount: snapshot.data["data"].length,
+                              );
+                            }
+                          },
+                        );
+                      });
                 }),
           ),
           textFormBuilder(),

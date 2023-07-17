@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
@@ -9,6 +10,28 @@ import 'package:http/http.dart' as http;
 class MessagesController extends GetxController {
   var data = [];
   TextEditingController searchController = TextEditingController();
+  StreamController peopleMessagedController = StreamController();
+
+  @override
+  void onInit() {
+    super.onInit();
+    // getData();
+    // Timer.periodic(Duration(seconds: 2), (timer) {
+    //   getData();
+    // });
+  }
+
+  getData() async {
+    var url = Uri.parse(peopleMessaged);
+    var response = await http.post(url, body: {
+      "sender": userId,
+    });
+    final dataBody = json.decode(response.body);
+    // print(dataBody);
+
+    peopleMessagedController.sink.add(dataBody);
+  }
+
   Future search() async {
     var url = Uri.parse(userSearch);
     var response = await http.post(url, body: {

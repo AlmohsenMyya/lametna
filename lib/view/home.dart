@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/bottomNavitionBar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/view/side%20pages/drawer.dart';
 
 class Home extends StatelessWidget {
@@ -47,111 +48,209 @@ class Home extends StatelessWidget {
                           weight: 400.0,
                           opticalSize: 33,
                         ),
-                        items: [
-                          BottomNavigationBarItem(
-                            // icon: Icon(Icons.home),
-                            icon: ShaderMask(
-                                shaderCallback: (rect) => LinearGradient(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                      colors: controller.selectedIndex == 0
-                                          ? [
-                                              Color(0xFFF792F0),
-                                              Color(0xFFFABD63),
-                                            ]
-                                          : [
-                                              Color(0xFFA2ACAC),
-                                              Color(0xFFA2ACAC)
-                                            ],
-                                      tileMode: TileMode.repeated,
-                                    ).createShader(rect),
-                                child: Image.asset(
-                                  'assets/icons/home.png',
-                                  width: 24.w,
-                                  color: controller.selectedIndex == 0
-                                      ? Colors.white
-                                      : Color(0xFFA2ACAC),
-                                  // height: 30.h,
-                                )),
+                        items: !isGuest
+                            ? [
+                                BottomNavigationBarItem(
+                                  // icon: Icon(Icons.home),
+                                  icon: ShaderMask(
+                                      shaderCallback: (rect) => LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors:
+                                                controller.selectedIndex == 0
+                                                    ? [
+                                                        Color(0xFFF792F0),
+                                                        Color(0xFFFABD63),
+                                                      ]
+                                                    : [
+                                                        Color(0xFFA2ACAC),
+                                                        Color(0xFFA2ACAC)
+                                                      ],
+                                            tileMode: TileMode.repeated,
+                                          ).createShader(rect),
+                                      child: Image.asset(
+                                        'assets/icons/home.png',
+                                        width: 24.w,
+                                        color: controller.selectedIndex == 0
+                                            ? Colors.white
+                                            : Color(0xFFA2ACAC),
+                                        // height: 30.h,
+                                      )),
 
-                            label: '',
-                          ),
-                          BottomNavigationBarItem(
-                            icon: ShaderMask(
-                              shaderCallback: (Rect bounds) {
-                                return LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: controller.selectedIndex == 1
-                                      ? [
-                                          Color(0xFFF792F0),
-                                          Color(0xFFFABD63),
-                                        ]
-                                      : [Color(0xFFA2ACAC), Color(0xFFA2ACAC)],
-                                ).createShader(bounds);
-                              },
-                              child: Image.asset(
-                                'assets/icons/planet.png',
-                                color: controller.selectedIndex == 1
-                                    ? Colors.white
-                                    : Color(0xFFA2ACAC),
-                                width: 34.w,
-                                // height: 30.h,
-                              ),
-                            ),
-                            label: '',
-                          ),
-                          BottomNavigationBarItem(
-                            icon: ShaderMask(
-                              shaderCallback: (Rect bounds) {
-                                return LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: controller.selectedIndex == 2
-                                      ? [
-                                          Color(0xFFF792F0),
-                                          Color(0xFFFABD63),
-                                        ]
-                                      : [Color(0xFFA2ACAC), Color(0xFFA2ACAC)],
-                                ).createShader(bounds);
-                              },
-                              child: Image.asset(
-                                'assets/icons/chat.png',
-                                color: controller.selectedIndex == 2
-                                    ? Colors.white
-                                    : Color(0xFFA2ACAC),
-                                width: 24.w,
-                                // height: 30.h,
-                              ),
-                            ),
-                            label: '',
-                          ),
-                          BottomNavigationBarItem(
-                            icon: ShaderMask(
-                              shaderCallback: (Rect bounds) {
-                                return LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: controller.selectedIndex == 3
-                                      ? [
-                                          Color(0xFFF792F0),
-                                          Color(0xFFFABD63),
-                                        ]
-                                      : [Color(0xFFA2ACAC), Color(0xFFA2ACAC)],
-                                ).createShader(bounds);
-                              },
-                              child: Image.asset(
-                                'assets/icons/bag.png',
-                                color: controller.selectedIndex == 3
-                                    ? Colors.white
-                                    : Color(0xFFA2ACAC),
-                                width: 24.w,
-                                // height: 30.h,
-                              ),
-                            ),
-                            label: '',
-                          ),
-                        ],
+                                  label: '',
+                                ),
+                                BottomNavigationBarItem(
+                                  icon: ShaderMask(
+                                    shaderCallback: (Rect bounds) {
+                                      return LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: controller.selectedIndex == 1
+                                            ? [
+                                                Color(0xFFF792F0),
+                                                Color(0xFFFABD63),
+                                              ]
+                                            : [
+                                                Color(0xFFA2ACAC),
+                                                Color(0xFFA2ACAC)
+                                              ],
+                                      ).createShader(bounds);
+                                    },
+                                    child: Image.asset(
+                                      'assets/icons/planet.png',
+                                      color: controller.selectedIndex == 1
+                                          ? Colors.white
+                                          : Color(0xFFA2ACAC),
+                                      width: 34.w,
+                                      // height: 30.h,
+                                    ),
+                                  ),
+                                  label: '',
+                                ),
+                                BottomNavigationBarItem(
+                                  icon: ShaderMask(
+                                    shaderCallback: (Rect bounds) {
+                                      return LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: controller.selectedIndex == 2
+                                            ? [
+                                                Color(0xFFF792F0),
+                                                Color(0xFFFABD63),
+                                              ]
+                                            : [
+                                                Color(0xFFA2ACAC),
+                                                Color(0xFFA2ACAC)
+                                              ],
+                                      ).createShader(bounds);
+                                    },
+                                    child: Image.asset(
+                                      'assets/icons/chat.png',
+                                      color: controller.selectedIndex == 2
+                                          ? Colors.white
+                                          : Color(0xFFA2ACAC),
+                                      width: 24.w,
+                                      // height: 30.h,
+                                    ),
+                                  ),
+                                  label: '',
+                                ),
+                                BottomNavigationBarItem(
+                                  icon: ShaderMask(
+                                    shaderCallback: (Rect bounds) {
+                                      return LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: controller.selectedIndex == 3
+                                            ? [
+                                                Color(0xFFF792F0),
+                                                Color(0xFFFABD63),
+                                              ]
+                                            : [
+                                                Color(0xFFA2ACAC),
+                                                Color(0xFFA2ACAC)
+                                              ],
+                                      ).createShader(bounds);
+                                    },
+                                    child: Image.asset(
+                                      'assets/icons/bag.png',
+                                      color: controller.selectedIndex == 3
+                                          ? Colors.white
+                                          : Color(0xFFA2ACAC),
+                                      width: 24.w,
+                                      // height: 30.h,
+                                    ),
+                                  ),
+                                  label: '',
+                                ),
+                              ]
+                            : [
+                                BottomNavigationBarItem(
+                                  // icon: Icon(Icons.home),
+                                  icon: ShaderMask(
+                                      shaderCallback: (rect) => LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors:
+                                                controller.selectedIndex == 0
+                                                    ? [
+                                                        Color(0xFFF792F0),
+                                                        Color(0xFFFABD63),
+                                                      ]
+                                                    : [
+                                                        Color(0xFFA2ACAC),
+                                                        Color(0xFFA2ACAC)
+                                                      ],
+                                            tileMode: TileMode.repeated,
+                                          ).createShader(rect),
+                                      child: Image.asset(
+                                        'assets/icons/home.png',
+                                        width: 24.w,
+                                        color: controller.selectedIndex == 0
+                                            ? Colors.white
+                                            : Color(0xFFA2ACAC),
+                                        // height: 30.h,
+                                      )),
+
+                                  label: '',
+                                ),
+                                BottomNavigationBarItem(
+                                  icon: ShaderMask(
+                                    shaderCallback: (Rect bounds) {
+                                      return LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: controller.selectedIndex == 1
+                                            ? [
+                                                Color(0xFFF792F0),
+                                                Color(0xFFFABD63),
+                                              ]
+                                            : [
+                                                Color(0xFFA2ACAC),
+                                                Color(0xFFA2ACAC)
+                                              ],
+                                      ).createShader(bounds);
+                                    },
+                                    child: Image.asset(
+                                      'assets/icons/planet.png',
+                                      color: controller.selectedIndex == 1
+                                          ? Colors.white
+                                          : Color(0xFFA2ACAC),
+                                      width: 34.w,
+                                      // height: 30.h,
+                                    ),
+                                  ),
+                                  label: '',
+                                ),
+                                BottomNavigationBarItem(
+                                  icon: ShaderMask(
+                                    shaderCallback: (Rect bounds) {
+                                      return LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: controller.selectedIndex == 3
+                                            ? [
+                                                Color(0xFFF792F0),
+                                                Color(0xFFFABD63),
+                                              ]
+                                            : [
+                                                Color(0xFFA2ACAC),
+                                                Color(0xFFA2ACAC)
+                                              ],
+                                      ).createShader(bounds);
+                                    },
+                                    child: Image.asset(
+                                      'assets/icons/bag.png',
+                                      color: controller.selectedIndex == 3
+                                          ? Colors.white
+                                          : Color(0xFFA2ACAC),
+                                      width: 24.w,
+                                      // height: 30.h,
+                                    ),
+                                  ),
+                                  label: '',
+                                ),
+                              ],
                       ),
                     )
                   : null,
