@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings
 
 import 'package:flutter/material.dart';
 import 'package:lametna/controllers/chat/room%20managment/roomSettingsController.dart';
+import 'package:lametna/controllers/userData/variables.dart';
 import 'package:lametna/view/chat/appBar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -85,25 +86,9 @@ class RoomSettings extends StatelessWidget {
                                         EdgeInsets.symmetric(vertical: 6.h),
                                     child: GestureDetector(
                                       onTap: () {
-                                        // print(controller.roomInfo);
-                                        // controller.pickRoomImage();
-
                                         if (index == 0) {
                                           controller.uploadRoomImage(
                                               Get.arguments["room_id"]);
-                                          // showDialog(
-                                          //   context: context,
-                                          //   barrierDismissible: false,
-                                          //   useSafeArea: false,
-                                          //   builder: (context) => WillPopScope(
-                                          //     onWillPop: () => Future.value(false),
-                                          //     child: Center(
-                                          //         child: CircularProgressIndicator()),
-                                          //   ),
-                                          // );
-                                          // AlertDialog(
-                                          //   content: CircularProgressIndicator(),
-                                          // );
                                         } else if (index == 1) {
                                           controller.uploadBackgroundRoomImage(
                                               Get.arguments["room_id"]);
@@ -121,39 +106,118 @@ class RoomSettings extends StatelessWidget {
                                           );
                                         } else if (index == 5) {
                                           // print("object");
-                                          controller.changeCameraStatus();
+                                          // controller.changeCameraStatus();
+                                          Get.toNamed(
+                                            '/cameraSettings',
+                                            arguments: {
+                                              "room_id":
+                                                  Get.arguments["room_id"],
+                                            },
+                                          );
                                         } else if (index == 6) {
                                           // print("object");
-                                          controller
-                                              .changePrivateMessageStatus();
+                                          // controller
+                                          //     .changePrivateMessageStatus();
+                                          Get.toNamed(
+                                            '/privateMessagesSetting',
+                                            arguments: {
+                                              "room_id":
+                                                  Get.arguments["room_id"],
+                                            },
+                                          );
                                         } else if (index == 7) {
                                           // print("object");
                                           controller.changeRoomLockStatus();
                                         } else if (index == 8) {
                                           print("object");
-                                          // controller.pickerColor;
-                                          Get.defaultDialog(
-                                            content: ColorPicker(
-                                              showLabel: false,
-                                              pickerColor:
-                                                  controller.pickerColor,
-                                              onColorChanged: (value) {
-                                                controller
-                                                    .updatePickerColor(value);
-                                              },
-                                            ),
-                                            confirm: TextButton(
-                                              onPressed: () {
-                                                Get.back();
-                                              },
-                                              child: Text(
-                                                "تم",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontFamily: 'Portada'),
-                                              ),
-                                            ),
-                                          );
+                                          if (controller.roomType) {
+                                            Get.snackbar(
+                                              "",
+                                              "",
+                                              titleText: Text("تنبية",
+                                                  textAlign: TextAlign.end,
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      // fontSize: 22.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                              messageText: Text(
+                                                  "لا يمكنك تغيير نمط الغرفة لأنها غرفة عامة",
+                                                  textAlign: TextAlign.end,
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      // fontSize: 22.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                              snackPosition:
+                                                  SnackPosition.BOTTOM,
+                                              backgroundColor: Colors.grey[300],
+                                              colorText: Colors.black,
+                                            );
+                                          } else {
+                                            showDialog(
+                                              // barrierColor: Colors.grey,
+                                              // barrierDismissible: false,
+                                              context: context,
+                                              builder: (context) => GetBuilder<
+                                                      RoomSettingController>(
+                                                  builder: (controller) {
+                                                return AlertDialog(
+                                                  content:
+                                                      SingleChildScrollView(
+                                                    child: ColorPicker(
+                                                      // hexInputBar: true,
+                                                      // hexInputController:
+                                                      //     controller.hexaInputController,
+                                                      pickerAreaHeightPercent:
+                                                          0.9,
+                                                      pickerAreaBorderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(360.r),
+                                                      ),
+                                                      showLabel: false,
+                                                      paletteType:
+                                                          PaletteType.hsl,
+                                                      pickerColor: controller
+                                                          .pickerColor,
+                                                      onColorChanged: (value) {
+                                                        // print(value);
+                                                        controller.colorCode = ("#" +
+                                                            value.toString().substring(
+                                                                10,
+                                                                value
+                                                                        .toString()
+                                                                        .length -
+                                                                    1));
+                                                        // controller
+                                                        //     .updatePickerColor(
+                                                        //         value);
+                                                      },
+                                                    ),
+                                                  ),
+                                                  actions: [
+                                                    Center(
+                                                      child: TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        child: Text(
+                                                          "تم",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 15.sp,
+                                                            fontFamily:
+                                                                "Segoe UI",
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              }),
+                                            );
+                                          }
                                         } else if (index == 10) {
                                           print("object");
                                           Get.toNamed('/advancedSettings',
@@ -184,6 +248,46 @@ class RoomSettings extends StatelessWidget {
                                             ),
                                           ),
                                           Spacer(),
+                                          index == 0
+                                              ? Image.network(
+                                                  roomImagesURL +
+                                                      Get.arguments["room_id"] +
+                                                      ".jpeg",
+                                                  width: 25.w,
+                                                  height: 25.h,
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder: (context, error,
+                                                          stackTrace) =>
+                                                      SizedBox(),
+                                                )
+                                              : SizedBox(),
+                                          index == 1
+                                              ? Image.network(
+                                                  roomBackgroundImagesURL +
+                                                      Get.arguments["room_id"] +
+                                                      ".jpeg",
+                                                  width: 25.w,
+                                                  height: 25.h,
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder: (context, error,
+                                                          stackTrace) =>
+                                                      SizedBox(),
+                                                )
+                                              : SizedBox(),
+                                          index == 8
+                                              ? Container(
+                                                  width: 25.w,
+                                                  height: 25.h,
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        controller.pickerColor,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(3.r),
+                                                    ),
+                                                  ),
+                                                )
+                                              : SizedBox(),
                                           Padding(
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 20.w),

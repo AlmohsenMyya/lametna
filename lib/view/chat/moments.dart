@@ -5,12 +5,71 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lametna/view/chat/appBar.dart';
 
 class Moments extends StatelessWidget {
-  const Moments({Key key}) : super(key: key);
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Moments({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appbarBuilder("اللحظات", false),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(72.h),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFFFABD63),
+                Color(0xFFF792F0),
+              ],
+              begin: Alignment.topRight,
+              end: Alignment.topLeft,
+            ),
+          ),
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            centerTitle: true,
+            elevation: 0,
+            leadingWidth: 130.w,
+            leading: Row(
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.notifications),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.favorite),
+                ),
+              ],
+            ),
+            title: Text(
+              "Lametna",
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Portada",
+              ),
+            ),
+            actions: [
+              Padding(
+                padding: EdgeInsets.only(right: 15.w),
+                child: Image.asset(
+                  "assets/images/trophy.png",
+                  width: 55.w,
+                  height: 30.h,
+                ),
+              ),
+              IconButton(
+                  onPressed: () {
+                    // print("object");
+                    // Scaffold.of(context).openDrawer();
+                    _scaffoldKey.currentState.openEndDrawer();
+                  },
+                  icon: Icon(Icons.menu)),
+            ],
+          ),
+        ),
+      ),
       body: Column(
         children: [
           SizedBox(

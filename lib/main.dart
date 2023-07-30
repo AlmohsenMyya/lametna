@@ -1,13 +1,17 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
 
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lametna/controllers/side%20pages/trophy..dart';
+import 'package:lametna/internet.dart';
 import 'package:lametna/test.dart';
 import 'package:lametna/view/ChoosingPage.dart';
 import 'package:lametna/view/LoginPage.dart';
 import 'package:get/get.dart';
 import 'package:lametna/view/chat/about.dart';
+import 'package:lametna/view/chat/in%20room%20chat/previousChats.dart';
+import 'package:lametna/view/chat/privateMessageRoom.dart';
 import 'package:lametna/view/chat/room%20mangement/accountMangement.dart';
 import 'package:lametna/view/chat/moments.dart';
 import 'package:lametna/view/chat/room%20mangement/advancedSettings.dart';
@@ -17,6 +21,7 @@ import 'package:lametna/view/chat/roomInfo.dart';
 import 'package:lametna/view/chat/roomMangement.dart';
 import 'package:lametna/view/chat/roomPageSettings.dart';
 import 'package:lametna/view/chatHomePage.dart';
+import 'package:lametna/view/control%20panel/mainControllerPanel.dart';
 import 'package:lametna/view/countries.dart';
 import 'package:lametna/view/customer%20service/ComplaintsSuggestions.dart';
 import 'package:lametna/view/customer%20service/customerServiceChat.dart';
@@ -34,6 +39,10 @@ import 'package:lametna/view/profile/editPerson.dart';
 import 'package:lametna/view/profile/profile.dart';
 import 'package:lametna/view/profile/editProfile.dart';
 import 'package:lametna/view/side%20pages/search.dart';
+import 'package:lametna/view/side%20pages/viewImage.dart';
+
+import 'view/chat/room mangement/side pages/cameraSettings.dart';
+import 'view/chat/room mangement/side pages/privateMessages.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,6 +60,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final ConnectionController connectionController =
+    //     Get.put();
     //Set the fit size (Find your UI design, look at the dimensions of the device screen and fill it in,unit in dp)
     return ScreenUtilInit(
       designSize: Size(428, 926),
@@ -92,6 +103,16 @@ class MyApp extends StatelessWidget {
             GetPage(name: "/profile", page: () => Profile()),
             GetPage(name: "/editProfile", page: () => EditProfileAccount()),
             GetPage(name: "/advancedSettings", page: () => AdvancedSettings()),
+            GetPage(
+                name: "/privateMessagesSetting", page: () => PrivateMessages()),
+            GetPage(name: "/cameraSettings", page: () => CameraSettings()),
+            GetPage(
+                name: "/privateMessageRoom", page: () => PrivateMessageRoom()),
+            GetPage(
+                name: "/mainControllerPanel",
+                page: () => MainControllerPanel()),
+            GetPage(name: "/PreviousChat", page: () => PreviosChat()),
+            GetPage(name: "/viewImage", page: () => ViewImage()),
           ],
           title: 'First Method',
           // You can use the library anywhere in the app even in theme
@@ -103,6 +124,29 @@ class MyApp extends StatelessWidget {
         );
       },
       child: choosingPage(),
+      // child: Center(
+      //     child: GetBuilder<ConnectionController>(
+      //   init: ConnectionController(),
+      //   builder: (controller) {
+      //     String connectionStatusText =
+      //         controller.connectionStatus == ConnectivityResult.none
+      //             ? "No Internet Connection"
+      //             : "Connected to the Internet";
+      //     return StreamBuilder(
+      //         stream: Stream.periodic(Duration(seconds: 1), (i) {
+      //           controller.checkConnectivity();
+      //         }),
+      //         builder: (context, snapshot) {
+      //           if (controller.connectionStatus == ConnectivityResult.none) {
+      //             return Text("Connection Status: $connectionStatusText");
+      //           } else {
+      //             return Center(
+      //               child: choosingPage(),
+      //             );
+      //           }
+      //         });
+      //   },
+      // )),
     );
   }
 }

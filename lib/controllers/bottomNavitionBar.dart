@@ -23,8 +23,8 @@ class BottomNavitionBarController extends GetxController {
 
   List<Widget> pages = <Widget>[
     ChatHomePage(),
-    // Moments(),
-    Container(),
+    Moments(),
+    // Container(),
     !isGuest ? Messages() : null,
     test(),
     // Container()

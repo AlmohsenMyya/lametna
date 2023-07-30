@@ -8,11 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:lametna/controllers/Crud.dart';
+import 'package:lametna/controllers/chat/voice%20and%20video/videoController.dart';
 import 'package:lametna/controllers/chathomePageController.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/model/message.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:lametna/view/chat/addAccount.dart';
+import 'package:image_picker/image_picker.dart';
+
 import 'package:get_ip_address/get_ip_address.dart';
 import 'package:lametna/view/chatHomePage.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -27,7 +30,7 @@ class RoomsPageController extends GetxController {
   StreamController streamController = StreamController();
   StreamController membersController = StreamController();
   OverlayEntry entry;
-  Timer _timer;
+  // Timer _timer;
   TextEditingController messageController = TextEditingController();
   bool scrollDownButton = true;
   ScrollController scrollController = ScrollController();
@@ -39,7 +42,8 @@ class RoomsPageController extends GetxController {
   bool inCall = false;
 
   var userInRoom;
-  String roomId = Get.arguments["roomId"];
+  String roomId;
+  // bool owner = Get.arguments["owner"] == userName;
 
   //blocktime
   String quarterHour = DateTime.now()
@@ -79,230 +83,34 @@ class RoomsPageController extends GetxController {
       .substring(0, 19)
       .toString();
   bool isKicked = false;
+  VideoController videoController = Get.put(VideoController());
 
   //voice room
-  String channelName = "";
-  String token = "";
+  // String channelName = "";
+  // String token = "";
   // String channelName = "2";
   // String token =
   //     "007eJxTYKh99aOr7HP0FNmPLzgVK1YnqwZP1vVbq75dyuf/pVtvzu5WYEg1NDVMTrYwM05JMTZJTEm2TDM3SzOwME01SUsyTzK30P28MKUhkJHhg74DEyMDBIL4jAxGDAwAlBAgUQ==";
 
-  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
-      GlobalKey<ScaffoldMessengerState>();
-
-  int uid = 0; // uid of the local user
-  //voice room
-  int _remoteUid; // uid of the remote user
-  bool _isJoined = false; // Indicates if the local user has joined the channel
-  RtcEngine agoraEngine; // Agora engine instance
-  showMessage(String message) {
-    scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(
-      content: Text(message),
-    ));
-  }
-
   @override
   Future<void> onInit() async {
     super.onInit();
+    roomId = await Get.arguments["room_id"];
     onJoin();
     isKicked = false;
+
     await getRoomInformation();
-    // setupVoiceSDKEngine();
-    // setupVideoSDKEngine();
-    // print(Get.arguments["room_id"]);
-    roomId = Get.arguments["room_id"];
-
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      // print(channelName);
-      // print(token);
-
-      return getData();
-    });
-
-    // getData();
   }
 
   //video
-  int _remoteUidVideo; // uid of the remote user
-  bool _isJoinedVideo =
-      false; // Indicates if the local user has joined the channel
-  bool _isHost = Get.arguments["owner"] == userName;
-  RtcEngine agoraEngineVideo; // Agora engine instance
-
-  Future setupVideoSDKEngine() async {
-    await [Permission.microphone, Permission.camera].request();
-    agoraEngineVideo = createAgoraRtcEngine();
-    await agoraEngineVideo.initialize(const RtcEngineContext(appId: APP_ID));
-    agoraEngineVideo.enableVideo();
-
-    // Register the event handler
-    agoraEngineVideo.registerEventHandler(
-      RtcEngineEventHandler(
-        onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
-          showMessage(
-              "Local user uid:${connection.localUid} joined the channel");
-          _isJoinedVideo = true;
-          update();
-        },
-        onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
-          showMessage("Remote user uid:$remoteUid joined the channel");
-
-          _remoteUidVideo = remoteUid;
-          update();
-        },
-        onUserOffline: (RtcConnection connection, int remoteUid,
-            UserOfflineReasonType reason) {
-          showMessage("Remote user uid:$remoteUid left the channel");
-
-          _remoteUidVideo = null;
-          update();
-        },
-      ),
-    );
-  }
-
-  void joinVideoChannel() async {
-    await setupVideoSDKEngine();
-    ChannelMediaOptions options;
-    if (_isHost) {
-      options = const ChannelMediaOptions(
-        clientRoleType: ClientRoleType.clientRoleBroadcaster,
-        channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
-      );
-      await agoraEngineVideo.startPreview();
-    } else {
-      options = const ChannelMediaOptions(
-        clientRoleType: ClientRoleType.clientRoleAudience,
-        channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
-      );
-    }
-    await agoraEngineVideo.joinChannel(
-      token: token,
-      channelId: channelName,
-      options: options,
-      uid: uid,
-    );
-  }
-
-  void leaveVideoChannel() {
-    _isJoinedVideo = false;
-    _remoteUidVideo = null;
-    update();
-    agoraEngineVideo.leaveChannel();
-  }
-
-  Future<void> setupVoiceSDKEngine() async {
-    // retrieve or request microphone permission
-    await [Permission.microphone].request();
-
-    //create an instance of the Agora engine
-    agoraEngine = createAgoraRtcEngine();
-    await agoraEngine.initialize(const RtcEngineContext(appId: APP_ID));
-
-    // Register the event handler
-    agoraEngine.registerEventHandler(
-      RtcEngineEventHandler(
-        onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
-          showMessage(
-              "Local user uid:${connection.localUid} joined the channel");
-          _isJoined = true;
-          update();
-        },
-        onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
-          showMessage("Remote user uid:$remoteUid joined the channel");
-
-          _remoteUid = remoteUid;
-          update();
-        },
-        onUserOffline: (RtcConnection connection, int remoteUid,
-            UserOfflineReasonType reason) {
-          showMessage("Remote user uid:$remoteUid left the channel");
-
-          _remoteUid = null;
-          update();
-        },
-      ),
-    );
-  }
-
-  Widget videoPanel() {
-    if (!_isJoinedVideo) {
-      return SizedBox();
-    } else if (_isHost) {
-      // Show local video preview
-      return AgoraVideoView(
-        controller: VideoViewController(
-          rtcEngine: agoraEngineVideo,
-          canvas: VideoCanvas(uid: 0),
-        ),
-      );
-    } else {
-      // Show remote video
-      if (_remoteUidVideo != null) {
-        return AgoraVideoView(
-          controller: VideoViewController.remote(
-            rtcEngine: agoraEngineVideo,
-            canvas: VideoCanvas(uid: _remoteUidVideo),
-            connection: RtcConnection(channelId: channelName),
-          ),
-        );
-      } else {
-        return Text(
-          "data 2",
-          style: TextStyle(color: Colors.green),
-        );
-      }
-    }
-  }
-
-  void join() async {
-    // Set channel options including the client role and channel profile
-    // setupVoiceSDKEngine();
-    var response = await http.post(Uri.parse(membersInCall), body: {
-      "roomId": Get.arguments["room_id"],
-      "name": isGuest ? guestUserName : userName,
-    });
-    ChannelMediaOptions options = const ChannelMediaOptions(
-      clientRoleType: ClientRoleType.clientRoleBroadcaster,
-      channelProfile: ChannelProfileType.channelProfileCommunication,
-    );
-    Get.snackbar("تم الانضمام", "تم الانضمام للغرفة بنجاح",
-        snackPosition: SnackPosition.BOTTOM);
-
-    await agoraEngine.joinChannel(
-      token: token,
-      channelId: channelName,
-      options: options,
-      uid: uid,
-    );
-  }
-
-  Future<void> leave() async {
-    _isJoined = false;
-    _remoteUid = null;
-    update();
-    // agoraEngine.leaveChannel();
-    // agoraEngine.release();
-    // agoraEngineVideo.leaveChannel();
-    // agoraEngineVideo.release();
-    var response = await http.post(Uri.parse(deleteMemberInCall), body: {
-      "roomId": Get.arguments["room_id"],
-      "name": isGuest ? guestUserName : userName,
-    });
-    Get.snackbar("sucess", "leave");
-  }
-
   @override
   Future<void> dispose() async {
     // TODO: implement dispose
     // getActiveOrDefualtBask
     //  emitTypingChange(0);
     await streamController.close();
-    _timer.cancel();
-    await agoraEngineVideo.leaveChannel();
-    await agoraEngineVideo.release();
-    await agoraEngine.leaveChannel();
-    await agoraEngine.release();
+    // _timer.cancel();
+
     onLeave();
     // await agoraEngine.leaveChannel();
     super.dispose();
@@ -312,14 +120,9 @@ class RoomsPageController extends GetxController {
   Future<void> onClose() async {
     print("close");
 
-    // onJoinOrLeave(false);
-    await agoraEngineVideo.leaveChannel();
-    await agoraEngineVideo.release();
-    await agoraEngine.leaveChannel();
-    await agoraEngine.release();
     streamController.close();
-    onLeave();
-    _timer.cancel();
+    // onLeave();
+    // _timer.cancel();
     super.onClose();
   }
 
@@ -329,8 +132,8 @@ class RoomsPageController extends GetxController {
       "roomId": Get.arguments["room_id"],
     });
     final dataBody = json.decode(response.body);
-    channelName = dataBody["data"][0]["Channel_Name"];
-    token = dataBody["data"][0]["Token"];
+    // channelName = dataBody["data"][0]["Channel_Name"];
+    // token = dataBody["data"][0]["Token"];
     update();
     // print();
   }
@@ -341,12 +144,12 @@ class RoomsPageController extends GetxController {
     await http.post(url2, body: {
       "roomId": Get.arguments["room_id"],
       "senderName": "roomAlert",
-      "message": "${userName} انضم للغرفة",
+      "message": "$userName انضم للغرفة",
       "joinOrLeave": "0", //left 1 joined 0
     });
 
     await http.post(url, body: {
-      "roomId": Get.arguments["room_id"],
+      "roomId": roomId,
       "userName": userName,
     });
   }
@@ -355,13 +158,13 @@ class RoomsPageController extends GetxController {
     var url = Uri.parse(leaveRoom);
     var url2 = Uri.parse(sendRoomMessage);
     await http.post(url2, body: {
-      "roomId": Get.arguments["room_id"],
+      "roomId": roomId,
       "senderName": "roomAlert",
       "message": "$userName غادر للغرفة",
       "joinOrLeave": "1", //left 1 joined 0
     });
     await http.post(url, body: {
-      "roomId": Get.arguments["room_id"],
+      "roomId": roomId,
       "userName": userName,
     });
     print("leave");
@@ -373,7 +176,7 @@ class RoomsPageController extends GetxController {
     try {
       var url = Uri.parse(getRoomMessagesUrl);
       var response = await http.post(url, body: {
-        "roomId": Get.arguments["room_id"],
+        "roomId": roomId,
       });
       final dataBody = json.decode(response.body);
 
@@ -393,23 +196,53 @@ class RoomsPageController extends GetxController {
           update();
         }
       }
-      // print("-------------------");
+      // if (owner) {
+      //   if (dataBody["videoRequest"].length != 0) {
+      //     for (var e in dataBody["videoRequest"]) {
+      //       print(e);
+      //       await Get.defaultDialog(
+      //           middleText: "هل تريد قبول طلب الفيديو من ${e["name"]}",
+      //           middleTextStyle: TextStyle(color: Colors.black),
+      //           confirm: TextButton(
+      //               child: Text(
+      //                 "test",
+      //                 style: TextStyle(color: Colors.black),
+      //               ),
+      //               onPressed: () {
+      //                 remove(e["name"], roomId);
+      //                 Get.back();
+      //               }));
+      //     }
+      //   }
+      //   print(dataBody["videoRequest"]);
+      //   print("-------------------");
+      // }
 
       membersController.sink.add(dataBody["membersInCall"]);
       // print(dataBody["membersInCall"]);
       streamController.sink.add(dataBody);
+      update();
     } catch (e) {}
   }
 
   sendMessage(String message) async {
     print(isRole);
     print(isGuest);
+
+    var response = await http.post(Uri.parse(messageInRoomStatus), body: {
+      "roomId": roomId,
+      //left 1 joined 0
+    });
+    final dataBody = json.decode(response.body);
+    // if
+    print(dataBody);
+    // Get.snackbar("title", );
     if (message != "") {
       messageStatus = true;
       update();
       var url = Uri.parse(sendRoomMessage);
       var response = await http.post(url, body: {
-        "roomId": Get.arguments["room_id"],
+        "roomId": roomId,
         "senderName": userName,
         "message": message,
         "isGuest": isGuest && !isRole ? "1" : "0",
@@ -417,13 +250,26 @@ class RoomsPageController extends GetxController {
       });
 
       final dataBody = json.decode(response.body);
-      print(dataBody);
-      if (dataBody["status"] == "success") {
-        messageController.clear();
-        messageStatus = false;
-        update();
+      // print(dataBody);
+      if (dataBody["status"] == "fail") {
+        Get.snackbar("تنبية", dataBody["message"]);
       }
+      messageController.clear();
+      messageStatus = false;
+      update();
+    } else {
+      Get.snackbar("تنبية", "لا يمكن ارسال رسال فارغة");
     }
+  }
+
+  remove(name, id) {
+    var url = Uri.parse(
+        'https://lametnachat.com/rooms/deleteVideoRequest.php'); //https://lametnachat.com/rooms/deleteVideoRequest.php //videoRequest
+    http.post(url, body: {
+      "roomId": id,
+      "name": name,
+      // "status": "",
+    });
   }
 
   getRoomMembers() async {
@@ -431,7 +277,7 @@ class RoomsPageController extends GetxController {
       // usersInRoom.sink.close();
       var url = Uri.parse(roomMember);
       var response = await http.post(url, body: {
-        "roomid": Get.arguments["room_id"],
+        "roomid": roomId,
       });
       final dataBody = json.decode(response.body);
       // print(dataBody);
@@ -521,8 +367,8 @@ class RoomsPageController extends GetxController {
   }
 
   Future<void> changeRoomStatus() async {
-    // print(Get.arguments["room_id"]);
-    print("changed");
+    // print(roomId);
+    // print("changed");
 
     var url = Uri.parse(changeRoomPlan);
     var response = await http.post(url, body: {
@@ -531,7 +377,7 @@ class RoomsPageController extends GetxController {
     final dataBody = json.decode(response.body);
     print(dataBody);
     if (dataBody["status"] == "success") {
-      print("changed");
+      // print("changed");
       roomStatus = !roomStatus;
     }
     update();
@@ -552,15 +398,15 @@ class RoomsPageController extends GetxController {
     // agoraEngine.muteLocalAudioStream(mic);
   }
 
-  micStatus() {
-    if (mute) {
-      agoraEngine.muteLocalAudioStream(false);
-    } else {
-      agoraEngine.muteLocalAudioStream(true);
-    }
-    mute = !mute;
-    update();
-  }
+  // micStatus() {
+  //   if (mute) {
+  //     agoraEngine.muteLocalAudioStream(false);
+  //   } else {
+  //     agoraEngine.muteLocalAudioStream(true);
+  //   }
+  //   mute = !mute;
+  //   update();
+  // }
 
   toggleCamera() {
     if (micWidget) {
@@ -570,16 +416,16 @@ class RoomsPageController extends GetxController {
     update();
   }
 
-  joinLeaveCalls() {
-    if (!inCall) {
-      join();
-    } else {
-      leave();
-    }
-    inCall = !inCall;
-    update();
-    print(inCall);
-  }
+  // joinLeaveCalls() {
+  //   if (!inCall) {
+  //     join();
+  //   } else {
+  //     leave();
+  //   }
+  //   inCall = !inCall;
+  //   update();
+  //   print(inCall);
+  // }
 
   getUserIP() async {
     var ipAddress = IpAddress(type: RequestType.json);

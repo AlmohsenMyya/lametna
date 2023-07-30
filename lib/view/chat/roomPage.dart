@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, missing_return, use_full_hex_values_for_flutter_colors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, missing_return, use_full_hex_values_for_flutter_colors, prefer_interpolation_to_compose_strings, unrelated_type_equality_checks
 
 import 'dart:async';
 import 'package:floating_draggable_widget/floating_draggable_widget.dart';
@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/chat/roomsPageController.dart';
+import 'package:lametna/controllers/chat/voice%20and%20video/videoController.dart';
+import 'package:lametna/controllers/chat/voice%20and%20video/voiceController.dart';
 import 'package:lametna/model/message.dart';
 import 'package:lametna/view/chat/roomMangement.dart';
 import 'package:lametna/view/messages/messages.dart';
@@ -67,21 +69,38 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
       autoAlign: false,
       dx: 0,
       dy: 80,
-      floatingWidget: GetBuilder<RoomsPageController>(
-        init: RoomsPageController(),
-        builder: (controller) => Container(
-          child: controller.videoPanel(),
-        ),
-      ),
+      floatingWidget: SizedBox(),
+
+      //  GetBuilder<VideoController>(
+      //   init: VideoController(),
+      //   builder: (controller) => Positioned(
+      //     right: 0,
+      //     child: SizedBox(
+      //       width: 151.w,
+      //       height: 130.h,
+      //       child: controller.videoPanel(),
+      //     ),
+      //   ),
+      // ),
       mainScreenWidget: SafeArea(
         child: WillPopScope(
           onWillPop: () {
             Get.put(RoomsPageController()).onLeave();
+            AppLifecycleState isBackground = _lastLifecycleState;
+            if (isBackground == AppLifecycleState.paused) {
+              print("paused");
+            } else if (isBackground == AppLifecycleState.detached) {
+              print("detached");
+            } else if (isBackground == AppLifecycleState.inactive) {
+              print("inactive");
+            }
+            // return Future.value(true);
             // return true;
           },
           child: Builder(builder: (context) {
             return Scaffold(
               // key: _scaffoldKey,
+
               drawerScrimColor: Colors.transparent,
               endDrawer: Padding(
                 padding: EdgeInsets.symmetric(vertical: 70.h),
@@ -96,17 +115,13 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
                               initialData: controller.getRoomMembers(),
                               stream: null,
                               builder: (context, snapshot) {
-                                // return Text(
-                                //   controller.userInRoom.toString(),
-                                //   style: TextStyle(
-                                //     color: Colors.black,
-                                //   ),
-                                // );
-
                                 return ListView.builder(
                                   shrinkWrap: true,
                                   itemCount:
                                       controller.userInRoom["data"].length,
+                                  // separatorBuilder: (context, index) => Divider(
+                                  //   color: Colors.grey,
+                                  // ),
                                   itemBuilder: (context, index) =>
                                       PopupMenuButton(
                                     child: Container(
@@ -114,46 +129,141 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
                                           horizontal: 10.w, vertical: 10.h),
                                       decoration: BoxDecoration(
                                         color: Colors.white,
-                                        border: Border.all(
-                                          color: Color(0xFF43D0CA),
-                                          width: 2.0,
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: Colors.grey.withOpacity(0.7),
+                                          ),
                                         ),
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
-                                          Text(
-                                            controller.userInRoom["data"][index]
-                                                    ["username"]
-                                                .toString(),
-                                            style: TextStyle(
-                                              fontSize: 14.sp,
-                                              fontFamily: "Segoe UI",
-                                              color: Colors.black,
+                                          SizedBox(
+                                            // color: Colors.red,
+                                            height: 35.h,
+                                            width: 150.w,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                // Text()
+                                                // ,
+                                                controller.userInRoom["data"]
+                                                                [index]
+                                                            ["cameraIs"] ==
+                                                        "0"
+                                                    ? SizedBox()
+                                                    : Icon(
+                                                        Icons.camera_alt,
+                                                        size: 20.sp,
+                                                      ),
+                                                Text(controller
+                                                        .userInRoom["data"]
+                                                    [index]["statusIs"]),
+                                                controller.userInRoom["data"]
+                                                            [index]["micIs"] ==
+                                                        "0"
+                                                    ? SizedBox()
+                                                    : Icon(
+                                                        Icons.mic,
+                                                        size: 20.sp,
+                                                      ),
+                                                // Text(),
+                                                controller.userInRoom["data"]
+                                                            [index]["MuteIs"] ==
+                                                        "0"
+                                                    ? SizedBox()
+                                                    : Icon(
+                                                        Icons.volume_off,
+                                                        size: 20.sp,
+                                                      ),
+
+                                                // Text(),
+                                                controller.userInRoom["data"]
+                                                            [index]["handIs"] ==
+                                                        "0"
+                                                    ? SizedBox()
+                                                    : Icon(
+                                                        Icons.back_hand_rounded,
+                                                        size: 20.sp,
+                                                      ),
+                                              ],
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          SizedBox(
+                                            width: 80.w,
+                                            child: Text(
+                                              controller.userInRoom["data"]
+                                                      [index]["username"]
+                                                  .toString(),
+                                              textAlign: TextAlign.center,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 14.sp,
+                                                fontFamily: "Segoe UI",
+                                                color: Colors.black,
+                                              ),
                                             ),
                                           ),
                                           Padding(
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 10.w),
-                                            child: Image.asset(
-                                              'assets/icons/profile.png',
-                                              width: 25.w,
-                                              height: 30.h,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(360.r),
+                                              child: Image.network(
+                                                imageURL +
+                                                    controller
+                                                            .userInRoom["data"]
+                                                        [index]["username"] +
+                                                    ".jpeg",
+                                                width: 25.w,
+                                                height: 30.h,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error,
+                                                        stackTrace) =>
+                                                    Icon(
+                                                  Icons.person,
+                                                  color: Colors.black,
+                                                  size: 24.sp,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
                                     itemBuilder: (context) => [
-                                      usersPopUpMenu("محادثة خاصة"),
+                                      usersPopUpMenu(
+                                        "محادثة خاصة",
+                                        f: () async {
+                                          await Get.back();
+                                          Get.toNamed(
+                                            "/privateMessageRoom",
+                                            arguments: {
+                                              "username":
+                                                  controller.userInRoom["data"]
+                                                      [index]["username"],
+                                              "room_id":
+                                                  Get.arguments['room_id'],
+                                            },
+                                          );
+                                        },
+                                      ),
                                       usersPopUpMenu(
                                           controller.userInRoom["data"][index]
                                               ["username"]),
-                                      usersPopUpMenu("الإبلاغ عن الستخدم"),
-                                      isOwner
-                                          ? null
-                                          : PopupMenuItem(
+                                      usersPopUpMenu("الإبلاغ عن الستخدم",
+                                          f: () {
+                                        print(roleType);
+                                      }),
+                                      isOwner ||
+                                              roleType == "1" && roleType != "0"
+                                          ? PopupMenuItem(
                                               value: 0,
                                               height: 25.h,
                                               textStyle: TextStyle(
@@ -171,49 +281,56 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
                                                 ),
                                                 itemBuilder: (context) => [
                                                   // usersPopUpMenu('معلومات المستخدم'),
-                                                  PopupMenuItem(
-                                                    value: 0,
-                                                    height: 25.h,
-                                                    textStyle: TextStyle(
-                                                      fontSize: 10.sp,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontFamily: "Portada",
-                                                      color: Color(0xFF43D0CA),
-                                                    ),
-                                                    child: PopupMenuButton(
-                                                      child: Align(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Text(
-                                                          "معلومات المستخدم",
-                                                        ),
-                                                      ),
-                                                      itemBuilder: (context) =>
-                                                          [
-                                                        usersPopUpMenu(
-                                                          'اسم المستخدم',
-                                                        ),
-                                                        usersPopUpMenu(
-                                                            'رقم الاي بي',
-                                                            f: () {
-                                                          controller
-                                                              .getUserIP();
-                                                        }),
-                                                        usersPopUpMenu(
-                                                            'نوع الجهاز',
-                                                            f: () {
-                                                          controller
-                                                              .getUserDeviceType();
-                                                        }),
-                                                        usersPopUpMenu('الدول',
-                                                            f: () {
-                                                          controller
-                                                              .getUserCountry();
-                                                        }),
-                                                      ],
-                                                    ),
-                                                  ),
+                                                  !isOwner
+                                                      ? PopupMenuItem(
+                                                          value: 0,
+                                                          height: 25.h,
+                                                          textStyle: TextStyle(
+                                                            fontSize: 10.sp,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontFamily:
+                                                                "Portada",
+                                                            color: Color(
+                                                                0xFF43D0CA),
+                                                          ),
+                                                          child:
+                                                              PopupMenuButton(
+                                                            child: Align(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              child: Text(
+                                                                "معلومات المستخدم",
+                                                              ),
+                                                            ),
+                                                            itemBuilder:
+                                                                (context) => [
+                                                              usersPopUpMenu(
+                                                                'اسم المستخدم',
+                                                              ),
+                                                              usersPopUpMenu(
+                                                                  'رقم الاي بي',
+                                                                  f: () {
+                                                                controller
+                                                                    .getUserIP();
+                                                              }),
+                                                              usersPopUpMenu(
+                                                                  'نوع الجهاز',
+                                                                  f: () {
+                                                                controller
+                                                                    .getUserDeviceType();
+                                                              }),
+                                                              usersPopUpMenu(
+                                                                  'الدول',
+                                                                  f: () {
+                                                                controller
+                                                                    .getUserCountry();
+                                                              }),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      : null,
                                                   // usersPopUpMenu('طرد'),
                                                   PopupMenuItem(
                                                     height: 25.h,
@@ -337,14 +454,18 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
                                                     ),
                                                   ),
                                                   usersPopUpMenu('إيقاف'),
-                                                  usersPopUpMenu('إرسال تحذير'),
+                                                  !isOwner
+                                                      ? usersPopUpMenu(
+                                                          'إرسال تحذير')
+                                                      : null,
                                                   usersPopUpMenu(
                                                       'مسح النص للجميع'),
 
                                                   // usersPopUpMenu('دائم'),
                                                 ],
                                               ),
-                                            ),
+                                            )
+                                          : null,
                                     ],
                                   ),
                                 );
@@ -397,6 +518,7 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
                               );
                             }),
                         PopupMenuButton(
+                          key: Key("menuButton"),
                           onCanceled: () {
                             print("You have canceled the menu.");
                           },
@@ -480,44 +602,120 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
                             ]
                                 .toList()
                                 .map((e) => PopupMenuItem(
-                                      height: e["mustBeAdmin"] ? 0 : 40.h,
-                                      child: e["mustBeAdmin"] && isOwner
+                                      onTap: () {},
+                                      height: e["name"] == "إدارة الغرفة" &&
+                                              isRole &&
+                                              roleType == "0"
+                                          ? 0.h
+                                          : e["name"] == "إدارة الغرفة" &&
+                                                  isGuest
+                                              ? 0.h
+                                              : 40.h,
+                                      child: e["name"] == "إدارة الغرفة" &&
+                                              isRole &&
+                                              roleType == "0"
                                           ? SizedBox()
-                                          : Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                Text(e["name"],
-                                                    style: TextStyle(
-                                                        fontSize: 15.sp,
-                                                        fontFamily: "Segoe",
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.black)),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: 10.w),
-                                                  child: e["icon"],
+                                          : e["name"] == "إدارة الغرفة" &&
+                                                  isGuest
+                                              ? SizedBox()
+                                              : Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Text(e["name"],
+                                                        style: TextStyle(
+                                                            fontSize: 15.sp,
+                                                            fontFamily: "Segoe",
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.black)),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 10.w),
+                                                      child: e["icon"],
+                                                    ),
+                                                  ],
                                                 ),
-                                              ],
-                                            ),
                                       value: int.parse(e["value"]),
                                     ))
                                 .toList();
                           },
                           onSelected: (value) {
-                            if (value == 1) {
-                              Get.toNamed("/roomSettingsPage");
+                            if (value == 0) {
+                              showMenu(
+                                context: context,
+                                position: RelativeRect.fromLTRB(50, 50, 50, 50),
+                                items: [
+                                  // usersPopUpMenu("dog"),
+                                  statusBuilder("متاح", icon: SizedBox()),
+                                  statusBuilder(
+                                    "بالخارج",
+                                    icon: Icon(
+                                      Icons.timer,
+                                      color: Colors.green,
+                                      size: 20.sp,
+                                    ),
+                                  ),
+                                  statusBuilder(
+                                    "مشغول",
+                                    icon: Icon(
+                                      Icons.stop_circle,
+                                      color: Colors.red,
+                                      size: 20.sp,
+                                    ),
+                                  ),
+                                  statusBuilder(
+                                    "هاتف",
+                                    icon: Icon(
+                                      Icons.phone,
+                                      color: Color(0xFF43D0CA),
+                                      size: 20.sp,
+                                    ),
+                                  ),
+                                  statusBuilder(
+                                    "طعام",
+                                    icon: Icon(
+                                      Icons.food_bank,
+                                      color: Colors.grey,
+                                      size: 20.sp,
+                                    ),
+                                  ),
+                                  statusBuilder(
+                                    "نائم",
+                                    icon: Icon(
+                                      Icons.nightlight,
+                                      color: Colors.purple,
+                                      size: 20.sp,
+                                    ),
+                                  ),
+                                  statusBuilder(
+                                    "سيارة",
+                                    icon: Icon(
+                                      Icons.airport_shuttle,
+                                      color: Colors.black,
+                                      size: 20.sp,
+                                    ),
+                                  ),
+                                ],
+                                elevation: 8.0,
+                              );
+                            } else if (value == 1) {
+                              // Get.toNamed("/roomSettingsPage");
+                              print(isGuest);
                             } else if (value == 2) {
                               Get.toNamed('/moments');
                             } else if (value == 3) {
                               Get.toNamed('/roomMangement', arguments: {
                                 "room_id": Get.arguments['room_id'],
                                 "room_name": Get.arguments['room_name'],
+                                "owner": Get.arguments['owner'],
                               });
                             } else if (value == 6) {
-                              Get.toNamed('/about');
+                              // Get.toNamed('/about');
+                              print(isOwner);
                             }
                           },
                         )
@@ -525,12 +723,26 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
                     ),
                     actions: <Widget>[
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          print(userName);
+                          print(Get.arguments["owner"]);
+                          print(isRole);
+                          print(roleType);
+                          print(isGuest);
+                          print(Get.arguments['room_id']);
+                        },
                         icon: Icon(Icons.volume_up),
                       ),
-                      ImageIcon(
-                        AssetImage('assets/icons/chat.png'),
-                        size: 23.sp,
+                      GestureDetector(
+                        onTap: () {
+                          Get.toNamed('/PreviousChat', arguments: {
+                            "roomId": Get.arguments['room_id'],
+                          });
+                        },
+                        child: ImageIcon(
+                          AssetImage('assets/icons/chat.png'),
+                          size: 23.sp,
+                        ),
                       ),
                       Builder(builder: (context) {
                         return GestureDetector(
@@ -550,9 +762,15 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
                   ),
                 ),
               ),
-
               body: Stack(
                 children: [
+                  Image.network(
+                    roomBackgroundImagesURL +
+                        Get.arguments['room_id'] +
+                        ".jpeg",
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => SizedBox(),
+                  ),
                   Column(
                     children: [
                       Expanded(
@@ -628,13 +846,21 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
                                                 ),
                                               ),
                                         SizedBox(
-                                          width: 60.w,
+                                          width: 50.w,
                                         ),
-                                        Text("22:10",
-                                            style: TextStyle(
-                                                fontSize: 9.sp,
-                                                fontFamily: "Portada",
-                                                color: Colors.black)),
+                                        GetBuilder<VoiceController>(
+                                            init: VoiceController(),
+                                            builder: (controller) {
+                                              return Text(
+                                                  controller
+                                                      .formatSecondsToTime(
+                                                          controller
+                                                              .currentTime),
+                                                  style: TextStyle(
+                                                      fontSize: 9.sp,
+                                                      fontFamily: "Portada",
+                                                      color: Colors.black));
+                                            }),
                                         SizedBox(
                                           width: 10.w,
                                         ),
@@ -738,102 +964,117 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
                                           ),
                                   ),
                                   // child: Container(),
-                                  child: StreamBuilder(
-                                    builder: (context, snapshot) {
-                                      // print(snapshot.data.length);
-                                      return snapshot.hasData
-                                          ? NotificationListener(
-                                              onNotification:
-                                                  (ScrollNotification
-                                                      scrollInfo) {
-                                                scrollInfo.metrics.pixels > 80
-                                                    ? controller
-                                                        .scrollDownButtonStatus(
-                                                            false)
-                                                    : controller
-                                                        .scrollDownButtonStatus(
-                                                            true);
-                                              },
-                                              child: ListView.builder(
-                                                controller:
-                                                    controller.scrollController,
-                                                reverse: true,
-                                                itemBuilder: (context, index) {
-                                                  if (snapshot.data["data"]
-                                                              [index]
-                                                          ["senderName"] ==
-                                                      "roomAlert") {
-                                                    return joinAndLeaveAlert(
-                                                        controller.roomStatus,
-                                                        snapshot.data["data"]
+                                  child: FutureBuilder(
+                                      future: controller.getData(),
+                                      builder: (context, snapshot) {
+                                        return StreamBuilder(
+                                          stream: controller
+                                              .streamController.stream,
+                                          builder: (context, snapshot) {
+                                            // print(snapshot.data.length);
+                                            return snapshot.hasData
+                                                ? NotificationListener(
+                                                    onNotification:
+                                                        (ScrollNotification
+                                                            scrollInfo) {
+                                                      scrollInfo.metrics
+                                                                  .pixels >
+                                                              80
+                                                          ? controller
+                                                              .scrollDownButtonStatus(
+                                                                  false)
+                                                          : controller
+                                                              .scrollDownButtonStatus(
+                                                                  true);
+                                                    },
+                                                    child: ListView.builder(
+                                                      controller: controller
+                                                          .scrollController,
+                                                      reverse: true,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        if (snapshot.data[
+                                                                        "data"]
+                                                                    [index][
+                                                                "senderName"] ==
+                                                            "roomAlert") {
+                                                          return joinAndLeaveAlert(
+                                                              controller
+                                                                  .roomStatus,
+                                                              snapshot.data["data"]
+                                                                              [
+                                                                              index]
+                                                                          [
+                                                                          "joinOrLeave"] ==
+                                                                      "0"
+                                                                  ? true
+                                                                  : false,
+                                                              snapshot
+                                                                  .data["data"]
+                                                                      [index][
+                                                                      "senderName"]
+                                                                  .toString(),
+                                                              snapshot
+                                                                  .data["data"]
+                                                                      [index][
+                                                                      "message"]
+                                                                  .toString());
+                                                        } else {
+                                                          if (controller
+                                                              .roomStatus) {
+                                                            return GestureDetector(
+                                                              onTap: () {
+                                                                print(snapshot.data[
+                                                                            "data"]
                                                                         [index][
-                                                                    "joinOrLeave"] ==
-                                                                "0"
-                                                            ? true
-                                                            : false,
-                                                        snapshot.data["data"]
-                                                                [index]
-                                                                ["senderName"]
-                                                            .toString(),
-                                                        snapshot.data["data"]
-                                                                [index]
-                                                                ["message"]
-                                                            .toString());
-                                                  } else {
-                                                    if (controller.roomStatus) {
-                                                      return GestureDetector(
-                                                        onTap: () {
-                                                          print(snapshot.data[
-                                                                  "data"][index]
-                                                              ["isGuest"]);
-                                                        },
-                                                        child: messageBuilder(
-                                                            context,
-                                                            snapshot.data[
-                                                                "data"][index],
-                                                            snapshot.data["data"]
+                                                                    "isGuest"]);
+                                                              },
+                                                              child: messageBuilder(
+                                                                  context,
+                                                                  snapshot.data[
+                                                                          "data"]
+                                                                      [index],
+                                                                  snapshot.data["data"][index]
+                                                                              [
+                                                                              "isGuest"] ==
+                                                                          "0"
+                                                                      ? true
+                                                                      : false),
+                                                            );
+                                                          } else {
+                                                            return messageVIPBuilder(
+                                                                context,
+                                                                snapshot.data[
+                                                                        "data"]
+                                                                    [index],
+                                                                snapshot.data["data"][index]
                                                                             [
-                                                                            index]
-                                                                        [
-                                                                        "isGuest"] ==
-                                                                    "0"
-                                                                ? true
-                                                                : false),
-                                                      );
-                                                    } else {
-                                                      return messageVIPBuilder(
-                                                          context,
-                                                          snapshot.data["data"]
-                                                              [index],
-                                                          snapshot.data["data"][
-                                                                          index]
-                                                                      [
-                                                                      "isGuest"] ==
-                                                                  "0"
-                                                              ? true
-                                                              : false);
-                                                      // return messageVIPBuilder(
-                                                      //     context,
-                                                      //     snapshot.data["data"][index],
-                                                      //     snapshot.data["data"][index]
-                                                      //                 ["isGuest"] ==
-                                                      //             "0"
-                                                      //         ? true
-                                                      //         : false);
-                                                    }
-                                                  }
-                                                },
-                                                itemCount: snapshot
-                                                    .data["data"].length,
-                                                // itemCount: 1,
-                                              ),
-                                            )
-                                          : Center(
-                                              child:
-                                                  CircularProgressIndicator());
-                                    },
-                                    stream: controller.streamController.stream,
-                                  ),
+                                                                            "isGuest"] ==
+                                                                        "0"
+                                                                    ? true
+                                                                    : false);
+                                                            // return messageVIPBuilder(
+                                                            //     context,
+                                                            //     snapshot.data["data"][index],
+                                                            //     snapshot.data["data"][index]
+                                                            //                 ["isGuest"] ==
+                                                            //             "0"
+                                                            //         ? true
+                                                            //         : false);
+                                                          }
+                                                        }
+                                                      },
+                                                      itemCount: snapshot
+                                                          .data["data"].length,
+                                                      // itemCount: 1,
+                                                    ),
+                                                  )
+                                                : Center(
+                                                    child:
+                                                        CircularProgressIndicator());
+                                          },
+                                        );
+                                      }),
                                 ),
                               );
                             }),
@@ -844,188 +1085,241 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
                       emojiPickerBuilder()
                     ],
                   ),
-                  GetBuilder<RoomsPageController>(builder: (controller) {
-                    return !controller.micWidget
-                        ? SizedBox()
-                        : Positioned(
-                            bottom: 73.h,
-                            right: 0.w,
-                            child: Container(
-                              height: 80.h,
-                              width: 250.w,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15.r),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 0,
-                                      blurRadius: 10.r,
-                                      offset: Offset(
-                                          0, 3), // changes position of shadow
-                                    ),
-                                  ]),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      controller.joinLeaveCalls();
-                                    },
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Center(
-                                          child: Icon(
-                                            Icons.mic,
-                                            color: Colors.black,
-                                          ),
+                  GetBuilder<VoiceController>(
+                      init: VoiceController(),
+                      builder: (controller) {
+                        return !controller.micWidget
+                            ? SizedBox()
+                            : Positioned(
+                                bottom: 73.h,
+                                right: 0.w,
+                                child: Container(
+                                  height: 80.h,
+                                  width: 250.w,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15.r),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 0,
+                                          blurRadius: 10.r,
+                                          offset: Offset(0,
+                                              3), // changes position of shadow
                                         ),
-                                        Text(
-                                          "التحدث",
-                                          style: TextStyle(
-                                              fontSize: 12.sp,
-                                              color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      controller.micStatus();
-                                    },
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Center(
-                                          child: Icon(
-                                            Icons.mic_off,
-                                            color: Colors.black,
-                                          ),
+                                      ]),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          // controller.join();
+                                          controller.checkIfUserIsJoined();
+                                          // controller.joinLeaveCalls();
+                                        },
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Center(
+                                              child: Icon(
+                                                Icons.mic,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              "التحدث",
+                                              style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  color: Colors.black),
+                                            )
+                                          ],
                                         ),
-                                        Text(
-                                          "كتم المايك",
-                                          style: TextStyle(
-                                              fontSize: 12.sp,
-                                              color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      controller.agoraEngineVideo
-                                          .disableVideo();
-                                    },
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Center(
-                                          child: Icon(
-                                            Icons.music_note,
-                                            color: Colors.black,
-                                          ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          controller.toggleMic();
+                                          // controller.micStatus();
+                                          // controller.leave();
+                                          // controller.checkIfUserIsJoined();
+                                        },
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Center(
+                                              child: Icon(
+                                                Icons.mic_off,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              "كتم المايك",
+                                              style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  color: Colors.black),
+                                            )
+                                          ],
                                         ),
-                                        Text(
-                                          "موسيقي",
-                                          style: TextStyle(
-                                              fontSize: 12.sp,
-                                              color: Colors.black),
-                                        )
-                                      ],
-                                    ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          // controller.agoraEngineVideo
+                                          //     .disableVideo();
+                                        },
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Center(
+                                              child: Icon(
+                                                Icons.music_note,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              "موسيقي",
+                                              style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  color: Colors.black),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              );
+                      }),
+                  GetBuilder<VideoController>(
+                      init: VideoController(),
+                      builder: (controller) {
+                        return controller.cameraWidget
+                            ? SizedBox()
+                            : Positioned(
+                                bottom: 73.h,
+                                right: 40.w,
+                                child: Container(
+                                  height: 80.h,
+                                  width: 180.w,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15.r),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 0,
+                                          blurRadius: 10.r,
+                                          offset: Offset(0,
+                                              3), // changes position of shadow
+                                        ),
+                                      ]),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          // controller.checkIfUserIsJoined();
+                                          // controller.join();
+                                          // controller.enterOrLeaveQueue();
+                                          controller.cameraToggle();
+
+                                          // controller.join();
+                                          // if (controller.inCall) {
+                                          //   controller.leave();
+                                          // } else {
+                                          //   controller.join();
+                                          // }
+                                          // controller.enterQueue();
+                                          // if (controller.isHost) {
+                                          //   controller.checkIfUserIsJoined();
+                                          // } else {
+                                          //   controller.enterQueue();
+                                          // }
+                                        },
+                                        onDoubleTap: () {
+                                          controller.leave();
+                                          controller.leaveQueue(userName);
+                                        },
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Center(
+                                              child: Icon(
+                                                Icons.videocam_sharp,
+                                                color: Colors.red,
+                                              ),
+                                            ),
+                                            Text(
+                                              "الكاميرا",
+                                              style: TextStyle(
+                                                fontSize: 12.sp,
+                                                color: Colors.black,
+                                                fontFamily: 'Segoe UI',
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          // controller.leaveVideoChannel();
+                                          // controller.leave();
+                                          controller.sendImage();
+                                        },
+                                        onDoubleTap: () {
+                                          controller.leave();
+                                        },
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Center(
+                                              child: Icon(
+                                                Icons.photo_library,
+                                                color: Colors.green,
+                                              ),
+                                            ),
+                                            Text(
+                                              "إرسال صورة",
+                                              style: TextStyle(
+                                                fontSize: 12.sp,
+                                                color: Colors.black,
+                                                fontFamily: 'Segoe UI',
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                      }),
+                  GetBuilder<VideoController>(
+                    init: VideoController(),
+                    builder: (controller) => StreamBuilder(
+                        stream: Stream.periodic(Duration(seconds: 2), (i) {
+                          return controller.getvideoRequest();
+                        }),
+                        builder: (context, snapshot) {
+                          return Positioned(
+                            right: 0,
+                            child: SizedBox(
+                              width: 151.w,
+                              height: 130.h,
+                              child: controller.videoPanel(),
                             ),
                           );
-                  }),
-                  GetBuilder<RoomsPageController>(builder: (controller) {
-                    return !controller.cameraWidget
-                        ? SizedBox()
-                        : Positioned(
-                            bottom: 73.h,
-                            right: 40.w,
-                            child: Container(
-                              height: 80.h,
-                              width: 180.w,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15.r),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 0,
-                                      blurRadius: 10.r,
-                                      offset: Offset(
-                                          0, 3), // changes position of shadow
-                                    ),
-                                  ]),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      controller.joinVideoChannel();
-                                    },
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Center(
-                                          child: Icon(
-                                            Icons.videocam_sharp,
-                                            color: Colors.red,
-                                          ),
-                                        ),
-                                        Text(
-                                          "الكاميرا",
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: Colors.black,
-                                            fontFamily: 'Segoe UI',
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      controller.leaveVideoChannel();
-                                    },
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Center(
-                                          child: Icon(
-                                            Icons.photo_library,
-                                            color: Colors.green,
-                                          ),
-                                        ),
-                                        Text(
-                                          "إرسال صورة",
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: Colors.black,
-                                            fontFamily: 'Segoe UI',
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                  }),
+                        }),
+                  ),
                 ],
               ),
               floatingActionButton: GetBuilder<RoomsPageController>(
@@ -1106,6 +1400,25 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
         ),
       ),
     );
+  }
+
+  PopupMenuItem<String> statusBuilder(String title, {Widget icon}) {
+    return PopupMenuItem(
+        height: 40.h,
+        // padding: EdgeInsets.zero,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.black),
+            ),
+            icon
+          ],
+        ),
+        value: title);
   }
 
   Widget emojiPickerBuilder() {
@@ -1199,52 +1512,76 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
                         ),
                       ),
                     ),
-                    Container(
-                      // height: 50.h,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        gradient: data["senderName"] == userName
-                            ? LinearGradient(
-                                colors: [
-                                  Color(0xFFF792F0),
-                                  Color(0xFFF1F1F1),
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              )
-                            : LinearGradient(
-                                colors: [
-                                  Color(0xFFF1F1F1),
-                                  Color(0xFFF792F0),
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              ),
-                        borderRadius: data["senderName"] == userName
-                            ? BorderRadius.only(
-                                bottomLeft: Radius.circular(20.r),
-                              )
-                            : BorderRadius.only(
-                                bottomRight: Radius.circular(20.r),
-                              ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(
-                            data["senderName"] == userName ? 0.w : 60.w,
-                            12.h,
-                            data["senderName"] == userName ? 60.w : 0.w,
-                            12.h),
-                        child: Text(
-                          data["message"],
-                          textAlign: data["senderName"] == userName
-                              ? TextAlign.right
-                              : TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "Portada",
-                            color: Colors.black,
-                          ),
+                    InkWell(
+                      onTap: () {
+                        if (data["image"] == "1") {
+                          // print("tapped");
+                          Get.toNamed("/viewImage", arguments: {
+                            "imageLink": imageSent + data["message"],
+                          });
+                        }
+                      },
+                      child: Container(
+                        // height: 50.h,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          gradient: data["senderName"] == userName
+                              ? LinearGradient(
+                                  colors: [
+                                    Color(0xFFF792F0),
+                                    Color(0xFFF1F1F1),
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                )
+                              : LinearGradient(
+                                  colors: [
+                                    Color(0xFFF1F1F1),
+                                    Color(0xFFF792F0),
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                          borderRadius: data["senderName"] == userName
+                              ? BorderRadius.only(
+                                  bottomLeft: Radius.circular(20.r),
+                                )
+                              : BorderRadius.only(
+                                  bottomRight: Radius.circular(20.r),
+                                ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(
+                              data["senderName"] == userName ? 20.w : 60.w,
+                              12.h,
+                              data["senderName"] == userName ? 60.w : 20.w,
+                              12.h),
+                          child: data["image"] == "1"
+                              ? Align(
+                                  alignment: data["senderName"] == userName
+                                      ? Alignment.centerRight
+                                      : Alignment.centerLeft,
+                                  // color: Colors.green,
+                                  child: Image.network(
+                                    imageSent + data["message"],
+                                    // width: 80,
+                                    // width: 80.w,
+                                    height: 130.h,
+                                    // fit: BoxFit.cover,
+                                  ),
+                                )
+                              : Text(
+                                  data["message"],
+                                  textAlign: data["senderName"] == userName
+                                      ? TextAlign.right
+                                      : TextAlign.left,
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Portada",
+                                    color: Colors.black,
+                                  ),
+                                ),
                         ),
                       ),
                     ),
@@ -1441,25 +1778,25 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
   }
 
   Widget buildMyNavBar(BuildContext context) {
-    return GetBuilder<RoomsPageController>(builder: (controller) {
-      return Container(
-        height: 71.h,
-        decoration: const BoxDecoration(
-          // LinearGradient
-          gradient: LinearGradient(
-            colors: [
-              const Color(0xFFF792F0),
-              const Color(0xFFFABD63),
-            ],
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-          ),
+    return Container(
+      height: 71.h,
+      decoration: const BoxDecoration(
+        // LinearGradient
+        gradient: LinearGradient(
+          colors: [
+            const Color(0xFFF792F0),
+            const Color(0xFFFABD63),
+          ],
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
         ),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Row(
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: GetBuilder<RoomsPageController>(builder: (controller) {
+              return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   !controller.messageStatus
@@ -1477,16 +1814,13 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
                             ),
                           ),
                         )
-                      : Padding(
-                          padding: EdgeInsets.all(0.0),
-                          child: SizedBox(
-                            // width: 30.w,
-                            // height: 30.h,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                              // valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                            ),
+                      : SizedBox(
+                          width: 20.w,
+                          height: 20.h,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                            // valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         ),
                   GestureDetector(
@@ -1499,87 +1833,92 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
                     ),
                   ),
                 ],
-              ),
-            ),
-            Expanded(
-              flex: 7,
-              child: SizedBox(
-                // width: 230.w,
-                height: 40.h,
-                child: Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: GetBuilder<RoomsPageController>(
-                    builder: (controller) {
-                      return TextFormField(
-                        cursorColor: Colors.black,
-                        controller: controller.messageController,
-                        style: TextStyle(
-                          color: Colors.black, //Color(0xff9A8B8B),
-                          fontSize: 14.sp,
+              );
+            }),
+          ),
+          Expanded(
+            flex: 7,
+            child: SizedBox(
+              height: 40.h,
+              child: Directionality(
+                textDirection: TextDirection.rtl,
+                child: GetBuilder<RoomsPageController>(
+                  builder: (controller) {
+                    return TextFormField(
+                      cursorColor: Colors.black,
+                      controller: controller.messageController,
+                      style: TextStyle(
+                        color: Colors.black, //Color(0xff9A8B8B),
+                        fontSize: 14.sp,
+                        fontFamily: "Portada",
+                      ),
+                      // expands: true,
+                      maxLines: 1,
+                      onFieldSubmitted: (value) => controller
+                          .sendMessage(controller.messageController.text),
+                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                      onTap: () {
+                        if (!controller.emojiStatus) {
+                          controller.changeEmojiStatus(true);
+                        }
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
+                        hintText: 'اكتب رسالة',
+                        hintStyle: TextStyle(
+                          fontSize: 12.sp,
                           fontFamily: "Portada",
                         ),
-                        // expands: true,
-                        maxLines: 1,
-                        onFieldSubmitted: (value) => controller
-                            .sendMessage(controller.messageController.text),
-                        onTapOutside: (event) =>
-                            FocusScope.of(context).unfocus(),
-                        onTap: () {
-                          if (!controller.emojiStatus) {
-                            controller.changeEmojiStatus(true);
-                          }
-                        },
-                        decoration: InputDecoration(
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 10.w),
-                          hintText: 'اكتب رسالة',
-                          hintStyle: TextStyle(
-                            fontSize: 12.sp,
-                            fontFamily: "Portada",
-                          ),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(50.r)),
-                          filled: true,
-                          fillColor: Colors.white, // Color(0xff00000029),
-                        ),
-                      );
-                    },
-                  ),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(50.r)),
+                        filled: true,
+                        fillColor: Colors.white, // Color(0xff00000029),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
-            Expanded(
-              flex: 2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      controller.toggleCamera();
-                    },
-                    child: Icon(
-                      Icons.add_circle_outline,
-                      size: 25.sp,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      // controller.join();
-                      controller.toggleMic();
-                    },
-                    child: Icon(
-                      Icons.mic,
-                      size: 25.sp,
-                    ),
-                  ),
-                ],
-              ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GetBuilder<VideoController>(
+                    init: VideoController(),
+                    builder: (controller) {
+                      return GestureDetector(
+                        onTap: () {
+                          controller.toggleCamera();
+                        },
+                        child: Icon(
+                          Icons.add_circle_outline,
+                          size: 25.sp,
+                        ),
+                      );
+                    }),
+                GetBuilder<VoiceController>(
+                    init: VoiceController(),
+                    builder: (controller) {
+                      return GestureDetector(
+                        onTap: () {
+                          // controller.join();
+                          controller.toogleMic();
+                        },
+                        child: Icon(
+                          Icons.mic,
+                          size: 25.sp,
+                        ),
+                      );
+                    }),
+              ],
             ),
-          ],
-        ),
-      );
-    });
+          ),
+        ],
+      ),
+    );
   }
 
   Widget messageVIPBuilder(BuildContext context, dynamic data, bool guest) {
@@ -1680,15 +2019,27 @@ class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
                         bottomRight: Radius.circular(20.r),
                       ),
                     ),
-                    child: Text(
-                      data["message"],
-                      // "",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: "Portada",
-                        fontSize: 12.sp,
-                      ),
-                    ),
+                    child: data["image"] == "1"
+                        ? Align(
+                            alignment: data["senderName"] == userName
+                                ? Alignment.centerRight
+                                : Alignment.centerLeft,
+                            child: Image.network(
+                              imageSent + data["message"],
+                              // width: 80,
+                              height: 130.h,
+                              // fit: BoxFit.cover,
+                            ),
+                          )
+                        : Text(
+                            data["message"],
+                            // "",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: "Portada",
+                              fontSize: 12.sp,
+                            ),
+                          ),
                   )
                 ],
               ),

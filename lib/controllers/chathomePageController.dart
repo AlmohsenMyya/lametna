@@ -396,7 +396,7 @@ class ChatHomeController extends GetxController {
       isRole = false;
       isGuest = true;
       // isRole = false;
-      // update();
+      update();
       Get.toNamed('/room', arguments: {
         "room_name": roomName,
         "room_id": roomId,

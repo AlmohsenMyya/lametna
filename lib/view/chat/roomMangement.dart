@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/view/chat/appBar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -81,7 +82,7 @@ class RoomMangement extends StatelessWidget {
                     Get.arguments["room_name"],
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 20,
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
                       fontFamily: "Segoe UI",
                     ),
@@ -112,60 +113,73 @@ class RoomMangement extends StatelessWidget {
               ),
               child: ListView.separated(
                   shrinkWrap: true,
+                  separatorBuilder: (context, index) =>
+                      (index == 1 && roleType != "3") ? SizedBox() : Divider(),
                   itemBuilder: (context, index) {
-                    return Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: GestureDetector(
-                        onTap: () {
-                          // print(table1[index]["page"]);
-                          if (index == 0) {
-                            Get.toNamed('/roomInfo', arguments: {
-                              "room_name": Get.arguments["room_name"],
-                              "room_id": Get.arguments["room_id"],
-                            });
-                          } else if (index == 1) {
-                            Get.toNamed('/addAccount', arguments: {
-                              "room_id": Get.arguments["room_id"],
-                            });
-                          }
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10.h),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                                child: Icon(
-                                  table1[index]["icon"],
-                                  color: Colors.black,
-                                  size: 25.sp,
+                    return (index == 1 &&
+                            roleType != "3" &&
+                            userName != Get.arguments["owner"])
+                        ? SizedBox()
+                        : Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: GestureDetector(
+                              onTap: () {
+                                // print(table1[index]["page"]);
+                                if (index == 0) {
+                                  Get.toNamed(
+                                    '/roomInfo',
+                                    arguments: {
+                                      "room_name": Get.arguments["room_name"],
+                                      "room_id": Get.arguments["room_id"],
+                                    },
+                                  );
+                                } else if (index == 1) {
+                                  Get.toNamed(
+                                    '/addAccount',
+                                    arguments: {
+                                      "room_id": Get.arguments["room_id"],
+                                    },
+                                  );
+                                }
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10.h),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20.w),
+                                      child: Icon(
+                                        table1[index]["icon"],
+                                        color: Colors.black,
+                                        size: 25.sp,
+                                      ),
+                                    ),
+                                    Text(
+                                      table1[index]["name"],
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Segoe UI",
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20.w),
+                                      child: Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Colors.black,
+                                        size: 20.sp,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Text(
-                                table1[index]["name"],
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Segoe UI",
-                                ),
-                              ),
-                              Spacer(),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                                child: Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Colors.black,
-                                  size: 20.sp,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
+                            ),
+                          );
                   },
-                  separatorBuilder: (context, index) => Divider(),
                   itemCount: table1.length),
             ),
             SizedBox(
@@ -185,58 +199,70 @@ class RoomMangement extends StatelessWidget {
               ),
               child: ListView.separated(
                   shrinkWrap: true,
+                  separatorBuilder: (context, index) => (index == 0 &&
+                          roleType != "3" &&
+                          userName != Get.arguments["owner"])
+                      ? SizedBox()
+                      : Divider(),
                   itemBuilder: (context, index) {
-                    return Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: GestureDetector(
-                        onTap: () {
-                          if (index == 0) {
-                            Get.toNamed('/roomSetting', arguments: {
-                              "room_id": Get.arguments["room_id"],
-                            });
-                          } else if (index == 1) {
-                            Get.toNamed('/advancedSettings', arguments: {
-                              "room_id": Get.arguments["room_id"],
-                            });
-                          }
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10.h),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                                child: Icon(
-                                  table2[index]["icon"],
-                                  color: Colors.black,
-                                  size: 25.sp,
+                    return (index == 0 &&
+                            roleType != "3" &&
+                            userName != Get.arguments["owner"])
+                        ? SizedBox()
+                        :
+                        // userName == Get.arguments["owner"]
+                        Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: GestureDetector(
+                              onTap: () {
+                                if (index == 0) {
+                                  Get.toNamed('/roomSetting', arguments: {
+                                    "room_id": Get.arguments["room_id"],
+                                  });
+                                } else if (index == 1) {
+                                  Get.toNamed('/advancedSettings', arguments: {
+                                    "room_id": Get.arguments["room_id"],
+                                  });
+                                }
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10.h),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20.w),
+                                      child: Icon(
+                                        table2[index]["icon"],
+                                        color: Colors.black,
+                                        size: 25.sp,
+                                      ),
+                                    ),
+                                    Text(
+                                      table2[index]["name"],
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Segoe UI",
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20.w),
+                                      child: Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Colors.black,
+                                        size: 20.sp,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Text(
-                                table2[index]["name"],
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Segoe UI",
-                                ),
-                              ),
-                              Spacer(),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                                child: Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Colors.black,
-                                  size: 20.sp,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
+                            ),
+                          );
                   },
-                  separatorBuilder: (context, index) => Divider(),
                   itemCount: table2.length),
             ),
             SizedBox(

@@ -49,7 +49,9 @@ Widget homeDrawer() => Drawer(
                       color: Colors.white,
                       size: 30.sp,
                     ),
-                    () {},
+                    () {
+                      Get.toNamed('/mainControllerPanel');
+                    },
                   )
                 : SizedBox(),
             drawerItem(

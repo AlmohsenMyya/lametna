@@ -15,12 +15,16 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 class RoomSettingController extends GetxController {
   TextEditingController statusController = TextEditingController();
   TextEditingController helloController = TextEditingController();
+  // String roomId = Get.arguments["room_id"];
+  bool roomType;
+
   File roomImage;
   File backgroundRoomImage;
   var roomInfo;
   Color pickerColor = Colors.black;
-  bool cameraStatus = false;
-  bool privateMessageStatus = false;
+  String colorCode = "#000000";
+  String cameraStatus;
+  String privateMessageStatus;
   bool roomLockStatus = false;
 
   bool isLoading = false;
@@ -44,14 +48,19 @@ class RoomSettingController extends GetxController {
       "roomId": Get.arguments["room_id"],
     });
     final dataBody = json.decode(response.body);
+    print(dataBody);
 
     if (response.statusCode == 200) {
+      roomType = dataBody["data"][0]["room_type"] == "regular" ? true : false;
       roomInfo = dataBody;
       statusController.text = dataBody["data"][0]["description"];
       helloController.text = dataBody["data"][0]["hello_msg"];
-      cameraStatus = dataBody["data"][0]["camera"] == "true" ? true : false;
-      privateMessageStatus =
-          dataBody["data"][0]["privateMessages"] == "true" ? true : false;
+      cameraStatus = dataBody["data"][0]["camera"];
+      pickerColor = Color(int.parse(
+              dataBody["data"][0]["background_color"].substring(1, 7),
+              radix: 16) +
+          0xFF000000);
+      privateMessageStatus = dataBody["data"][0]["privateMessages"];
       roomLockStatus = dataBody["data"][0]["roomLock"] == "true" ? true : false;
       update();
     }
@@ -135,6 +144,7 @@ class RoomSettingController extends GetxController {
     var request = http.MultipartRequest('POST', Uri.parse(roomSettings));
     request.fields['room_id'] = roomId;
     request.fields['description'] = statusController.text.trim();
+    request.fields['background_color'] = colorCode;
     request.fields['hello_msg'] = helloController.text.trim();
     request.fields['camera'] = cameraStatus.toString();
     request.fields['privateMessages'] = privateMessageStatus.toString();
@@ -158,33 +168,15 @@ class RoomSettingController extends GetxController {
     // print(fontColor);
   }
 
-  pickColor() {
-    Get.defaultDialog(
-      content: ColorPicker(
-        showLabel: false,
-        pickerColor: pickerColor,
-        onColorChanged: (value) {
-          updatePickerColor(value);
-        },
-      ),
-    );
+  changePrivateMessagesRadio(String value) {
+    privateMessageStatus = value;
+    update();
   }
 
-  changeCameraStatus() {
-    cameraStatus = !cameraStatus;
+  changeCameraRadio(String value) {
+    cameraStatus = value;
     update();
-    Get.snackbar(
-        "الكاميرا", cameraStatus ? "تم فتح الكاميرا" : "تم قفل الكاميرا");
-  }
-
-  changePrivateMessageStatus() {
-    privateMessageStatus = !privateMessageStatus;
-    update();
-    Get.snackbar(
-        "الرسائل الخاصة",
-        privateMessageStatus
-            ? "تم فتح الرسائل الخاصة"
-            : "تم قفل الرسائل الخاصة");
+    print(cameraStatus);
   }
 
   changeRoomLockStatus() {
@@ -293,4 +285,14 @@ class RoomSettingController extends GetxController {
   //     print('Failed to upload image. Error code: ${response.statusCode}');
   //   }
   // }
+}
+
+extension ColorExtension on String {
+  toColor() {
+    var hexString = this;
+    final buffer = StringBuffer();
+    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+    buffer.write(hexString.replaceFirst('#', ''));
+    return Color(int.parse(buffer.toString(), radix: 16));
+  }
 }

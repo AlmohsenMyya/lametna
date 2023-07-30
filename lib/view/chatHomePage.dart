@@ -595,11 +595,20 @@ class ChatHomePage extends StatelessWidget {
                                                                       .r), // Image radius
                                                               child:
                                                                   Image.network(
-                                                                'https://media.istockphoto.com/id/1295072146/vector/mini-heart-korean-love-hand-finger-symbol-on-pink-background-vector-illustration.jpg?s=612x612&w=0&k=20&c=eihpG3p1GoSvMjlSAQjCft50iff2I1AweF2a1MLI1SQ=',
+                                                                roomImagesURL +
+                                                                    controller.regularRooms[
+                                                                            index]
+                                                                        [
+                                                                        "room_img"],
+                                                                errorBuilder: (context,
+                                                                        error,
+                                                                        stackTrace) =>
+                                                                    Image.network(
+                                                                        "https://media.istockphoto.com/id/1295072146/vector/mini-heart-korean-love-hand-finger-symbol-on-pink-background-vector-illustration.jpg?s=612x612&w=0&k=20&c=eihpG3p1GoSvMjlSAQjCft50iff2I1AweF2a1MLI1SQ=",
+                                                                        fit: BoxFit
+                                                                            .fill),
                                                                 fit:
                                                                     BoxFit.fill,
-                                                                // height: 30,
-                                                                // width: 30,
                                                               ),
                                                             ),
                                                           ),
@@ -1058,7 +1067,8 @@ void showAlert(
                       } else {
                         // print("object");contro
                         FocusScope.of(context).unfocus();
-                        controller.loginRoleAccount(roomId, roomId, roomOwner);
+                        controller.loginRoleAccount(
+                            roomId, roomOwner, roomName);
                         // print(isGuest);
                         // if (isGuest == false) {
                         //   Get.toNamed('/room', arguments: {
