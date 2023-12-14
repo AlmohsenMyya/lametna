@@ -10,7 +10,7 @@ class StoreController extends GetxController {
   int alertIndex = 0;
   void changeIndex(int index) {
     selectedIndex = index;
-    pageController.jumpToPage(index);
+    // pageController.jumpToPage(index);
     update();
   }
 }

@@ -223,7 +223,6 @@ class PrivateMessage extends StatelessWidget {
       ),
     );
   }
-
   Row textFormBuilder() {
     return Row(
       children: [

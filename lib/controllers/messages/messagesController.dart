@@ -24,7 +24,7 @@ class MessagesController extends GetxController {
   getData() async {
     var url = Uri.parse(peopleMessaged);
     var response = await http.post(url, body: {
-      "sender": userId,
+      "senderId": userId,
     });
     final dataBody = json.decode(response.body);
     // print(dataBody);

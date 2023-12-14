@@ -28,7 +28,7 @@ Widget homeDrawer() => Drawer(
                 height: 160.h,
               ),
             ),
-            !isGuest
+            isGuest == false && isRole == false
                 ? drawerItem(
                     'الملف الشخصي',
                     Icon(
@@ -41,7 +41,7 @@ Widget homeDrawer() => Drawer(
                     },
                   )
                 : SizedBox(),
-            !isGuest
+            isGuest == false && isRole == false
                 ? drawerItem(
                     'لوحة التحكم',
                     Icon(
@@ -94,6 +94,9 @@ Widget homeDrawer() => Drawer(
                 prefs.remove('username');
                 prefs.remove('password');
                 Get.offAllNamed('/choosingPage');
+                isGuest = true;
+
+                /// to make the user guest again
               },
             ),
           ],

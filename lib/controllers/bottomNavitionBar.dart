@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:lametna/view/chat/moments.dart';
+import 'package:lametna/view/chat/moments/moments.dart';
 import 'package:lametna/view/chatHomePage.dart';
 import 'package:lametna/view/messages/messages.dart';
 import 'userData/userCredentials.dart';
 import 'package:lametna/view/store/test.dart';
+import 'package:get/get.dart';
 
 class BottomNavitionBarController extends GetxController {
   bool isShow = true;
@@ -23,9 +24,10 @@ class BottomNavitionBarController extends GetxController {
 
   List<Widget> pages = <Widget>[
     ChatHomePage(),
-    Moments(),
-    // Container(),
-    !isGuest ? Messages() : null,
+    // Moments(appBar: 1),
+    // Get.toNamed()
+    Container(),
+    isGuest == false && isRole == false ? Messages() : null,
     test(),
     // Container()
   ];

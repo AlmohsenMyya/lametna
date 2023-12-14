@@ -70,6 +70,7 @@ class LoginController extends GetxController {
         userName = response["data"]['username'];
         userId = response["data"]['userid'];
         userImage = response["data"]["image"];
+        userType = response["data"]["userType"];
         isGuest = false;
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('username', email);

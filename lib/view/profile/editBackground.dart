@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/view/chat/appBar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -29,7 +30,15 @@ class EditBackground extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         if (index == 0) {
-                          Get.toNamed('/changeBackground', arguments: {});
+                          if (userType == "protectedWithBG" ||
+                              userType == "VIPWithBG" ||
+                              userType == "topVIP") {
+                            Get.toNamed('/changeBackground');
+                          } else {
+                            Get.snackbar("خطأ",
+                                "يجب ان تكون عضو مميز لتستطيع تغيير خلفية الاسم",
+                                backgroundColor: Colors.red);
+                          }
                         } else if (index == 1) {}
                       },
                       child: Padding(

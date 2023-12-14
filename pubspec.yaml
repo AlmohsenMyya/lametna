@@ -36,7 +36,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   floating_draggable_widget: ^2.1.2
-  connectivity:
+  community_material_icon: ^5.9.55
+  google_mobile_ads:
 
 
 dev_dependencies:
@@ -51,7 +52,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   # flutter_launcher_icons: ^0.13.1
   flutter_screenutil:
-  permission_handler:
+  permission_handler: any
   google_fonts:
   get:
   device_preview:
@@ -61,11 +62,38 @@ dev_dependencies:
   flutter_colorpicker:
   carousel_slider:
   emoji_picker_flutter:
+  ####################### engine
   agora_rtc_engine:
   agora_uikit:
+  # zego_uikit: 
+  # zego_uikit_prebuilt_call:
+  # zego_uikit_prebuilt_live_audio_room: 
+  # ^2.2.3
+  zego_uikit_signaling_plugin: 
+
+  ######################
   image_picker:
   shared_preferences:
   get_ip_address: 
+  device_info_plus: 
+  geolocator: any
+  geocoder:
+  # geocoding:  
+  # get_mac_address: 
+  flutter_sound: 
+  intl:
+  animated_text_kit:
+  flutter_keyboard_visibility:
+
+
+  # record: ^4.4.4 
+  # audioplayers: 
+
+  audio_session:
+  
+  # audioplayers: ^0.20.1
+  # flutter_audio_recorder: ^0.5.5
+  # audio_recorder:
   # zego_express_engine:
   # zego_express_engine: 
   # zego_uikit: 
@@ -77,11 +105,11 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-flutter_launcher_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "assets/icons/logo.png"
-  min_sdk_android: 21 
+# flutter_launcher_icons:
+#   android: "launcher_icon"
+#   ios: true
+#   image_path: "assets/icons/logo.png"
+#   min_sdk_android: 21 
 # The following section is specific to Flutter packages.
 flutter:
 
@@ -94,8 +122,12 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    # - assets/icons/testIcons/
+    - assets/gif/
     - assets/icons/profile/
+    - assets/icons/store/
     - assets/images/flags/
+    - assets/icons/mangement/
 
   
 
@@ -114,9 +146,12 @@ flutter:
     - family: Portada
       fonts:
         - asset: assets\fonts\alfont_com_PortadaARA-Bold.ttf
-    - family: Segoe UI
+    # - family: Segoe UI
+    #   fonts:
+    #     - asset: assets\fonts\segoeuii.ttf
+    - family: Montserrat
       fonts:
-        - asset: assets\fonts\segoeuii.ttf
+        - asset: assets\fonts\Montserrat-VariableFont_wght.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #

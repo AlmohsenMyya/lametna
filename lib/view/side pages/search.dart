@@ -16,7 +16,7 @@ class Search extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         centerTitle: true,
         // automaticallyImplyLeading: true,
         leading: IconButton(
@@ -64,10 +64,9 @@ class Search extends StatelessWidget {
                           // enabled: false,
                           // readOnly: true,
                           controller: controller.searchController,
-                          onChanged: (value) => controller.search(),
-                          onTap: () {
-                            Get.toNamed("/search");
-                          },
+                          // onChanged: (value) => controller.search(),
+                          onEditingComplete: () => controller.search(),
+
                           autofocus: false,
                           style:
                               TextStyle(color: Colors.black, fontSize: 15.sp),
@@ -93,7 +92,7 @@ class Search extends StatelessWidget {
             SizedBox(height: 20.h),
             GetBuilder<SearchController>(builder: (controller) {
               return SizedBox(
-                height: 40.h,
+                height: Get.height * .06,
                 child: ListView.builder(
                   reverse: true,
                   shrinkWrap: true,
@@ -101,7 +100,7 @@ class Search extends StatelessWidget {
                   itemBuilder: (context, index) => Padding(
                     padding: EdgeInsets.symmetric(horizontal: 6.w),
                     child: Container(
-                      height: 50.h,
+                      // height: 70.h,
                       decoration: controller.selectedIndex == index
                           ? BoxDecoration(
                               borderRadius: BorderRadius.circular(5.r),
@@ -145,27 +144,27 @@ class Search extends StatelessWidget {
                 ),
               );
             }),
-            // GetBuilder<SearchController>(
-            //   builder: (controller) => controller.data == null
-            //       ? SizedBox()
-            //       : ListView.builder(
-            //           shrinkWrap: true,
-            //           itemBuilder: (context, index) => Card(
-            //             child: Padding(
-            //               padding: EdgeInsets.all(20.sp),
-            //               child: Text(
-            //                 controller.selectedIndex == 0
-            //                     ? controller.data["data"][index]["username"]
-            //                         .toString()
-            //                     : controller.data["data"][index]["room_name"]
-            //                         .toString(),
-            //                 style: TextStyle(color: Colors.black),
-            //               ),
-            //             ),
-            //           ),
-            //           itemCount: controller.data["data"].length,
-            //         ),
-            // ),
+            GetBuilder<SearchController>(
+              builder: (controller) => controller.data == null
+                  ? SizedBox()
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) => Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(20.sp),
+                          child: Text(
+                            controller.selectedIndex == 0
+                                ? controller.data["data"][index]["username"]
+                                    .toString()
+                                : controller.data["data"][index]["room_name"]
+                                    .toString(),
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      itemCount: controller.data["data"].length,
+                    ),
+            ),
           ],
         ),
       ),

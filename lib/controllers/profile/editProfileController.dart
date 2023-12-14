@@ -89,7 +89,7 @@ class EditProfileController extends GetxController {
       await http.MultipartFile.fromPath(
         'image',
         image.path,
-        // filename: "${userName}.jpeg".toString(),
+        filename: "${userName}.jpeg".toString(),
       ),
     );
 

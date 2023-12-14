@@ -16,6 +16,7 @@ class SearchController extends GetxController {
     selectedIndex = index;
     // print(index);
     searchController.text = "";
+    data = null;
     update();
   }
 

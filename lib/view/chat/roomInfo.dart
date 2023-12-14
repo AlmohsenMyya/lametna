@@ -12,35 +12,18 @@ class RoomInfo extends StatelessWidget {
   var titles = [
     {"إسم الغرفة", "room_name"},
     {"إسم المالك", "owner_username"},
-    //  { "البريد",""}
+    {"البريد", "email"},
     {"سعة الغرفة", "capacity"},
     {"المتصلين", "number_of_connections"},
     {"رقم الغرفة", "room_id"},
     {"تاريخ البداية", "start_date"},
     {"تاريخ الإنتهاء", "expiry_date"}
   ];
-  var tiers = [
-    {
-      "name": "ممبر",
-      "color": Color(0xFF7F52A3),
-    },
-    {
-      "name": "أدمن",
-      "color": Color(0xFF5D00FF),
-    },
-    {
-      "name": "سوبر أدمن",
-      "color": Color(0xFF00B041),
-    },
-    {
-      "name": "ماستر",
-      "color": Color(0xFFFF0000),
-    },
-  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appbarBuilder("معلومات الغرفة", true),
+      appBar: appbarBuilder("معلومات الغرفة", true, color: Get.arguments["color"]),
       body: SafeArea(
         child: GetBuilder<RoomInfoController>(
           init: RoomInfoController(),
@@ -51,49 +34,48 @@ class RoomInfo extends StatelessWidget {
                   ? ListView(
                       padding: EdgeInsets.symmetric(horizontal: 20.w),
                       children: [
-                        _builderRooms(
-                            context,
-                            Get.arguments["room_name"],
-                            snapshot.data["data"][0]["country_name"]
-                                .toString()),
+                        _builderRooms(context, Get.arguments["room_name"], snapshot.data["data"][0]["country_name"].toString()),
                         Divider(
-                          color: Color(0xFF43d0ca),
-                          thickness: 1,
+                          thickness: (1).w,
                         ),
                         ListView.separated(
                           separatorBuilder: (context, index) => Divider(
-                            color: Color(0xFF43d0ca),
-                            thickness: 1,
+                            // height: 2,
+                            thickness: (1).w,
                           ),
                           shrinkWrap: true,
                           itemCount: titles.length,
                           itemBuilder: (context, index) {
                             return infoSetting(
                               titles[index].elementAt(0),
-                              snapshot.data["data"][0]
-                                      [titles[index].elementAt(1)]
-                                  .toString(),
+                              snapshot.data["data"][0][titles[index].elementAt(1)].toString(),
                             );
                           },
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 25.h),
-                          child: Divider(
-                            color: Colors.grey.withOpacity(0.3),
-                            thickness: 4,
-                          ),
+                        Divider(
+                          thickness: (1).w,
                         ),
                         ListView.separated(
                             shrinkWrap: true,
                             itemBuilder: (context, index) => infoSetting(
-                                  tiers[index]["name"].toString(),
-                                  "20",
-                                  color1: tiers[index]["color"],
+                                  controller.tiers[index]["name"].toString(),
+                                  controller.tiers[index]["name"].toString() == "زائر"
+                                      ? controller.guestTime.toString()
+                                      : controller.tiers[index]["name"].toString() == "ممبر"
+                                          ? controller.memberTime.toString()
+                                          : controller.tiers[index]["name"].toString() == "أدمن"
+                                              ? controller.adminTime.toString()
+                                              : controller.tiers[index]["name"].toString() == "سوبر أدمن"
+                                                  ? controller.superAdminTime.toString()
+                                                  : controller.masterTime.toString(),
+                                  color1: controller.tiers[index]["color"],
                                   color2: Colors.red,
                                   fontWeight1: FontWeight.w900,
                                 ),
-                            separatorBuilder: (context, index) => Divider(),
-                            itemCount: tiers.length)
+                            separatorBuilder: (context, index) => Divider(
+                                  thickness: (1).w,
+                                ),
+                            itemCount: controller.tiers.length)
                       ],
                     )
                   : Center(child: CircularProgressIndicator()),
@@ -116,24 +98,14 @@ class RoomInfo extends StatelessWidget {
       children: [
         Text(
           subtitle,
-          style: TextStyle(
-              fontSize: fontsize1.sp,
-              color: color2,
-              fontWeight: fontWeight1,
-              fontFamily: "Segoe UI"),
+          style: TextStyle(fontSize: fontsize1.sp, color: color2, fontWeight: fontWeight1, fontFamily: "Segoe UI"),
         ),
-        Text(title,
-            style: TextStyle(
-                fontSize: fontsize2.sp,
-                color: color1,
-                fontWeight: fontWeight2,
-                fontFamily: "Segoe UI")),
+        Text(title, style: TextStyle(fontSize: fontsize2.sp, color: color1, fontWeight: fontWeight2, fontFamily: "Segoe UI")),
       ],
     );
   }
 
-  Widget _builderRooms(BuildContext context, String name, String countryName,
-      {Color color = Colors.white}) {
+  Widget _builderRooms(BuildContext context, String name, String countryName, {Color color = Colors.white}) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: GestureDetector(
@@ -168,23 +140,6 @@ class RoomInfo extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // SizedBox(
-                  //   // color: Colors.red,
-                  //   height: 58.h,
-                  //   width: 57.w,
-                  //   child: ClipRRect(
-                  //     borderRadius: BorderRadius.circular(2.r),
-                  //      // Image border
-                  //     child: SizedBox.fromSize(
-                  //       child: Image.network(
-                  //         'https://media.istockphoto.com/id/1295072146/vector/mini-heart-korean-love-hand-finger-symbol-on-pink-background-vector-illustration.jpg?s=612x612&w=0&k=20&c=eihpG3p1GoSvMjlSAQjCft50iff2I1AweF2a1MLI1SQ=',
-                  //         fit: BoxFit.fill,
-                  //         // height: 30,
-                  //         // width: 30,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                   SizedBox(
                     width: 10.w,
                   ),
@@ -196,20 +151,13 @@ class RoomInfo extends StatelessWidget {
                       children: [
                         Text(
                           name,
-                          style: TextStyle(
-                              fontSize: 15.sp,
-                              color: Colors.black,
-                              fontFamily: "Segoe UI"),
+                          style: TextStyle(fontSize: 15.sp, color: Colors.black, fontFamily: "Segoe UI"),
                         ),
                         Row(
                           children: [
                             Container(
                               child: Center(
-                                child: Text("ID:0000000",
-                                    style: TextStyle(
-                                        fontSize: 7.sp,
-                                        color: Colors.black,
-                                        fontFamily: "Segoe UI")),
+                                child: Text("ID:0000000", style: TextStyle(fontSize: 7.sp, color: Colors.black, fontFamily: "Segoe UI")),
                               ),
                               width: 54.w,
                               height: 20.h,
@@ -235,11 +183,7 @@ class RoomInfo extends StatelessWidget {
                             ),
                             Text(
                               "| " + countryName,
-                              style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  fontFamily: "Segoe UI"),
+                              style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: Colors.black, fontFamily: "Segoe UI"),
                             ),
                           ],
                         ),

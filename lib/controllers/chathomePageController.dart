@@ -1,6 +1,8 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, depend_on_referenced_packages, unused_import
 
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -10,7 +12,19 @@ import 'package:lametna/controllers/Crud.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/controllers/userData/variables.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lametna/view/chat/roomPage.dart';
 import 'package:lametna/view/chatHomePage.dart';
+
+import 'package:get_ip_address/get_ip_address.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+// import 'package:get_mac_address/get_mac_address.dart';
+// import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoder/geocoder.dart';
+
+// import 'package:mac_address/mac_address.dart';
+
+import 'package:lametna/view/VIPRoombuildder.dart';
 
 class ChatHomeController extends GetxController {
   PageController pageController = PageController();
@@ -28,6 +42,8 @@ class ChatHomeController extends GetxController {
   int roomNumber = 0;
   int numberOfConnections = 0;
   List banedUsers = [];
+  String _platformVersion = 'Unknown';
+  Timer timer;
 
   List countries = [
     "algeria",
@@ -47,12 +63,14 @@ class ChatHomeController extends GetxController {
     super.onInit();
     fetchAllRooms();
     getFavourites();
+    determinePosition();
+
     isRole = false;
   }
 
   void changeIndex(int index) {
     selectedIndex = index;
-    pageController.jumpToPage(index);
+    // pageController.jumpToPage(index);
     update();
   }
 
@@ -159,13 +177,48 @@ class ChatHomeController extends GetxController {
     }
   }
 
-  loginRoleAccount(String roomId, String owner, String roomName) async {
+  loginRoleAccount({String roomId, String roomName, String welcomeText}) async {
     print("role");
     FocusScope.of(Get.context).unfocus();
+    Get.back();
+    showDialog(
+      context: Get.context,
+      builder: (context) => AlertDialog(
+        content: SingleChildScrollView(
+          child: Column(
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(
+                height: 20.h,
+              ),
+              Text(
+                "... برجاء الانتظار ",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 17.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    var device = DeviceInfoPlugin();
+    // determinePosition();
 
-    if (roleUsernameController.text.trim().isEmpty ||
-        rolePasswordController.text.trim().isEmpty) {
-      // print("empty");
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+    final coordinates = new Coordinates(position.latitude, position.longitude);
+    var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var first = addresses.first;
+    String country = first.countryName;
+
+    String id = await getId();
+    var ip = IpAddress(type: RequestType.json);
+    dynamic ipAddress = await ip.getIpAddress();
+
+    if (roleUsernameController.text.trim().isEmpty || rolePasswordController.text.trim().isEmpty) {
       Get.snackbar(
         "",
         "",
@@ -197,35 +250,57 @@ class ChatHomeController extends GetxController {
       );
     } else {
       print(roomId);
+      Get.back();
       var url = Uri.parse(loginRole);
       var response = await http.post(
         url,
         body: {
           "roomId": roomId,
-          "username": roleUsernameController.text.trim(),
+          "userName": roleUsernameController.text.trim(),
           "password": rolePasswordController.text,
+          "macAddress": await getId(),
+          "country": country.toString(),
+          // "ipAddress": ipAddress["ip"],
         },
       );
       final databody = json.decode(response.body);
       print(databody);
-
       if (databody["status"] == "success") {
-        //role
         print("login");
+        print(databody);
         userName = roleUsernameController.text.trim();
         isRole = true;
         isGuest = false;
         roleType = databody["data"]["roleType"].toString();
+        deleteChat = databody["data"]["deleteChat"] == "1" ? true : false;
+        mic = databody["data"]["mic"] == "1" ? true : false;
+        kick = databody["data"]["kick"] == "1" ? true : false;
+        stop = databody["data"]["stop"] == "1" ? true : false;
+        banDevice = databody["data"]["banDevice"] == "1" ? true : false;
+        accountMangment = databody["data"]["accountMangment"] == "1" ? true : false;
+        logRecord = databody["data"]["logRecord"] == "1" ? true : false;
+        removeBan = databody["data"]["removeBan"] == "1" ? true : false;
+        publicmessage = databody["data"]["publicmessage"] == "1" ? true : false;
+        adminReport = databody["data"]["adminReport"] == "1" ? true : false;
+        roomSettings = databody["data"]["roomSettings"] == "1" ? true : false;
+        memberMangment = databody["data"]["memberMangment"] == "1" ? true : false;
+        masterMangment = databody["data"]["masterMangment"] == "1" ? true : false;
+        superAdminMangment = databody["data"]["superAdminMangment"] == "1" ? true : false;
+        adminMangment = databody["data"]["adminMangment"] == "1" ? true : false;
+        // roleType = databody["data"]["roleType"].toString();
         // print(roleType);
-        if (userName.isNotEmpty) {
-          Get.toNamed('/room', arguments: {
-            "room_name": roomName,
+        // if (userName.isNotEmpty) {
+        Get.toNamed(
+          '/room',
+          arguments: {
             "room_id": roomId,
-            "owner": owner,
-          });
-        } else if (isGuest) {
-          showAlert(Get.context, roomId, roomName, owner);
-        }
+            "username": userName,
+          },
+        );
+        // } else if (isGuest) {
+        //   showAlert(Get.context, roomId: roomId, roomName: roomName, welcomeText: welcomeText);
+        // }
+      } else if (databody["status"] == "success") {
       } else {
         Get.snackbar(
           "",
@@ -236,16 +311,14 @@ class ChatHomeController extends GetxController {
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
-              fontFamily: "Cairo",
             ),
           ),
           messageText: Text(
-            "اسم المستخدم أو كلمة المرور غير صحيحة",
+            databody["message"],
             textAlign: TextAlign.right,
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
-              fontFamily: "Cairo",
             ),
           ),
           backgroundColor: Colors.red,
@@ -282,82 +355,222 @@ class ChatHomeController extends GetxController {
     });
   }
 
-  checkIfBanned(String roomId, String owner, String roomName) async {
+  Future<Position> determinePosition() async {
+    LocationPermission permission;
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        return Future.error('Location Not Available');
+      }
+    } else {
+      throw Exception('Error');
+    }
+    return await Geolocator.getCurrentPosition();
+  }
+
+  Future<void> checkIfBanned({String roomId, String username}) async {
     // viewBannedUsers
-    var url = Uri.parse(viewBannedUsers);
-    var response = await http.post(
+    // alertMessage("message");
+    // return
+    showDialog(
+      context: Get.context,
+      builder: (context) => AlertDialog(
+        content: SingleChildScrollView(
+          child: Column(
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(
+                height: 20.h,
+              ),
+              Text(
+                "... برجاء الانتظار ",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 17.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    var device = DeviceInfoPlugin();
+
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+    final coordinates = new Coordinates(position.latitude, position.longitude);
+    var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var first = addresses.first;
+    String id = await getId();
+    var ip = IpAddress(type: RequestType.json);
+    dynamic ipAddress = await ip.getIpAddress();
+    String country = first.countryName;
+
+    // getCurrentPosition();
+
+    // getLocation();
+
+    var url = Uri.parse(checkUserBan);
+
+    var res = await http.post(
       url,
       body: {
-        // "username": userName,
+        "username": username,
         "roomId": roomId,
+        "macAddress": await getId(),
+        "country": country.toString(),
+        "ipAddress": ipAddress["ip"],
       },
     );
-    var res = json.decode(response.body);
-    print(res);
-    if (response.statusCode == 200) {
-      for (var e in res["data"]) {
-        if (e["username"] == userName &&
-            !DateTime.parse(e["endTime"])
-                .difference(DateTime.now())
-                .isNegative) {
-          // banedUsers.add(e["username"]);
-          print("banned");
-          Get.defaultDialog(
-              // title: "تنبيه",
-              title: "لقد تم حظرك من هذه الغرفة",
-              titleStyle: TextStyle(
-                  color: Colors.black, fontFamily: "Portada", fontSize: 12.sp),
-              middleText: DateTime.parse(e["endTime"])
-                          .difference(DateTime.now())
-                          .inDays >
-                      0
-                  ? "متبقي " +
-                      DateTime.parse(e["endTime"])
-                          .difference(DateTime.now())
-                          .inDays
-                          .toString() +
-                      " ايام"
-                  : "متبقي " +
-                      DateTime.parse(e["endTime"])
-                          .difference(DateTime.now())
-                          .inMinutes
-                          .toString() +
-                      " دقائق",
-              middleTextStyle: TextStyle(
-                  color: Colors.black, fontFamily: "Portada", fontSize: 12.sp),
-              confirm: TextButton(
-                onPressed: () {
-                  Get.back();
-                },
-                child: Text(
-                  "حسنا",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: "Portada",
-                      fontSize: 12.sp),
-                ),
-              ));
-          return;
+    var data = json.decode(res.body);
+    print(data);
+    // print(res);
+    if (res.statusCode == 200) {
+      if (data["status"] == "success") {
+        Get.back();
+        roleType = "";
+        print(data);
+        if (data["isAdmin"] == "true") {
+          deleteChat = true;
+          mic = true;
+          kick = true;
+          stop = true;
+          banDevice = true;
+          accountMangment = true;
+          logRecord = true;
+          removeBan = true;
+          publicmessage = true;
+          adminReport = true;
+          roomSettings = true;
+          memberMangment = true;
+          masterMangment = true;
+          superAdminMangment = true;
+          adminMangment = true;
+        } else {
+          deleteChat = false;
+          mic = false;
+          kick = false;
+          stop = false;
+          banDevice = false;
+          accountMangment = false;
+          logRecord = false;
+          removeBan = false;
+          publicmessage = false;
+          adminReport = false;
+          roomSettings = false;
+          memberMangment = false;
+          masterMangment = false;
+          superAdminMangment = false;
+          adminMangment = false;
         }
-      }
-      removeBannedUser(roomId, userName);
+        Get.toNamed(
+          '/room',
+          arguments: {
+            "room_id": roomId,
+            "username": username,
+          },
+        );
+      } else if (data["status"] == "closed") {
+        Get.back();
+        showDialog(
+          context: Get.context,
+          builder: (context) {
+            timer = Timer.periodic(Duration(seconds: 2), (timer) {
+              checkIfAccept(username: username);
+            });
+            return AlertDialog(
+              content: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Text(
+                      data["message"],
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 17.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ).then((value) {
+          deleteFromRoomLock();
+          timer.cancel();
 
-      print("not banned");
-      if (userName.isNotEmpty) {
-        Get.toNamed('/room', arguments: {
-          "room_name": roomName,
-          "room_id": roomId,
-          "owner": owner,
+          // return ;
         });
-      } else if (isGuest) {
-        showAlert(Get.context, roomId, roomName, owner);
+      } else {
+        Get.back();
+        // timer.cancel();
+
+        alertMessage(data["message"]);
+        timer.cancel();
       }
+    } else {
+      Get.back();
     }
   }
 
-  loginAsGuest(String roomName, String roomId) async {
-    print("guest-${guestController.text.trim()}${Random().nextInt(9999)}");
+  checkIfAccept({String username}) async {
+    // https://lametnachat.com/rooms/checkEnteringRoom.php
+    var url = Uri.parse(checkEnteringRoom);
+    var response = await http.post(
+      url,
+      body: {
+        "username": username,
+      },
+    );
+    final databody = json.decode(response.body);
+    print(databody);
+    if (databody["status"] == "success") {
+      Get.back();
+      timer.cancel();
+      Get.toNamed(
+        '/room',
+        arguments: {
+          "room_id": databody["roomId"].toString(),
+          "username": username,
+        },
+      );
+      timer.cancel();
+    } else if (databody["status"] == "fail") {
+      Get.back();
+      timer.cancel();
+      alertMessage(databody["message"]);
+    }
+    print("----------");
+  }
+
+  deleteFromRoomLock() async {
+    //https://lametnachat.com/rooms/deleteEnteringRoom.php
+    var url = Uri.parse(deleteEnteringRoom);
+    var response = await http.post(
+      url,
+      body: {
+        "username": userName,
+      },
+    );
+    final databody = json.decode(response.body);
+    print(databody);
+    print("----------");
+  }
+
+  loginAsGuest(
+      {String welcomeText,
+      String roomName,
+      // String owner,
+      String roomId}) async {
+    print("guest-${guestController.text.trim()}");
 
     if (guestController.text.isEmpty) {
       // print("empty");
@@ -391,16 +604,155 @@ class ChatHomeController extends GetxController {
         duration: Duration(seconds: 3),
       );
     } else {
-      userName =
-          "${guestController.text.trim()}${Random().nextInt(999999).toString().substring(0, 3)}";
-      isRole = false;
-      isGuest = true;
-      // isRole = false;
-      update();
-      Get.toNamed('/room', arguments: {
-        "room_name": roomName,
-        "room_id": roomId,
-      });
+      var guestLoginUrl = Uri.parse(guestLogin);
+      var res = await http.post(
+        guestLoginUrl,
+        body: {
+          "name": guestController.text.trim(),
+          "roomId": roomId,
+        },
+      );
+      var data = json.decode(res.body);
+
+      if (data["status"] == "success") {
+        Get.back();
+
+        userName = "${guestController.text.trim()}";
+        isRole = false;
+        isGuest = true;
+        guestController.text = "";
+        // isRole = false;
+        // update();
+
+        Get.toNamed(
+          '/room',
+          arguments: {
+            // "room_name": roomName,
+            "room_id": roomId,
+            // "owner": owner,
+            // "welcome_text": welcomeText,
+          },
+        );
+        // Get.toNamed(
+        //   '/room',
+        //   // arguments: {
+        //   //   "room_name": roomName,
+        //   //   "room_id": roomId,
+        //   //   // "owner": owner,
+        //   //   "welcome_text": welcomeText,
+        //   // },
+        // );
+      } else {
+        Get.snackbar(
+          "",
+          "",
+          titleText: Text(
+            "تنبيه",
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+              fontFamily: "Cairo",
+            ),
+          ),
+          messageText: Text(
+            " من فضلك ادخل اسم المستخدم اخر", //
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+              fontFamily: "Cairo",
+            ),
+          ),
+          backgroundColor: Colors.red,
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          snackPosition: SnackPosition.BOTTOM,
+          duration: Duration(seconds: 3),
+        );
+      }
     }
   }
+}
+
+Future<String> getId() async {
+  var deviceInfo = DeviceInfoPlugin();
+  if (Platform.isIOS) {
+    // import 'dart:io'
+    var iosDeviceInfo = await deviceInfo.iosInfo;
+    return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+  } else if (Platform.isAndroid) {
+    var androidDeviceInfo = await deviceInfo.androidInfo;
+    return androidDeviceInfo.id; // unique ID on Android
+  }
+}
+
+alertMessage(String message) {
+  return showDialog(
+    context: Get.context,
+    builder: (context) => AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.r),
+      ),
+      titlePadding: EdgeInsets.zero,
+      title: Container(
+        decoration: BoxDecoration(
+          color: Color(0xFFFABD63),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r)),
+        ),
+        padding: EdgeInsets.all(3.sp),
+        child: Text(
+          "تنبيه",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 18.sp,
+          ),
+        ),
+      ),
+      content: Text(
+        message,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 18.sp,
+        ),
+      ),
+      actionsPadding: EdgeInsets.zero,
+      actions: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFFFABD63),
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 25.w,
+                  vertical: 3.h,
+                ),
+                child: Text(
+                  "حسنا",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.sp,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }

@@ -26,7 +26,7 @@ class CameraSettings extends StatelessWidget {
                   style: TextStyle(color: Colors.black),
                 ),
                 value: "all",
-                groupValue: controller.cameraStatus,
+                groupValue: controller.cameraRadio,
                 onChanged: (value) {
                   controller.changeCameraRadio(value);
                   // setState(() {});
@@ -38,7 +38,7 @@ class CameraSettings extends StatelessWidget {
                   style: TextStyle(color: Colors.black),
                 ),
                 value: "membersAndAdmins",
-                groupValue: controller.cameraStatus,
+                groupValue: controller.cameraRadio,
                 onChanged: (value) {
                   controller.changeCameraRadio(value);
                   // setState(() {});
@@ -50,7 +50,7 @@ class CameraSettings extends StatelessWidget {
                   style: TextStyle(color: Colors.black),
                 ),
                 value: "adminsOnly",
-                groupValue: controller.cameraStatus,
+                groupValue: controller.cameraRadio,
                 onChanged: (value) {
                   controller.changeCameraRadio(value);
                   // setState(() {});
@@ -62,7 +62,7 @@ class CameraSettings extends StatelessWidget {
                   style: TextStyle(color: Colors.black),
                 ),
                 value: "nobody",
-                groupValue: controller.cameraStatus,
+                groupValue: controller.cameraRadio,
                 onChanged: (value) {
                   // setState(() {});
                   controller.changeCameraRadio(value);

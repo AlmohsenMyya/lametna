@@ -26,15 +26,14 @@ class LoginPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         body: Stack(
           children: [
-            _buildBackgroundImage("phone.png", -37.sp, -51.sp, 210),
-            _buildBackgroundImage("heart.png", 214.sp, 0.sp, 202, opacity: 1),
-            _buildBackgroundImage("message.png", 260.sp, 135.sp, 179),
-            _buildBackgroundImage("phone.png", 274.sp, 353.sp, 210),
-            _buildBackgroundImage("recipt.png", 41.sp, 651.sp, 201, opacity: 1),
-            _buildBackgroundImage("heart.png", 274.sp, 700.sp, 202, opacity: 1),
-            _buildBackgroundImage("heart.png", -101.sp, 231.sp, 202,
-                opacity: 1),
-            _buildBackgroundImage("message.png", 0.sp, 300.sp, 179),
+            buildBackgroundImage("phone.png", -37.sp, -51.sp, 210),
+            buildBackgroundImage("heart.png", 214.sp, 0.sp, 202, opacity: 1),
+            buildBackgroundImage("message.png", 260.sp, 135.sp, 179),
+            buildBackgroundImage("phone.png", 274.sp, 353.sp, 210),
+            buildBackgroundImage("recipt.png", 41.sp, 651.sp, 201, opacity: 1),
+            buildBackgroundImage("heart.png", 274.sp, 700.sp, 202, opacity: 1),
+            buildBackgroundImage("heart.png", -101.sp, 231.sp, 202, opacity: 1),
+            buildBackgroundImage("message.png", 0.sp, 300.sp, 179),
             GetBuilder<LoginController>(
                 init: LoginController(),
                 builder: (controller) {
@@ -54,8 +53,7 @@ class LoginPage extends StatelessWidget {
                                   spreadRadius: 5,
                                   blurRadius: 10,
 
-                                  offset: Offset(
-                                      0, 3), // changes position of shadow
+                                  offset: Offset(0, 3), // changes position of shadow
                                 ),
                               ],
                             ),
@@ -72,14 +70,10 @@ class LoginPage extends StatelessWidget {
                                     ),
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 25.w, vertical: 5.h),
+                                    padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 5.h),
                                     child: Text(
                                       "دخول الاسماء المسجلة",
-                                      style: TextStyle(
-                                          fontSize: 15.sp,
-                                          color: Colors.white,
-                                          fontFamily: "Portada"),
+                                      style: TextStyle(fontSize: 15.sp, color: Colors.white, fontFamily: "Portada"),
                                     ),
                                   ),
                                 ),
@@ -89,8 +83,7 @@ class LoginPage extends StatelessWidget {
                                 Directionality(
                                   textDirection: TextDirection.rtl,
                                   child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 40.w),
+                                    padding: EdgeInsets.symmetric(horizontal: 40.w),
                                     child: TextFormField(
                                       controller: controller.userNameController,
                                       decoration: InputDecoration(
@@ -99,8 +92,7 @@ class LoginPage extends StatelessWidget {
                                           size: 22.sp,
                                           color: Colors.grey,
                                         ),
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 20.w, vertical: 7.h),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 7.h),
                                         filled: true,
                                         hintText: "اسم المستتخدم",
                                         hintStyle: TextStyle(
@@ -110,8 +102,7 @@ class LoginPage extends StatelessWidget {
                                         ),
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide.none,
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
+                                          borderRadius: BorderRadius.circular(10.r),
                                         ),
                                       ),
                                       style: TextStyle(
@@ -126,12 +117,10 @@ class LoginPage extends StatelessWidget {
                                 Directionality(
                                   textDirection: TextDirection.rtl,
                                   child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 40.w),
+                                    padding: EdgeInsets.symmetric(horizontal: 40.w),
                                     child: TextFormField(
                                       controller: controller.passwordController,
-                                      obscureText:
-                                          !controller.passwordVisibility,
+                                      obscureText: !controller.passwordVisibility,
                                       decoration: InputDecoration(
                                         prefixIcon: Icon(
                                           Icons.lock_outline,
@@ -140,17 +129,13 @@ class LoginPage extends StatelessWidget {
                                         ),
                                         suffixIcon: IconButton(
                                             icon: Icon(
-                                              controller.passwordVisibility
-                                                  ? Icons.visibility
-                                                  : Icons.visibility_off,
+                                              controller.passwordVisibility ? Icons.visibility : Icons.visibility_off,
                                               color: Colors.grey,
                                             ),
                                             onPressed: () {
-                                              controller
-                                                  .changePasswordVisibility();
+                                              controller.changePasswordVisibility();
                                             }),
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 20.w, vertical: 7.h),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 7.h),
                                         filled: true,
                                         hintText: "كلمة المرور",
                                         hintStyle: TextStyle(
@@ -160,8 +145,7 @@ class LoginPage extends StatelessWidget {
                                         ),
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide.none,
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
+                                          borderRadius: BorderRadius.circular(10.r),
                                         ),
                                       ),
                                       style: TextStyle(
@@ -174,8 +158,7 @@ class LoginPage extends StatelessWidget {
                                   height: 20.h,
                                 ),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     GestureDetector(
                                       onTap: () {
@@ -192,37 +175,26 @@ class LoginPage extends StatelessWidget {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        controller.login(
-                                            context,
-                                            controller.userNameController.text
-                                                .trim(),
-                                            controller.passwordController.text);
+                                        controller.login(context, controller.userNameController.text.trim(), controller.passwordController.text);
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: Color(0xFFffcc00),
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
+                                          borderRadius: BorderRadius.circular(10.r),
                                           boxShadow: [
                                             BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
+                                              color: Colors.grey.withOpacity(0.5),
                                               spreadRadius: 1,
                                               blurRadius: 7,
-                                              offset: Offset(0,
-                                                  3), // changes position of shadow
+                                              offset: Offset(0, 3), // changes position of shadow
                                             ),
                                           ],
                                         ),
                                         child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 25.w, vertical: 5.h),
+                                          padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 5.h),
                                           child: Text(
                                             "دخول",
-                                            style: TextStyle(
-                                                fontSize: 15.sp,
-                                                color: Colors.white,
-                                                fontFamily: "Portada"),
+                                            style: TextStyle(fontSize: 15.sp, color: Colors.white, fontFamily: "Portada"),
                                           ),
                                         ),
                                       ),
@@ -262,10 +234,7 @@ class LoginPage extends StatelessWidget {
                             child: Text(
                               "دخول زائر",
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 15.sp,
-                                  color: Colors.white,
-                                  fontFamily: "Portada"),
+                              style: TextStyle(fontSize: 15.sp, color: Colors.white, fontFamily: "Portada"),
                             ),
                           ),
                         ),
@@ -280,14 +249,13 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-Widget _buildBackgroundImage(String image, double x, double y, int size,
-    {double opacity = 0.07}) {
+Widget buildBackgroundImage(String image, double x, double y, double size, {double opacity = 0.07}) {
   return Container(
     child: Opacity(
       opacity: opacity,
       child: Image.asset(
         'assets/images/$image',
-        width: size.w,
+        width: size,
         fit: BoxFit.scaleDown,
       ),
     ),

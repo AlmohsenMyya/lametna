@@ -7,6 +7,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lametna/controllers/profile/profileController.dart';
+import 'package:lametna/controllers/userData/userCredentials.dart';
+import 'package:lametna/view/profile/editPersonalProfile.dart';
 
 class Profile extends StatelessWidget {
   // const Profile({Key key}) : super(key: key);
@@ -35,11 +37,25 @@ class Profile extends StatelessWidget {
                       slivers: [
                         SliverAppBar(
                           backgroundColor: Colors.grey,
-                          leading: IconButton(
-                              icon: Icon(Icons.settings, size: 25.sp),
-                              onPressed: () {
-                                Get.toNamed('/editProfile');
-                              }),
+                          expandedHeight: 360.h,
+                          leading: GestureDetector(
+                              onTap: () {
+                                // Get.toNamed('/editProfile');
+                                Get.toNamed('/editPersonalProfile');
+                                //route to page
+                                // MaterialPageRoute(builder: (context) => Navigator,)
+                                // print("object");
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => EditPersonalProfile(),
+                                //   ),
+                                // );
+
+                                //EditPersonalProfile()
+                                // MaterialPageRoute(builder: (context) => ,)
+                              },
+                              child: Icon(Icons.settings, size: 25.sp)),
                           title: GetBuilder<ProfileController>(
                             builder: (controller) => Padding(
                               padding: EdgeInsets.symmetric(horizontal: 15.w),
@@ -102,7 +118,7 @@ class Profile extends StatelessWidget {
                                 // init: ProfileController(),
                                 builder: (controller) {
                               return Padding(
-                                padding: EdgeInsets.only(bottom: 125.h),
+                                padding: EdgeInsets.only(bottom: 130.h),
                                 child: Column(
                                   children: [
                                     Stack(
@@ -112,13 +128,20 @@ class Profile extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(100.r),
                                           child: Image.network(
-                                            controller.data["image"]
-                                                        .toString() ==
-                                                    ""
-                                                ? "https://lametnachat.com/upload/imageUser/anonymous.jpg"
-                                                : "https://lametnachat.com/upload/imageUser/" +
-                                                    controller.data["image"]
-                                                        .toString(),
+                                            "https://lametnachat.com/upload/imageUser/" +
+                                                userName.toString() +
+                                                ".jpeg",
+                                            errorBuilder:
+                                                (context, error, stackTrace) =>
+                                                    ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(100.r),
+                                              child: Image.network(
+                                                  "https://lametnachat.com/upload/imageUser/anonymous.jpg",
+                                                  width: 65.w,
+                                                  height: 70.h,
+                                                  fit: BoxFit.fill),
+                                            ),
                                             width: 65.w,
                                             height: 70.h,
                                             fit: BoxFit.fill,
@@ -137,7 +160,7 @@ class Profile extends StatelessWidget {
                                       ],
                                     ),
                                     SizedBox(
-                                      height: 30.h,
+                                      height: 32.h,
                                       child: Text(
                                         controller.data["username"].toString(),
                                         style: TextStyle(
@@ -164,7 +187,6 @@ class Profile extends StatelessWidget {
                               );
                             }),
                           ),
-                          expandedHeight: 360.h,
                           flexibleSpace: GetBuilder<ProfileController>(
                               init: ProfileController(),
                               builder: (controller) {
@@ -443,7 +465,7 @@ class Profile extends StatelessWidget {
 
   Container statusBuilder(String num, String text) {
     return Container(
-      height: 46.h,
+      height: 50.h,
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 9.h),
       decoration: BoxDecoration(
         color: Colors.white,

@@ -3,13 +3,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lametna/controllers/chat/roomsPageController.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/controllers/userData/variables.dart';
 import 'package:http/http.dart' as http;
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:lametna/view/chat/addAccount.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-const String appId = "e151cc863dd34adc9f76f085e4fb7b78";
+const String appId = "977621c3bde5423ebb3782aaf5b6edbc"; //e151cc863dd34adc9f76f085e4fb7b78
 
 class VoiceController extends GetxController {
   String channelName;
@@ -19,26 +21,43 @@ class VoiceController extends GetxController {
   int _remoteUid; // uid of the remote user
   bool _isJoined = false; // Indicates if the local user has joined the channel
   RtcEngine agoraEngine; // Agora engine instance
-
   bool micWidget = false;
   bool muteMic = false;
+  bool isJoined = true;
+  bool inCall = false;
   int currentTime = 0;
   Timer timer;
+  String talkStatus;
+  String memberTalkTime;
+  String adminTalkTime;
+  String superAdminTalkTime;
+  String masterTalkTime;
+  String owner;
+
+  Timer talkTimer;
+
+  RoomsPageController roomPageController = Get.put(RoomsPageController());
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
-    getRoomInformation();
-    // setupVoiceSDKEngine();
-    // l.forEach((element) {
-    //   element["status"] = "55";
-    // });
+    await getRoomInformation();
+    await setupVoiceSDKEngine();
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      currentTime = currentTime + 1;
+      update();
+    });
+    // join();
   }
 
   @override
   void dispose() async {
     // await agoraEngine.leaveChannel();
+    // agoraEngine = null;
+    // leave();
+    leaveCall();
     super.dispose();
+    // leave();
   }
 
   getRoomInformation() async {
@@ -49,6 +68,14 @@ class VoiceController extends GetxController {
     final dataBody = json.decode(response.body);
     channelName = dataBody["data"][0]["Channel_Name"];
     token = dataBody["data"][0]["Token"];
+    memberTalkTime = dataBody["data"][0]["memberCallTime"];
+    adminTalkTime = dataBody["data"][0]["adminCallTime"];
+    superAdminTalkTime = dataBody["data"][0]["superAdminCallTime"];
+    masterTalkTime = dataBody["data"][0]["masterCallTime"];
+    talkStatus = dataBody["data"][0]["speech"];
+    owner = dataBody["data"][0]["owner_username"];
+    // roomId =
+
     update();
     // print();
   }
@@ -60,10 +87,6 @@ class VoiceController extends GetxController {
     //create an instance of the Agora engine
     agoraEngine = createAgoraRtcEngine();
     await agoraEngine.initialize(const RtcEngineContext(appId: appId));
-    // agoraEngi
-    await agoraEngine.disableVideo();
-
-    // Register the event handler
     agoraEngine.registerEventHandler(
       RtcEngineEventHandler(
         onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
@@ -74,8 +97,7 @@ class VoiceController extends GetxController {
           _remoteUid = remoteUid;
           update();
         },
-        onUserOffline: (RtcConnection connection, int remoteUid,
-            UserOfflineReasonType reason) {
+        onUserOffline: (RtcConnection connection, int remoteUid, UserOfflineReasonType reason) {
           _remoteUid = null;
           update();
         },
@@ -83,48 +105,50 @@ class VoiceController extends GetxController {
     );
   }
 
-  // Widget _status() {
-  //   String statusText;
-
-  //   if (!_isJoined)
-  //     statusText = 'Join a channel';
-  //   else if (_remoteUid == null)
-  //     statusText = 'Waiting for a remote user to join...';
-  //   else
-  //     statusText = 'Connected to remote user, uid:$_remoteUid';
-
-  //   return Text(
-  //     statusText,
-  //   );
+  // getMemberInCall() async {
+  //   var url = Uri.parse('https://lametnachat.com/messages/getMembersInCall.php');
+  //   var response = await http.post(url, body: {
+  //     "roomId": Get.arguments["room_id"],
+  //   });
+  //   final dataBody = json.decode(response.body);
+  //   print(dataBody);
+  //   roomPageController.memberInCall = dataBody["data"];
+  //   update();
   // }
-  getCurrentTime() {
-    // DateTime now = DateTime.now();
-    currentTime = currentTime + 1;
-    //     "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}:${now.second.toString().padLeft(2, '0')}";
-    update();
-    print(currentTime);
-  }
 
-  String formatSecondsToTime(int seconds) {
-    int hours = seconds ~/ 3600;
-    int minutes = (seconds % 3600) ~/ 60;
-    int remainingSeconds = seconds % 60;
+  // getCurrentTime() {
+  //   // DateTime now = DateTime.now();
+  //   currentTime = currentTime + 1;
+  //   //     "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}:${now.second.toString().padLeft(2, '0')}";
+  //   update();
+  //   print(currentTime);
+  // }
 
-    String formattedTime =
-        '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+  // String formatSecondsToTime(int seconds) {
+  //   int hours = seconds ~/ 3600;
+  //   int minutes = (seconds % 3600) ~/ 60;
+  //   int remainingSeconds = seconds % 60;
 
-    return formattedTime;
-  }
+  //   String formattedTime = '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+
+  //   return formattedTime;
+  // }
 
   void join() async {
-    await setupVoiceSDKEngine();
-
     // Set channel options including the client role and channel profile
     ChannelMediaOptions options = const ChannelMediaOptions(
       clientRoleType: ClientRoleType.clientRoleBroadcaster,
       channelProfile: ChannelProfileType.channelProfileCommunication,
     );
-    await agoraEngine.disableVideo();
+    // agoraEngine.disableVideo();
+    // agoraEngine.muteLocalAudioStream(true);
+    var url = Uri.parse('https://lametnachat.com/messages/addMembersInCall.php');
+    var response = await http.post(url, body: {
+      "roomId": Get.arguments["room_id"],
+      "name": userName,
+      "userType": "1",
+      // "joinOrLeave": "9", //left 1 joined 0
+    });
 
     await agoraEngine.joinChannel(
       token: token,
@@ -132,93 +156,186 @@ class VoiceController extends GetxController {
       options: options,
       uid: uid,
     );
-    _isJoined = true;
-    update();
-    await http.post(
-      Uri.parse(toggleMicUrl),
-      body: {
-        "roomId": Get.arguments["room_id"],
-        "username": userName,
-      },
-    );
-    var response = await http.post(
-      Uri.parse(membersInCall),
-      body: {
-        "roomId": Get.arguments["room_id"],
-        "name": userName,
-      },
-    );
 
-    if (response.statusCode == 200) {
-      print("joined");
-      Get.snackbar("message", "joined");
-      timer = await Timer.periodic(Duration(seconds: 1), (timer) {
-        getCurrentTime();
-      });
-    }
+    Get.snackbar("message", "تم الانضمام للمكالمة");
   }
 
   Future<void> leave() async {
-    await agoraEngine.leaveChannel();
-
     _isJoined = false;
     _remoteUid = null;
+    var url = Uri.parse('https://lametnachat.com/messages/deleteMembersInCall.php');
+    var response = await http.post(url, body: {
+      "roomId": Get.arguments["room_id"],
+      "name": userName,
+      // "joinOrLeave": "9", //left 1 joined 0
+    });
     update();
-    // agoraEngine.leaveChannel();
-    await http.post(
-      Uri.parse(toggleMicUrl),
-      body: {
-        "roomId": Get.arguments["room_id"],
-        "username": userName,
-      },
-    );
+    agoraEngine.leaveChannel();
+    Get.snackbar("message", "leave");
+  }
 
-    var response = await http.post(
-      Uri.parse(deleteMemberInCall),
-      body: {
-        "roomId": Get.arguments["room_id"],
-        "name": userName,
-      },
-    );
+  // Future<void> leave() async {
+  //   _isJoined = false;
+  //   _remoteUid = null;
+  //   update();
+  //   await agoraEngine.leaveChannel();
+  // }
+
+  // joinCall() async {
+  //   if (inCall) {
+  //   } else {
+  //     var url = Uri.parse('https://lametnachat.com/messages/addMembersInCall.php');
+  //     var response = await http.post(url, body: {
+  //       "roomId": Get.arguments["room_id"],
+  //       "name": userName,
+  //       "userType": "1",
+
+  //       // "joinOrLeave": "9", //left 1 joined 0
+  //     });
+  //     ChannelMediaOptions options = const ChannelMediaOptions(
+  //       clientRoleType: ClientRoleType.clientRoleBroadcaster,
+  //       channelProfile: ChannelProfileType.channelProfileCommunication,
+  //     );
+
+  //     await agoraEngine.joinChannel(
+  //       token: token,
+  //       channelId: channelName,
+  //       options: options,
+  //       uid: uid,
+  //     );
+  //   }
+  // }
+
+  leaveCall() async {
+    //deleteMemberInCall
+    inCall = false;
+    update();
+
+    var url = Uri.parse('https://lametnachat.com/messages/deleteMembersInCall.php');
+    var response = await http.post(url, body: {
+      "roomId": Get.arguments["room_id"],
+      "name": userName,
+      // "joinOrLeave": "9", //left 1 joined 0
+    });
     if (response.statusCode == 200) {
-      print("left");
-      Get.snackbar("message", "left");
-      timer.cancel();
-      currentTime = 0;
-    }
-  }
-
-  toogleMic() {
-    micWidget = !micWidget;
-    update();
-  }
-
-  checkIfUserIsJoined() {
-    if (!_isJoined) {
-      print("join");
-      join();
-    } else {
-      print("not join");
-      leave();
-    }
-  }
-
-  toggleMic() async {
-    muteMic = !muteMic;
-    update();
-    await http.post(
-      Uri.parse(toggleMute),
-      body: {
-        "roomId": Get.arguments["room_id"],
-        "username": userName,
-      },
-    );
-    if (muteMic) {
       agoraEngine.muteLocalAudioStream(true);
-    } else {
-      agoraEngine.muteLocalAudioStream(false);
-      // agoraEngine.
     }
-    // agoraEngine.muteLocalAudioStream(true);
   }
+
+  // forceJoinCall(String name, String roomId) async {
+  //   // print(roomPageController.memberInCall);
+  //   Get.back();
+  //   var url = Uri.parse('https://lametnachat.com/messages/addMembersInCall.php');
+  //   var response = await http.post(url, body: {
+  //     "roomId": roomId,
+  //     "name": name,
+  //     "userType": "user",
+  //     // "joinOrLeave": "9", //left 1 joined 0
+  //   });
+  //   // if (response.statusCode == 200) {
+  //   //   agoraEngine.muteLocalAudioStream(false);
+  //   //   inCall = true;
+  //   //   update();
+  //   // }
+  // }
+
+  // toogleMic() {
+  //   if (micWidget) {
+  //     joinCall();
+  //   } else {
+  //     agoraEngine.muteLocalAudioStream(true);
+  //     leaveCall();
+  //   }
+  // }
+
+  // // checkIfUserIsJoined() async {
+  // //   print("isRole" + isRole.toString());
+  // //   print("isGuest" + isGuest.toString());
+  // //   print("inCall" + inCall.toString());
+  // //   // print(isGuest);
+  // //   print(inCall);
+  // //   // print(_isJoined);
+  // //   if (inCall == false) {
+  // //     // join();
+  // //     // print(isRole);
+  // //     // print(isGuest);
+  // //     if (talkStatus == "الجميع") {
+  // //       join();
+  // //       inCall = !inCall;
+  // //     } else if (talkStatus == "الأعضاء والمشرفين فقط" &&
+  // //             isGuest == false &&
+  // //             isRole == true ||
+  // //         userName == owner ||
+  // //         isGuest == false && isRole == false) {
+  // //       join();
+  // //       inCall = !inCall;
+  // //     } else if (talkStatus == "المشرفين فقط" && isRole == true ||
+  // //         userName == owner) {
+  // //       join();
+  // //       inCall = !inCall;
+  // //     } else if (talkStatus == "لا أحد") {
+  // //       if (owner == userName) {
+  // //         join();
+  // //         inCall = !inCall;
+  // //       }
+  // //     } else {
+  // //       Get.snackbar("message", "لا يمكنك الانضمام لهذه الغرفة");
+  // //       // join();
+  // //     }
+  // //     if (isRole) {
+  // //       if (roleType == "0") {
+  // //         talkTimer = Timer.periodic(
+  // //             Duration(minutes: int.parse(memberTalkTime)), (timer) {
+  // //           print("close");
+  // //           leave();
+  // //         });
+  // //       } else if (roleType == " 1") {
+  // //         talkTimer = Timer.periodic(
+  // //             Duration(minutes: int.parse(adminTalkTime)), (timer) {
+  // //           print("close");
+  // //           leave();
+  // //         });
+  // //       } else if (roleType == "2") {
+  // //         talkTimer = Timer.periodic(
+  // //             Duration(minutes: int.parse(superAdminTalkTime)), (timer) {
+  // //           leave();
+  // //           print("close");
+  // //         });
+  // //       } else if (roleType == "3") {
+  // //         talkTimer = Timer.periodic(
+  // //             Duration(minutes: int.parse(masterTalkTime)), (timer) {
+  // //           leave();
+  // //           print("close");
+  // //         });
+  // //       }
+  // //     }
+  // //   } else {
+  // //     leave();
+  // //     if (isRole == true || talkTimer != null) {
+  // //       talkTimer.cancel();
+  // //       talkTimer = null;
+  // //     }
+  // //     inCall = !inCall;
+  // //   }
+  // //   update();
+  // // }
+
+  // toggleMic() async {
+  //   muteMic = !muteMic;
+  //   update();
+  //   await http.post(
+  //     Uri.parse(toggleMute),
+  //     body: {
+  //       "roomId": Get.arguments["room_id"],
+  //       "username": userName,
+  //     },
+  //   );
+  //   if (muteMic) {
+  //     agoraEngine.muteLocalAudioStream(true);
+  //   } else {
+  //     agoraEngine.muteLocalAudioStream(false);
+  //     // agoraEngine.
+  //   }
+  //   // agoraEngine.muteLocalAudioStream(true);
+  // }
 }

@@ -1,36 +1,35 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-PreferredSize appbarBuilder(String title, bool isCentered) {
+PreferredSize appbarBuilder(String title, bool isCentered, {String color = ""}) {
   return PreferredSize(
-    preferredSize: Size.fromHeight(72.h),
+    preferredSize: Size.fromHeight(60.h),
     child: Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         // LinearGradient
-        gradient: LinearGradient(
-          colors: [
-            const Color(0xFFF792F0),
-            const Color(0xFFFABD63),
-          ],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
+        gradient: color == ""
+            ? LinearGradient(
+                colors: [
+                  Color(0xFFF792F0),
+                  Color(0xFFFABD63),
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              )
+            : null,
+        color: color == "" ? null : Color(int.parse(color.substring(1, 7), radix: 16) + 0xFF000000),
       ),
       child: AppBar(
-        title: Align(
-          alignment: isCentered ? Alignment.center : Alignment.centerRight,
-          child: Padding(
-            padding: EdgeInsets.only(right: isCentered ? 0 : 20.w),
-            child: Text(
-              title,
-              style: TextStyle(
-                color: Colors.white, //Color(0xff9A8B8B),
-                fontSize: 20.sp,
-                fontWeight: FontWeight.bold,
-                fontFamily: "Portada",
-              ),
-            ),
+        centerTitle: isCentered,
+        title: Text(
+          title,
+          style: TextStyle(
+            color: Colors.white, //Color(0xff9A8B8B),
+            fontSize: 20.sp,
+            fontWeight: FontWeight.bold,
           ),
         ),
         leading: IconButton(
@@ -43,6 +42,7 @@ PreferredSize appbarBuilder(String title, bool isCentered) {
             size: 25.sp,
           ),
         ),
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),

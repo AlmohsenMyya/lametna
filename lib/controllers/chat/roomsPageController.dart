@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables
 
 import 'dart:async';
 import 'dart:convert';
@@ -9,17 +9,21 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:lametna/controllers/Crud.dart';
 import 'package:lametna/controllers/chat/voice%20and%20video/videoController.dart';
+import 'package:lametna/controllers/chat/voice%20and%20video/voiceController.dart';
 import 'package:lametna/controllers/chathomePageController.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/model/message.dart';
-import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+// import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:lametna/view/chat/addAccount.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:get_ip_address/get_ip_address.dart';
 import 'package:lametna/view/chatHomePage.dart';
+import 'package:lametna/view/home.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoder/geocoder.dart';
 import '../userData/variables.dart';
 
 const String APP_ID = "e151cc863dd34adc9f76f085e4fb7b78";
@@ -29,77 +33,80 @@ class RoomsPageController extends GetxController {
   Crud crud = Crud();
   StreamController streamController = StreamController();
   StreamController membersController = StreamController();
+  StreamController roomLockController = StreamController.broadcast();
+  // VideoController videoController = Get.put(VideoController());
+  // VoiceController voiceController = Get.put(VoiceController());
   OverlayEntry entry;
+  var memberInCall;
+
+  bool isRoomLock = false;
   // Timer _timer;
   TextEditingController messageController = TextEditingController();
   bool scrollDownButton = true;
-  ScrollController scrollController = ScrollController();
+  // ScrollController scrollController = ScrollController();
   bool messageStatus = false;
   bool emojiStatus = true;
   bool cameraWidget = false;
   bool micWidget = false;
   bool mute = false;
   bool inCall = false;
+  bool isVisible = false;
+  bool waitingListStatus = false;
+
+  String timeEntered;
+
+  String privateMessages;
 
   var userInRoom;
   String roomId;
+
+  String roomOwner;
+  String welcomeText;
+  String welcomeMsg;
+
+  String roomName;
+  String themeColor;
+
+  bool isEndrawerOpen = false;
+
   // bool owner = Get.arguments["owner"] == userName;
 
   //blocktime
-  String quarterHour = DateTime.now()
-      .add(Duration(minutes: 15))
-      .toString()
-      .substring(0, 19)
-      .toString();
-  String hour = DateTime.now()
-      .add(Duration(minutes: 60))
-      .toString()
-      .substring(0, 19)
-      .toString();
-  String sixHours = DateTime.now()
-      .add(Duration(hours: 6))
-      .toString()
-      .substring(0, 19)
-      .toString();
-  String day = DateTime.now()
-      .add(Duration(days: 1))
-      .toString()
-      .substring(0, 19)
-      .toString();
+  String quarterHour = DateTime.now().add(Duration(minutes: 15)).toString().substring(0, 19).toString();
+  String hour = DateTime.now().add(Duration(minutes: 60)).toString().substring(0, 19).toString();
+  String sixHours = DateTime.now().add(Duration(hours: 6)).toString().substring(0, 19).toString();
+  String day = DateTime.now().add(Duration(days: 1)).toString().substring(0, 19).toString();
 
-  String week = DateTime.now()
-      .add(Duration(days: 7))
-      .toString()
-      .substring(0, 19)
-      .toString();
-  String month = DateTime.now()
-      .add(Duration(days: 30))
-      .toString()
-      .substring(0, 19)
-      .toString();
-  String forever = DateTime.now()
-      .add(Duration(days: 365))
-      .toString()
-      .substring(0, 19)
-      .toString();
+  String week = DateTime.now().add(Duration(days: 7)).toString().substring(0, 19).toString();
+  String month = DateTime.now().add(Duration(days: 30)).toString().substring(0, 19).toString();
+  String forever = DateTime.now().add(Duration(days: 365)).toString().substring(0, 19).toString();
   bool isKicked = false;
-  VideoController videoController = Get.put(VideoController());
 
-  //voice room
-  // String channelName = "";
-  // String token = "";
-  // String channelName = "2";
-  // String token =
-  //     "007eJxTYKh99aOr7HP0FNmPLzgVK1YnqwZP1vVbq75dyuf/pVtvzu5WYEg1NDVMTrYwM05JMTZJTEm2TDM3SzOwME01SUsyTzK30P28MKUhkJHhg74DEyMDBIL4jAxGDAwAlBAgUQ==";
+  bool isChatActive = false;
 
   @override
   Future<void> onInit() async {
     super.onInit();
     roomId = await Get.arguments["room_id"];
+    // roomId = await Get.arguments["room_id"];
+    timeEntered = DateTime.now().toUtc().subtract(Duration(seconds: 5)).toString();
     onJoin();
     isKicked = false;
 
     await getRoomInformation();
+    Timer.periodic(Duration(seconds: 2), (timer) {
+      update();
+      getRoomInformation();
+    });
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+
+    streamController.close();
+    membersController.close();
+    super.onClose();
   }
 
   //video
@@ -108,135 +115,139 @@ class RoomsPageController extends GetxController {
     // TODO: implement dispose
     // getActiveOrDefualtBask
     //  emitTypingChange(0);
-    await streamController.close();
+
+    // scrollController.removeListener(() {});
+    streamController.close();
+    membersController.close();
+    roomLockController.close();
+    timeEntered = "";
     // _timer.cancel();
 
-    onLeave();
+    await onLeave();
     // await agoraEngine.leaveChannel();
     super.dispose();
   }
 
-  @override
-  Future<void> onClose() async {
-    print("close");
-
-    streamController.close();
-    // onLeave();
-    // _timer.cancel();
-    super.onClose();
-  }
-
-  getRoomInformation() async {
-    var url = Uri.parse(roomInfoUrl);
-    var response = await http.post(url, body: {
-      "roomId": Get.arguments["room_id"],
-    });
-    final dataBody = json.decode(response.body);
-    // channelName = dataBody["data"][0]["Channel_Name"];
-    // token = dataBody["data"][0]["Token"];
+  changeChatStatus(bool status) {
+    isChatActive = status;
     update();
-    // print();
-  }
-
-  onJoin() async {
-    var url = Uri.parse(joinRoom);
-    var url2 = Uri.parse(sendRoomMessage);
-    await http.post(url2, body: {
-      "roomId": Get.arguments["room_id"],
-      "senderName": "roomAlert",
-      "message": "$userName انضم للغرفة",
-      "joinOrLeave": "0", //left 1 joined 0
-    });
-
-    await http.post(url, body: {
-      "roomId": roomId,
-      "userName": userName,
-    });
-  }
-
-  onLeave() async {
-    var url = Uri.parse(leaveRoom);
-    var url2 = Uri.parse(sendRoomMessage);
-    await http.post(url2, body: {
-      "roomId": roomId,
-      "senderName": "roomAlert",
-      "message": "$userName غادر للغرفة",
-      "joinOrLeave": "1", //left 1 joined 0
-    });
-    await http.post(url, body: {
-      "roomId": roomId,
-      "userName": userName,
-    });
-    print("leave");
-    // isGuest = false;
-    Get.back();
   }
 
   Future<dynamic> getData() async {
+    userName == roomOwner ? getRoomLock() : null;
     try {
       var url = Uri.parse(getRoomMessagesUrl);
       var response = await http.post(url, body: {
         "roomId": roomId,
+        "time": timeEntered,
       });
       final dataBody = json.decode(response.body);
-
+      // print(dataBody["themeColor"][0]["themeColor"]);
+      themeColor = dataBody["themeColor"][0]["themeColor"];
+      memberInCall = await dataBody["membersInCall"];
+      update();
       if (dataBody["roomPlan"][0]["room_plan"] == "0") {
         roomStatus = false;
       } else {
         roomStatus = true;
       }
-      update();
-      // print(dataBody["banuser"]);
-      // print(dataBody["roomPlan"][0]["room_plan"]);
       for (var element in dataBody["banuser"]) {
-        if (element == (isGuest ? guestUserName : userName) &&
-            isKicked == false) {
+        if (element == (isGuest ? guestUserName : userName) && isKicked == false) {
           onLeave();
           isKicked = true;
           update();
         }
       }
-      // if (owner) {
-      //   if (dataBody["videoRequest"].length != 0) {
-      //     for (var e in dataBody["videoRequest"]) {
-      //       print(e);
-      //       await Get.defaultDialog(
-      //           middleText: "هل تريد قبول طلب الفيديو من ${e["name"]}",
-      //           middleTextStyle: TextStyle(color: Colors.black),
-      //           confirm: TextButton(
-      //               child: Text(
-      //                 "test",
-      //                 style: TextStyle(color: Colors.black),
-      //               ),
-      //               onPressed: () {
-      //                 remove(e["name"], roomId);
-      //                 Get.back();
-      //               }));
-      //     }
-      //   }
-      //   print(dataBody["videoRequest"]);
-      //   print("-------------------");
-      // }
-
+      for (var e in dataBody["membersInCall"]) {
+        if (e["name"] == userName) {}
+      }
+      // print("---");
+      // memberInCall = dataBody["membersInCall"];
       membersController.sink.add(dataBody["membersInCall"]);
-      // print(dataBody["membersInCall"]);
-      streamController.sink.add(dataBody);
+      streamController.sink.add(dataBody["data"]);
       update();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  getRoomInformation() async {
+    var url = Uri.parse(roomInfoUrl);
+    var response = await http.post(url, body: {
+      "roomId": roomId,
+    });
+
+    final dataBody = json.decode(response.body);
+    privateMessages = dataBody["data"][0]["privateMessages"];
+    roomOwner = dataBody["data"][0]["owner_username"];
+    welcomeText = dataBody["data"][0]["hello_msg"];
+    welcomeMsg = dataBody["data"][0]["welcomeMsg"];
+    roomName = dataBody["data"][0]["room_name"];
+    roomId = dataBody["data"][0]["room_id"];
+    isRoomLock = dataBody["data"][0]["roomLock"] == "بوابة دخول" ? true : false;
+    // print(dataBody);
+
+    update();
+  }
+
+  onJoin() async {
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+
+    final coordinates = new Coordinates(position.latitude, position.longitude);
+    var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var first = addresses.first;
+    String country = first.countryName;
+
+    var url = Uri.parse(joinRoom);
+    http.post(url, body: {
+      "roomId": roomId,
+      "userName": Get.arguments["username"],
+      "macAddress": await getId(),
+      "country": country,
+      // "isRole": isRole == true ? "1" : "0",
+    });
+    var url2 = Uri.parse(sendRoomMessage);
+    await http.post(url2, body: {
+      "roomId": roomId,
+      "senderName": "roomAlert",
+      "message": "${Get.arguments["username"]} انضم للغرفة",
+      "joinOrLeave": "0", //left 1 joined 0S
+    });
+  }
+
+  onLeave() async {
+    // await Get.put(VoiceController()).agoraEngine.leaveChannel(); ////disable voice
+
+    // Get.offAll(Home());
+    Get.back();
+    // await videoController.leave();
+    // await voiceController.leave();
+
+    var url = Uri.parse(leaveRoom);
+    await http.post(url, body: {
+      "roomId": roomId,
+      "userName": Get.arguments["username"],
+    });
+    var url2 = Uri.parse(sendRoomMessage);
+    await http.post(url2, body: {
+      "roomId": roomId,
+      "senderName": "roomAlert",
+      "message": "${Get.arguments["username"]} غادر للغرفة",
+      "joinOrLeave": "1", //left 1 joined 0
+    });
+
+    print("leave");
+    // if (isRole) {
+    //   isRole = true;
+    // } else if (isGuest) {
+    //   isGuest = true;
+    // }
+    // isGuest = false;
   }
 
   sendMessage(String message) async {
     print(isRole);
     print(isGuest);
-
-    var response = await http.post(Uri.parse(messageInRoomStatus), body: {
-      "roomId": roomId,
-      //left 1 joined 0
-    });
-    final dataBody = json.decode(response.body);
-    // if
-    print(dataBody);
-    // Get.snackbar("title", );
     if (message != "") {
       messageStatus = true;
       update();
@@ -246,7 +257,12 @@ class RoomsPageController extends GetxController {
         "senderName": userName,
         "message": message,
         "isGuest": isGuest && !isRole ? "1" : "0",
-        "joinOrLeave": "9", //left 1 joined 0
+        "userType": isRole == true
+            ? roleType.toString()
+            : isGuest == true
+                ? ""
+                : userType.toString(),
+        // "joinOrLeave": "9", //left 1 joined 0
       });
 
       final dataBody = json.decode(response.body);
@@ -257,17 +273,15 @@ class RoomsPageController extends GetxController {
       messageController.clear();
       messageStatus = false;
       update();
-    } else {
-      Get.snackbar("تنبية", "لا يمكن ارسال رسال فارغة");
     }
   }
 
   remove(name, id) {
-    var url = Uri.parse(
-        'https://lametnachat.com/rooms/deleteVideoRequest.php'); //https://lametnachat.com/rooms/deleteVideoRequest.php //videoRequest
+    var url = Uri.parse('https://lametnachat.com/rooms/deleteVideoRequest.php'); //https://lametnachat.com/rooms/deleteVideoRequest.php //videoRequest
     http.post(url, body: {
       "roomId": id,
       "name": name,
+
       // "status": "",
     });
   }
@@ -290,13 +304,14 @@ class RoomsPageController extends GetxController {
       // }
       // print("object");
       // update();
+      print("memebers");
       // return dataBody;
     } catch (e) {
       print("object");
     }
   }
 
-  blockUser(String name, int selection) async {
+  blockUser(String name, String selection, String macAddress) async {
     // Get.back();
     // Get.back();
     // Get.back();
@@ -305,19 +320,24 @@ class RoomsPageController extends GetxController {
     var response = await http.post(url, body: {
       "roomId": roomId,
       "username": name,
-      "endTime": selection == 0
-          ? quarterHour
-          : selection == 1
-              ? hour
-              : selection == 2
-                  ? sixHours
-                  : selection == 3
-                      ? day
-                      : selection == 4
-                          ? week
-                          : selection == 5
-                              ? month
-                              : forever,
+      "macAddress": macAddress,
+      "userBan": "watan",
+      "country": "",
+      "ipAddress": "",
+      "banType": selection == "0"
+          ? "ربع ساعة"
+          : selection == "1"
+              ? "ساعة"
+              : selection == "2"
+                  ? "ستة ساعات"
+                  : selection == "3"
+                      ? "يوم"
+                      : selection == "4"
+                          ? "اسبوع"
+                          : selection == "5"
+                              ? "شهر"
+                              : "دائما",
+      "endTime": selection
     });
 
     if (response.statusCode == 200) {
@@ -335,7 +355,7 @@ class RoomsPageController extends GetxController {
         ));
   }
 
-  kickUser(String name) async {
+  kickUser(String name, {String roomId}) async {
     Get.defaultDialog(
         middleText: "هل تريد طرد هذا المستخدم؟",
         middleTextStyle: TextStyle(color: Colors.green),
@@ -348,13 +368,9 @@ class RoomsPageController extends GetxController {
 
     var url = Uri.parse(banUser);
     var response = await http.post(url, body: {
-      "roomId": roomId,
+      "roomId": Get.arguments["room_id"],
       "username": name,
-      "endTime": DateTime.now()
-          .add(Duration(seconds: 1))
-          .toString()
-          .substring(0, 19)
-          .toString()
+      "endTime": DateTime.now().add(Duration(days: -10)).toString().substring(0, 19).toString()
     });
     if (response.statusCode == 200) {
       print("kicked");
@@ -372,7 +388,7 @@ class RoomsPageController extends GetxController {
 
     var url = Uri.parse(changeRoomPlan);
     var response = await http.post(url, body: {
-      "roomId": Get.arguments["room_id"],
+      "roomId": roomId,
     });
     final dataBody = json.decode(response.body);
     print(dataBody);
@@ -447,15 +463,16 @@ class RoomsPageController extends GetxController {
     String os = await Platform.operatingSystem;
     // Or, use a predicate getter.
     Get.defaultDialog(
-        title: "IP",
-        middleText: os,
-        middleTextStyle: TextStyle(color: Colors.black),
-        confirm: TextButton(
-          onPressed: () {
-            Get.back();
-          },
-          child: Text("حسنا"),
-        ));
+      title: "IP",
+      middleText: os,
+      middleTextStyle: TextStyle(color: Colors.black),
+      confirm: TextButton(
+        onPressed: () {
+          Get.back();
+        },
+        child: Text("حسنا"),
+      ),
+    );
   }
 
   getUserCountry() async {
@@ -472,5 +489,44 @@ class RoomsPageController extends GetxController {
           },
           child: Text("حسنا"),
         ));
+  }
+  //peopleMessaged
+
+  getPeopleMessaged() async {
+    var url = Uri.parse(peopleMessaged);
+    var response = await http.post(url, body: {
+      "senderId": userId,
+    });
+    final dataBody = json.decode(response.body);
+    // print(dataBody);
+    return dataBody["participants"];
+  }
+
+  getRoomLock() async {
+    var url = Uri.parse(waitingList);
+    var response = await http.post(url, body: {
+      "roomId": roomId,
+    });
+    final dataBody = json.decode(response.body);
+    // print(dataBody);
+    // print("-------");
+    roomLockController.sink.add(dataBody["data"]);
+    // roomLockController.sink.();
+    return dataBody["participants"];
+  }
+
+  acceptOrRejectWaitingList({String status, String name}) async {
+    var url = Uri.parse(statusEntringRoom);
+    var response = await http.post(url, body: {
+      "userName": name,
+      "status": status,
+    });
+    final dataBody = json.decode(response.body);
+  }
+
+  void toggleWaitingList() {
+    waitingListStatus = !waitingListStatus;
+    print(waitingListStatus);
+    update();
   }
 }

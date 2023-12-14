@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lametna/controllers/profile/changeBackgroundController.dart';
+import 'package:lametna/controllers/userData/userCredentials.dart';
+import 'package:lametna/controllers/userData/variables.dart';
 import 'package:lametna/view/chat/appBar.dart';
+import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChangeBackground extends StatelessWidget {
@@ -10,28 +14,98 @@ class ChangeBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appbarBuilder("تغيير خلفية الاسم", true),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 12.h,
-          ),
-          Center(
-            child: Text(
-              "اختر خلفية",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20.sp,
-                fontWeight: FontWeight.bold,
-                fontFamily: "Portada",
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 12.h,
+            ),
+            Center(
+              child: Text(
+                "اختر خلفية",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Portada",
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 20.h,
-          ),
-          StyleContainer(),
-          StyleContainer()
-        ],
+            SizedBox(
+              height: 20.h,
+            ),
+            GetBuilder<ChangeBackgroundController>(
+              init: ChangeBackgroundController(),
+              builder: (controller) => FutureBuilder(
+                  future: controller.getData(),
+                  builder: (context, snapshot) => snapshot.data == null
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: 20,
+                          itemBuilder: (context, index) => GestureDetector(
+                                onTap: () {
+                                  controller.changeUserBackground(
+                                      snapshot.data["data"][index]["name"]);
+                                  // Get.back();
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15.w, vertical: 30.h),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        backgroundImagesURL +
+                                            snapshot.data["data"][index]
+                                                ["name"],
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        userName,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontFamily: 'Portada',
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20.sp),
+                                      ),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      Image.asset(
+                                        'assets/icons/profile.png',
+                                        width: 30,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                          // Image.network(
+                          //     backgroundImagesURL +
+                          //         snapshot.data["data"][index]["name"]),
+                          )
+
+                  // Text(
+                  //   snapshot.data["data"][0]["name"].toString(),
+                  //   style: TextStyle(color: Colors.black),
+                  // ),
+                  //  Image.network(
+                  //     backgroundImagesURL +
+                  //         snapshot.data["data"][index]["name"]),
+                  // ),
+                  ),
+            )
+            // StyleContainer(),
+            // StyleContainer()
+          ],
+        ),
       ),
     );
   }

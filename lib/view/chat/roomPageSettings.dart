@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:lametna/controllers/chat/roomPageSettings.dart';
+import 'package:lametna/controllers/chat/roomPageSettingsController.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:lametna/controllers/chat/roomsPageController.dart';
 import 'package:lametna/view/chat/appBar.dart';
@@ -63,7 +63,7 @@ class RoomSettingsPage extends StatelessWidget {
                                   inactiveColor: Colors.grey[300],
                                   value: controller.sliderValue.toDouble(),
                                   min: 10,
-                                  max: 50,
+                                  max: 30,
                                   onChanged: (value) {
                                     controller.updateSliderValue(value);
                                   }),
@@ -103,19 +103,48 @@ class RoomSettingsPage extends StatelessWidget {
                       ),
                     );
                   }),
-              Padding(
-                padding: EdgeInsets.only(right: 20.w),
-                child: SizedBox(
-                  height: 25.h,
+              GetBuilder<RoomsSettingPageController>(builder: (controller) {
+                return Padding(
+                  padding: EdgeInsets.only(right: 20.w),
+                  child: SizedBox(
+                    height: 25.h,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Switch(
+                          value: controller.isBold,
+                          onChanged: (value) {
+                            controller.changeBold();
+                          },
+                        ),
+                        Text(
+                          "خط عريض",
+                          textDirection: TextDirection.rtl,
+                          style: TextStyle(
+                            color: Color(0xff707070),
+                            fontSize: 15.sp,
+                            fontFamily: "Segoe UI",
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+              GetBuilder<RoomsSettingPageController>(builder: (controller) {
+                return Padding(
+                  padding: EdgeInsets.only(right: 20.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Switch(
-                        value: false,
-                        onChanged: (value) {},
+                        value: controller.isItalic,
+                        onChanged: (value) {
+                          controller.changeItalic();
+                        },
                       ),
                       Text(
-                        "خط عريض",
+                        "خط مائل  ",
                         textDirection: TextDirection.rtl,
                         style: TextStyle(
                           color: Color(0xff707070),
@@ -125,29 +154,8 @@ class RoomSettingsPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(right: 20.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Switch(
-                      value: false,
-                      onChanged: (value) {},
-                    ),
-                    Text(
-                      "خط مائل  ",
-                      textDirection: TextDirection.rtl,
-                      style: TextStyle(
-                        color: Color(0xff707070),
-                        fontSize: 15.sp,
-                        fontFamily: "Segoe UI",
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                );
+              }),
               Divider(
                 color: Color(0xffA7A7A7),
                 thickness: 1.h,
@@ -179,7 +187,9 @@ class RoomSettingsPage extends StatelessWidget {
                                   showLabel: false,
                                   paletteType: PaletteType.hsl,
                                   pickerColor: controller.pickerColor,
+
                                   onColorChanged: (value) {
+                                    print(value);
                                     controller.updatePickerColor(value);
                                   },
                                 ),
@@ -189,6 +199,7 @@ class RoomSettingsPage extends StatelessWidget {
                                   child: TextButton(
                                     onPressed: () {
                                       //
+                                      controller.changeFontColor();
                                       Navigator.of(context).pop();
                                     },
                                     child: Text(

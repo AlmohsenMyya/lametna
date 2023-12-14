@@ -91,9 +91,13 @@ class PreviosChat extends StatelessWidget {
                     Get.toNamed(
                       "/privateMessageRoom",
                       arguments: {
-                        "username":
-                            snapshot.data[index]["reciever_user"].toString(),
-                        // "room_id": Get.arguments['roomId'],
+                        "username": snapshot.data[index]["recieverUserRoom"]
+                                    .toString() ==
+                                userName
+                            ? snapshot.data[index]["senderUserRoom"].toString()
+                            : snapshot.data[index]["recieverUserRoom"]
+                                .toString(),
+                        "room_id": Get.arguments['roomId'],
                       },
                     );
                   },

@@ -10,6 +10,7 @@ import 'package:lametna/controllers/chathomePageController.dart';
 import 'package:lametna/controllers/favourites/favouritesController.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/view/chatHomePage.dart';
+import 'package:lametna/view/VIPRoombuildder.dart';
 
 class Favourite extends StatelessWidget {
   const Favourite({Key key}) : super(key: key);
@@ -99,7 +100,8 @@ class Favourite extends StatelessWidget {
               "owner": owner,
             });
           } else if (isGuest) {
-            showAlert(context, roomId, roomName, owner);
+            showAlert(context,
+                roomId: roomId, roomName: roomName, roomOwner: owner);
           }
         },
         child: Padding(

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/controllers/userData/variables.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -12,6 +13,7 @@ class AccountMangementController extends GetxController {
   List roles = [];
   int index = 0;
   String roomId = Get.arguments["room_id"];
+  String selectedMasterType = "ماستر";
 
   @override
   void onInit() {
@@ -37,7 +39,7 @@ class AccountMangementController extends GetxController {
         roles.add(data["data"][i]);
       }
       print(data["data"]);
-      roles.add(data["data"]);
+      // roles.add(data["data"]);
       update();
       // print(json.decode(response.body));
 
@@ -52,7 +54,7 @@ class AccountMangementController extends GetxController {
     update();
   }
 
-  deleteAlert(String name, int index) {
+  void deleteAlert(String name, int index) {
     Get.defaultDialog(
       title: 'هل تريد حذف حساب ${name}',
       titleStyle: TextStyle(
@@ -128,5 +130,61 @@ class AccountMangementController extends GetxController {
       update();
       // getRoles();
     }
+  }
+
+  checkIfCanAddRole() async {
+    if (true) {
+      // print("owner");
+      print(Get.arguments["owner"]);
+      Get.toNamed('/roles', arguments: {
+        "room_id": Get.arguments["room_id"],
+        "color": Get.arguments["color"],
+      });
+    } else {
+      var url = Uri.parse(addMaster);
+      var res = await http.post(url, body: {
+        "roomId": roomId,
+      });
+      if (res.statusCode == 200) {
+        final data = json.decode(res.body);
+        // print();
+        if (data["allowAddMaster"] == "true") {
+          print("cant add");
+          Get.snackbar("تنبية", "لا يمكنك اضافة مشرفين لهذه الغرفة");
+        } else {
+          Get.toNamed('/roles', arguments: {
+            "room_id": Get.arguments["room_id"],
+            "color": Get.arguments["color"],
+          });
+        }
+      }
+      print("not owner");
+      print(Get.arguments["roomOwner"]);
+    }
+  }
+
+  toggleLock(String roleId) async {
+    var url = Uri.parse(toggleIsLocked);
+    var res = await http.post(url, body: {
+      "id": roleId,
+    });
+    print("object");
+    if (res.statusCode == 200) {
+      // final data = json.decode(res.body);
+      // print(data);
+      getRoles();
+    }
+  }
+
+  changeSelectedMasterType(String s) {
+    selectedMasterType = s;
+    if (s == "ماستر") {
+      // print("master");
+      changeSeletedIndex(4);
+    } else if (s == "زهري") {
+      // print("super");
+      changeSeletedIndex(5);
+    }
+    update();
   }
 }

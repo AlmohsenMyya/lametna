@@ -1,70 +1,29 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
- 
-  <base href="$FLUTTER_BASE_HREF">
-
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
-
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="lametna">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>lametna</title>
-  <link rel="manifest" href="manifest.json">
-
-  <script>
- 
-    var serviceWorkerVersion = null;
-  </script>
- 
-  <script src="flutter.js" defer></script>
-</head>
-<body>
-  <script>
-    window.addEventListener('load', function(ev) {
-      // Download main.dart.js
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
-            appRunner.runApp();
-          });
-        }
-      });
-    });
-  </script>
-</body>
-</html> -->
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
-  <title>Get started with Voice Calling</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 
 <body>
-  <h2 class="left-align">Get started with Voice Calling</h2>
-  <div class="row">
-    <div>
-      <button type="button" id="join">Join</button>
-      <button type="button" id="leave" onclick="leave()">Leave</button>
-    </div>
+
+  <div>
+    <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="title" style="font-size: 19pt;">السعر</label>
+        <input type="text" id="title" class="form-control" name="price" required>
+      </div>
+      <div class="form-group">
+        <label for="img" style="font-size: 19pt;"> الملف</label>
+        <input type="file" class="form-control" name="image">
+      </div>
+      <button class="custom-btn" style="font-size: 19pt;"> رفع</button>
+    </form>
+
   </div>
-  <br>
-  <div id="message"></div>
-  <script type="module" src="./script.js"></script>
+
 
 </body>
 

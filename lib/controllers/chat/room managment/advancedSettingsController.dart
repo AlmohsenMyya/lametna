@@ -5,25 +5,34 @@ import 'package:lametna/controllers/userData/variables.dart';
 import 'package:http/http.dart' as http;
 
 class AdvancedSettingsController extends GetxController {
-  bool sendImage;
-  bool sendText;
-  bool sendVoiceInPrivate;
-  bool sendAlerts;
+  var sendImage;
+  var sendText;
+  var sendVoiceInPrivate;
+  var sendAlerts;
   bool allowAddMaster;
   bool allowEditRoomSettings;
+  var roomEntries;
+
+  bool canEdit;
   var items = [
     {
-      "title": "السماح بإرسال االصور في النص العام",
+      "title": "السماح للمستخدمين إرسال الصور في غرفة الدردشة",
     },
     {
-      "title": "توقيف النص للجميع",
+      "title": "السماح للمستخدمين إرسال رسائل في غرفة الدردشة",
     },
     {
-      "title": "السماح بإرسال الرسائل الصوتية بالخاص",
+      "title": "السماح للمستخدمين إرسال رسائل الصوتية في  الخاص",
     },
     {
-      "title": "السماح بارسال رسالة التحذير",
+      "title": "السماح للمستخدمين إرسال رسائل التحذير في غرفة الدردشة",
     },
+    {
+      "title": "السماح للمستخدمين الدخول بالدخوليات في غرفة الدردشة",
+    },
+  ];
+
+  var masterOption = [
     {
       "title": "السماح بإضافة ماستر",
     },
@@ -31,37 +40,76 @@ class AdvancedSettingsController extends GetxController {
       "title": "السماح بتعديل إعداد الغرفة",
     }
   ];
+  var sendOption = [
+    {
+      "title": "السماح للمستخدمين إرسال الصور في غرفة الدردشة",
+    },
+    {
+      "title": "السماح للمستخدمين إرسال رسائل في غرفة الدردشة",
+    },
+    {
+      "title": "السماح للمستخدمين إرسال رسائل الصوتية في  الخاص",
+    },
+    {
+      "title": "السماح للمستخدمين إرسال رسائل التحذير في غرفة الدردشة",
+    },
+    {
+      "title": "السماح للمستخدمين الدخول بالدخوليات في غرفة الدردشة",
+    },
+  ];
 
   @override
   Future<void> onInit() async {
     super.onInit();
     await getData();
+    await checkAuthorization();
   }
 
   @override
   Future<void> onClose() async {
     super.onClose();
     await saveData();
+    checkAuthorization();
     print("object");
   }
 
+  checkAuthorization() async {
+    var url = Uri.parse(checkRoomEdit);
+    var res = await http.post(url, body: {
+      "roomId": Get.arguments["room_id"],
+      // "user_id": Get.arguments["user_id"],
+    });
+    var data = await jsonDecode(res.body);
+    if (res.statusCode == 200) {
+      print(data);
+      if (data["allowEditRoom"] == "true") {
+        canEdit = true;
+        update();
+      } else {
+        canEdit = false;
+        update();
+      }
+      print(canEdit);
+    }
+  }
+
   // @override
-  void changeSendImage(bool value) {
+  void changeSendImage(String value) {
     sendImage = value;
     update();
   }
 
-  void changeSendText(bool value) {
+  void changeSendText(String value) {
     sendText = value;
     update();
   }
 
-  void changeSendVoiceInPrivate(bool value) {
+  void changeSendVoiceInPrivate(String value) {
     sendVoiceInPrivate = value;
     update();
   }
 
-  void changeSendAlerts(bool value) {
+  void changeSendAlerts(String value) {
     sendAlerts = value;
     update();
   }
@@ -76,6 +124,11 @@ class AdvancedSettingsController extends GetxController {
     update();
   }
 
+  void changeRoomEntries(String value) {
+    roomEntries = value;
+    update();
+  }
+
   getData() async {
     var url = Uri.parse(roomInfoUrl);
     var res = await http.post(url, body: {"roomId": Get.arguments["room_id"]});
@@ -85,15 +138,12 @@ class AdvancedSettingsController extends GetxController {
       // await print(data["sendImage"]);
       print(data);
       // print(data["data"][0]["room_id"]);
-      sendImage = data["data"][0]["sendImage"] == "true" ? true : false;
-      sendText = data["data"][0]["sendText"] == "true" ? true : false;
-      sendAlerts = data["data"][0]["sendAlert"] == "true" ? true : false;
-      sendVoiceInPrivate =
-          data["data"][0]["sendVoiceInPrivate"] == "true" ? true : false;
-      allowAddMaster =
-          data["data"][0]["allowAddMaster"] == "true" ? true : false;
-      allowEditRoomSettings =
-          data["data"][0]["allowEditRoom"] == "true" ? true : false;
+      sendImage = data["data"][0]["sendImage"];
+      sendText = data["data"][0]["sendText"];
+      sendAlerts = data["data"][0]["sendAlert"];
+      sendVoiceInPrivate = data["data"][0]["sendVoiceInPrivate"];
+      allowAddMaster = data["data"][0]["allowAddMaster"];
+      allowEditRoomSettings = data["data"][0]["allowEditRoom"];
       update();
     }
   }

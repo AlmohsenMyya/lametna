@@ -1,19 +1,15 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_import, implementation_imports, depend_on_referenced_packages, file_names
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/view/chat/appBar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:lametna/view/chat/roomInfo.dart';
+import 'package:lametna/view/side%20pages/scrollText.dart';
 
 var table1 = [
   {
     "name": "معلومات الغرفة",
-    "icon": Icons.info_outline,
+    "icon": Icons.info,
     // "page":
   },
   {
@@ -27,38 +23,45 @@ var table1 = [
     "page": "",
   }
 ];
-var table2 = [
-  {
-    "name": "إعدادت الغرفة",
-    "icon": Icons.info_outline,
-  },
-  {
-    "name": "إعدادت متقدمة",
-    "icon": Icons.people,
-  },
-  {
-    "name": "سجل الغرفة",
-    "icon": Icons.block,
-  },
-  {
-    "name": "تقارير الغرفة",
-    "icon": Icons.block,
-  }
-];
 
 class RoomMangement extends StatelessWidget {
   const RoomMangement({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var table2 = [
+      {
+        "name": "إعدادت الغرفة",
+        "icon": Icons.settings,
+      },
+      {
+        "name": "إعدادت متقدمة",
+        "icon": Icons.people,
+      },
+      {
+        "name": "سجل الغرفة",
+        "icon": Icons.login,
+      },
+      {
+        "name": "تقارير الغرفة",
+        "icon": Icons.description,
+      },
+      {
+        "name": "دعم فني",
+        "icon": Icons.support_agent,
+      }
+    ];
     return Scaffold(
       backgroundColor: Color(0xFFF1F1F1),
-      appBar: appbarBuilder("إدارة الغرفة", true),
+      appBar: appbarBuilder("إدارة الغرفة", true, color: Get.arguments["color"]),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(
+              height: 20.h,
+            ),
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -76,17 +79,29 @@ class RoomMangement extends StatelessWidget {
                 children: [
                   Spacer(),
                   SizedBox(
-                    width: 40.w,
+                    width: 20.w,
                   ),
-                  Text(
-                    Get.arguments["room_name"],
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Segoe UI",
+                  SizedBox(
+                    width: 265,
+                    height: 50,
+                    child: ScrollingText(
+                      text: Get.arguments["room_name"],
+                      textStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
+                  // Text(
+                  //   Get.arguments["room_name"],
+                  // style: TextStyle(
+                  //   color: Colors.black,
+                  //   fontSize: 20.sp,
+                  //   fontWeight: FontWeight.bold,
+                  //   fontFamily: "Segoe UI",
+                  // ),
+                  // ),
                   Spacer(),
                   Image.asset(
                     "assets/icons/logo.png",
@@ -113,73 +128,77 @@ class RoomMangement extends StatelessWidget {
               ),
               child: ListView.separated(
                   shrinkWrap: true,
-                  separatorBuilder: (context, index) =>
-                      (index == 1 && roleType != "3") ? SizedBox() : Divider(),
                   itemBuilder: (context, index) {
-                    return (index == 1 &&
-                            roleType != "3" &&
-                            userName != Get.arguments["owner"])
-                        ? SizedBox()
-                        : Directionality(
-                            textDirection: TextDirection.rtl,
-                            child: GestureDetector(
-                              onTap: () {
-                                // print(table1[index]["page"]);
-                                if (index == 0) {
-                                  Get.toNamed(
-                                    '/roomInfo',
-                                    arguments: {
-                                      "room_name": Get.arguments["room_name"],
-                                      "room_id": Get.arguments["room_id"],
-                                    },
-                                  );
-                                } else if (index == 1) {
-                                  Get.toNamed(
-                                    '/addAccount',
-                                    arguments: {
-                                      "room_id": Get.arguments["room_id"],
-                                    },
-                                  );
-                                }
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 10.h),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 20.w),
-                                      child: Icon(
-                                        table1[index]["icon"],
-                                        color: Colors.black,
-                                        size: 25.sp,
-                                      ),
-                                    ),
-                                    Text(
-                                      table1[index]["name"],
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15.sp,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Segoe UI",
-                                      ),
-                                    ),
-                                    Spacer(),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 20.w),
-                                      child: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Colors.black,
-                                        size: 20.sp,
-                                      ),
-                                    ),
-                                  ],
+                    return Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: GestureDetector(
+                        onTap: () {
+                          // print(table1[index]["page"]);
+                          if (index == 0) {
+                            Get.toNamed('/roomInfo', arguments: {
+                              "room_name": Get.arguments["room_name"],
+                              "room_id": Get.arguments["room_id"],
+                              "color": Get.arguments["color"],
+                            });
+                          } else if (index == 1) {
+                            if (accountMangment) {
+                              Get.toNamed('/addAccount', arguments: {
+                                "room_id": Get.arguments["room_id"],
+                                // "owner": Get.arguments['owner'],
+                                "roomOwner": Get.arguments["roomOwner"],
+                                "color": Get.arguments["color"],
+                              });
+                            } else {
+                              permissionsdenied();
+                            }
+                          } else if (index == 2) {
+                            if (removeBan) {
+                              Get.toNamed('/blockPage', arguments: {
+                                "room_id": Get.arguments["room_id"],
+                                "color": Get.arguments["color"],
+                                // "owner": Get.arguments['owner'],
+                              });
+                            } else {
+                              permissionsdenied();
+                            }
+                          }
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10.h),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                child: Icon(
+                                  table1[index]["icon"],
+                                  color: Color(int.parse(Get.arguments["color"].substring(1, 7), radix: 16) + 0xFF000000),
+                                  size: 28.sp,
                                 ),
                               ),
-                            ),
-                          );
+                              Text(
+                                table1[index]["name"],
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Spacer(),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                child: Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Color(int.parse(Get.arguments["color"].substring(1, 7), radix: 16) + 0xFF000000),
+                                  size: 23.sp,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
                   },
+                  separatorBuilder: (context, index) => Divider(),
                   itemCount: table1.length),
             ),
             SizedBox(
@@ -199,126 +218,111 @@ class RoomMangement extends StatelessWidget {
               ),
               child: ListView.separated(
                   shrinkWrap: true,
-                  separatorBuilder: (context, index) => (index == 0 &&
-                          roleType != "3" &&
-                          userName != Get.arguments["owner"])
-                      ? SizedBox()
-                      : Divider(),
                   itemBuilder: (context, index) {
-                    return (index == 0 &&
-                            roleType != "3" &&
-                            userName != Get.arguments["owner"])
-                        ? SizedBox()
-                        :
-                        // userName == Get.arguments["owner"]
-                        Directionality(
-                            textDirection: TextDirection.rtl,
-                            child: GestureDetector(
-                              onTap: () {
-                                if (index == 0) {
-                                  Get.toNamed('/roomSetting', arguments: {
-                                    "room_id": Get.arguments["room_id"],
-                                  });
-                                } else if (index == 1) {
-                                  Get.toNamed('/advancedSettings', arguments: {
-                                    "room_id": Get.arguments["room_id"],
-                                  });
-                                }
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 10.h),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 20.w),
-                                      child: Icon(
-                                        table2[index]["icon"],
-                                        color: Colors.black,
-                                        size: 25.sp,
-                                      ),
-                                    ),
-                                    Text(
-                                      table2[index]["name"],
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15.sp,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Segoe UI",
-                                      ),
-                                    ),
-                                    Spacer(),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 20.w),
-                                      child: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Colors.black,
-                                        size: 20.sp,
-                                      ),
-                                    ),
-                                  ],
+                    return Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: GestureDetector(
+                        onTap: () {
+                          if (index == 0) {
+                            if (roomSettings) {
+                              Get.toNamed('/roomSetting', arguments: {
+                                "room_id": Get.arguments["room_id"],
+                                "color": Get.arguments["color"],
+                              });
+                            } else {
+                              permissionsdenied();
+                            }
+                          } else if (index == 1) {
+                            Get.toNamed('/advancedSettings', arguments: {
+                              "room_id": Get.arguments["room_id"],
+                              "color": Get.arguments["color"],
+                            });
+                          } else if (index == 2) {
+                            if (logRecord) {
+                              Get.toNamed('/roomReport', arguments: {
+                                "room_id": Get.arguments["room_id"],
+                                "color": Get.arguments["color"],
+                              });
+                            } else {
+                              permissionsdenied();
+                            }
+                          } else if (index == 3) {
+                            if (adminReport) {
+                            } else {
+                              permissionsdenied();
+                            }
+                          }
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10.h),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                child: Icon(
+                                  table2[index]["icon"],
+                                  color: Color(int.parse(Get.arguments["color"].substring(1, 7), radix: 16) + 0xFF000000),
+                                  size: 28.sp,
                                 ),
                               ),
-                            ),
-                          );
+                              Text(
+                                table2[index]["name"],
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Spacer(),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                child: Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Color(int.parse(Get.arguments["color"].substring(1, 7), radix: 16) + 0xFF000000),
+                                  size: 23.sp,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
                   },
+                  separatorBuilder: (context, index) => Divider(),
                   itemCount: table2.length),
             ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15.r),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                  ),
-                ],
-              ),
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10.h),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
-                        child: Icon(
-                          Icons.block,
-                          color: Colors.black,
-                          size: 25.sp,
-                        ),
-                      ),
-                      Text(
-                        "لوحة المستخدم",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "Segoe UI",
-                        ),
-                      ),
-                      Spacer(),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
-                        child: Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.black,
-                          size: 20.sp,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+            Spacer(),
+            Text(
+              "Lametna - Audio And Video Chat Rooms ® 2023/2024",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.bold,
               ),
             ),
+            SizedBox(height: 10.h),
           ],
         ),
+      ),
+    );
+  }
+
+  permissionsdenied() {
+    return Get.snackbar(
+      'تنبية',
+      'ليس لديك صلاحية ',
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.red,
+      colorText: Colors.white,
+      titleText: Text(
+        'تنبية',
+        textAlign: TextAlign.right,
+        style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+      ),
+      messageText: Text(
+        'ليس لديك صلاحية ',
+        textAlign: TextAlign.right,
+        style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
       ),
     );
   }

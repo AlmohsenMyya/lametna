@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, depend_on_referenced_packages, avoid_print, sort_child_properties_last
 
 import 'package:flutter/material.dart';
 import 'package:lametna/controllers/chat/room%20managment/roomSettingsController.dart';
@@ -6,404 +6,459 @@ import 'package:lametna/controllers/userData/variables.dart';
 import 'package:lametna/view/chat/appBar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-
-var setting = [
-  {
-    "name": "الصورة الشخصية الخاصة بالغرفة",
-    "icon": Icons.photo,
-  },
-  {
-    "name": "خلفية الغرفة",
-    "icon": Icons.photo,
-  },
-  {
-    "name": "الحالة",
-    "icon": Icons.volume_up,
-  },
-  {
-    "name": "رسالة ترحيب",
-    "icon": Icons.email,
-  },
-  {
-    "name": "التحدث",
-    "icon": Icons.mic,
-  },
-  {
-    "name": "الكاميرا",
-    "icon": Icons.photo_camera_front,
-  },
-  {
-    "name": "الرسائل الخاصة",
-    "icon": Icons.message,
-  },
-  {
-    "name": "قفل الغرفة",
-    "icon": Icons.lock_outline,
-  },
-  {
-    "name": "نمط الغرفة",
-    "icon": Icons.color_lens,
-  },
-  {
-    "name": "الغرف الصوتية",
-    "icon": Icons.surround_sound_rounded,
-  },
-  {
-    "name": "إعدادات متقدمة",
-    "icon": Icons.settings,
-  },
-];
+import 'package:lametna/view/chat/room%20mangement/side%20pages/callSettings.dart';
+import 'package:lametna/view/chat/room%20mangement/side%20pages/custom_expansion.dart';
 
 class RoomSettings extends StatelessWidget {
   // RoomSettingController controller = Get.put(RoomSettingController());
 
-  const RoomSettings({Key key}) : super(key: key);
+  RoomSettings({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: appbarBuilder("إعدادات الغرفة", true),
-          body: Stack(
-            children: [
-              ListView(
-                shrinkWrap: true,
-                children: [
-                  GetBuilder<RoomSettingController>(
-                      init: RoomSettingController(),
-                      builder: (controller) {
-                        return ListView.separated(
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Directionality(
-                                textDirection: TextDirection.rtl,
-                                child: GestureDetector(
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 6.h),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        if (index == 0) {
-                                          controller.uploadRoomImage(
-                                              Get.arguments["room_id"]);
-                                        } else if (index == 1) {
-                                          controller.uploadBackgroundRoomImage(
-                                              Get.arguments["room_id"]);
-                                        } else if (index == 2) {
-                                          controller.alertDialog(
-                                            setting[index]["name"],
-                                            textEditingController:
-                                                controller.statusController,
-                                          );
-                                        } else if (index == 3) {
-                                          controller.alertDialog(
-                                            setting[index]["name"],
-                                            textEditingController:
-                                                controller.helloController,
-                                          );
-                                        } else if (index == 5) {
-                                          // print("object");
-                                          // controller.changeCameraStatus();
-                                          Get.toNamed(
-                                            '/cameraSettings',
-                                            arguments: {
-                                              "room_id":
-                                                  Get.arguments["room_id"],
-                                            },
-                                          );
-                                        } else if (index == 6) {
-                                          // print("object");
-                                          // controller
-                                          //     .changePrivateMessageStatus();
-                                          Get.toNamed(
-                                            '/privateMessagesSetting',
-                                            arguments: {
-                                              "room_id":
-                                                  Get.arguments["room_id"],
-                                            },
-                                          );
-                                        } else if (index == 7) {
-                                          // print("object");
-                                          controller.changeRoomLockStatus();
-                                        } else if (index == 8) {
-                                          print("object");
-                                          if (controller.roomType) {
-                                            Get.snackbar(
-                                              "",
-                                              "",
-                                              titleText: Text("تنبية",
-                                                  textAlign: TextAlign.end,
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      // fontSize: 22.sp,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              messageText: Text(
-                                                  "لا يمكنك تغيير نمط الغرفة لأنها غرفة عامة",
-                                                  textAlign: TextAlign.end,
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      // fontSize: 22.sp,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              snackPosition:
-                                                  SnackPosition.BOTTOM,
-                                              backgroundColor: Colors.grey[300],
-                                              colorText: Colors.black,
-                                            );
-                                          } else {
-                                            showDialog(
-                                              // barrierColor: Colors.grey,
-                                              // barrierDismissible: false,
-                                              context: context,
-                                              builder: (context) => GetBuilder<
-                                                      RoomSettingController>(
-                                                  builder: (controller) {
-                                                return AlertDialog(
-                                                  content:
-                                                      SingleChildScrollView(
-                                                    child: ColorPicker(
-                                                      // hexInputBar: true,
-                                                      // hexInputController:
-                                                      //     controller.hexaInputController,
-                                                      pickerAreaHeightPercent:
-                                                          0.9,
-                                                      pickerAreaBorderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(360.r),
-                                                      ),
-                                                      showLabel: false,
-                                                      paletteType:
-                                                          PaletteType.hsl,
-                                                      pickerColor: controller
-                                                          .pickerColor,
-                                                      onColorChanged: (value) {
-                                                        // print(value);
-                                                        controller.colorCode = ("#" +
-                                                            value.toString().substring(
-                                                                10,
-                                                                value
-                                                                        .toString()
-                                                                        .length -
-                                                                    1));
-                                                        // controller
-                                                        //     .updatePickerColor(
-                                                        //         value);
-                                                      },
-                                                    ),
-                                                  ),
-                                                  actions: [
-                                                    Center(
-                                                      child: TextButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                        child: Text(
-                                                          "تم",
-                                                          style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 15.sp,
-                                                            fontFamily:
-                                                                "Segoe UI",
-                                                          ),
+    var color = Get.arguments["color"];
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: appbarBuilder("إعدادات الغرفة", true, color: color),
+      body: ListView(
+        shrinkWrap: true,
+        children: [
+          GetBuilder<RoomSettingController>(
+              init: RoomSettingController(),
+              builder: (controller) {
+                return ListView.separated(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    separatorBuilder: (context, index) => Divider(
+                          color: Colors.grey.withOpacity(0.5),
+                          thickness: (0.5).h,
+                        ),
+                    itemBuilder: (context, index) {
+                      return IgnorePointer(
+                        ignoring: false,
+                        child: Theme(
+                          data: ThemeData().copyWith(
+                            dividerColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              // controller.changeExpansionTile(index: index);
+                              print("object");
+                            },
+                            child: Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: CustomExpansionTile(
+                                  // backgroundColor: Colors.green,
+                                  children: [controller.expansionTileChildren(index: index)],
+                                  leading: Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 15.w),
+                                    child: Icon(
+                                      controller.setting[index]["icon"],
+                                      color: Color(int.parse(color.substring(1, 7), radix: 16) + 0xFF000000),
+                                      size: 28.sp,
+                                    ),
+                                  ),
+                                  title: GestureDetector(
+                                    onTap: () {
+                                      // print("object");
+                                      if (index == 0) {
+                                        showMenu(
+                                            shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+                                            constraints: BoxConstraints(
+                                              minWidth: 135,
+                                              maxWidth: 135,
+                                            ),
+                                            context: Get.context,
+                                            position: RelativeRect.fromLTRB(100.w, 130.h, 100.w, 100.h),
+                                            items: [
+                                              // PopupMenuItem(
+                                              //   child: GestureDetector(
+                                              //     onTap: () {
+                                              //       // controller.();
+                                              //       Get.back();
+                                              //     },
+                                              //     child: Row(
+                                              //       children: [
+                                              //         Icon(
+                                              //           Icons.camera_alt,
+                                              //           color: Colors.black,
+                                              //           size: 20.sp,
+                                              //         ),
+                                              //         SizedBox(width: 10.w),
+                                              //         Text(
+                                              //           "التقاط صورة",
+                                              //           style: TextStyle(
+                                              //             color: Colors.black,
+                                              //             fontSize: 16.sp,
+                                              //             fontWeight: FontWeight.bold,
+                                              //           ),
+                                              //         ),
+                                              //       ],
+                                              //     ),
+                                              //   ),
+                                              // ),
+                                              PopupMenuItem(
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    controller.getImageFromGallery().then((value) {
+                                                      controller.uploadRoomImage(
+                                                        Get.arguments["room_id"],
+                                                      );
+                                                    });
+                                                    Get.back();
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        "اختيار صورة",
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 16.sp,
+                                                          fontWeight: FontWeight.bold,
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                );
-                                              }),
-                                            );
-                                          }
-                                        } else if (index == 10) {
-                                          print("object");
-                                          Get.toNamed('/advancedSettings',
-                                              arguments: {
-                                                "room_id":
-                                                    Get.arguments["room_id"],
-                                              });
-                                          // controller.changeVoiceRoomStatus();
-                                        }
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 15.w),
-                                            child: Icon(
-                                              setting[index]["icon"],
-                                              color: Colors.black,
-                                              size: 22.sp,
-                                            ),
-                                          ),
-                                          Text(
-                                            setting[index]["name"],
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15.sp,
-                                              fontFamily: "Segoe UI",
-                                            ),
-                                          ),
-                                          Spacer(),
-                                          index == 0
-                                              ? Image.network(
-                                                  roomImagesURL +
-                                                      Get.arguments["room_id"] +
-                                                      ".jpeg",
-                                                  width: 25.w,
-                                                  height: 25.h,
-                                                  fit: BoxFit.cover,
-                                                  errorBuilder: (context, error,
-                                                          stackTrace) =>
-                                                      SizedBox(),
-                                                )
-                                              : SizedBox(),
-                                          index == 1
-                                              ? Image.network(
-                                                  roomBackgroundImagesURL +
-                                                      Get.arguments["room_id"] +
-                                                      ".jpeg",
-                                                  width: 25.w,
-                                                  height: 25.h,
-                                                  fit: BoxFit.cover,
-                                                  errorBuilder: (context, error,
-                                                          stackTrace) =>
-                                                      SizedBox(),
-                                                )
-                                              : SizedBox(),
-                                          index == 8
-                                              ? Container(
-                                                  width: 25.w,
-                                                  height: 25.h,
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        controller.pickerColor,
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(3.r),
-                                                    ),
+                                                      Icon(
+                                                        Icons.image,
+                                                        color: Colors.black,
+                                                        size: 20.sp,
+                                                      ),
+                                                      SizedBox(width: 10.w),
+                                                    ],
                                                   ),
-                                                )
-                                              : SizedBox(),
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 20.w),
-                                            child: Icon(
-                                              Icons.keyboard_arrow_down,
-                                              color: Colors.black,
-                                              size: 20.sp,
-                                            ),
-                                          ),
-                                        ],
+                                                ),
+                                              ),
+                                            ]);
+                                      } else if (index == 4) {
+                                        Get.to(() => CallSettings(), arguments: {"color": color});
+                                      } else {}
+                                    },
+                                    child: Text(
+                                      controller.setting[index]["name"],
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                            separatorBuilder: (context, index) => Divider(
-                                  color: Color(0xff43D0CA),
-                                  thickness: 1,
-                                ),
-                            itemCount: setting.length);
-                      }),
-                  SizedBox(height: 60.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 35.w, vertical: 3.h),
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 0.5,
-                                blurRadius: 6,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                            color: Color(0xffDA8080),
-                            borderRadius: BorderRadius.circular(25.r),
-                          ),
-                          child: Text(
-                            "إلغاء",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Segoe UI",
+                                  trailing: trailingBuilder(index, controller)),
                             ),
                           ),
                         ),
+                      );
+                    },
+                    itemCount: controller.setting.length);
+              }),
+          SizedBox(height: 60.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Get.back();
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 35.w, vertical: 3.h),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 0.5,
+                        blurRadius: 6,
+                        offset: Offset(0, 3),
                       ),
-                      SizedBox(width: 30.w),
-                      GetBuilder<RoomSettingController>(builder: (controller) {
-                        return GestureDetector(
-                          onTap: () {
-                            print("test");
-                            controller.changeSettings(Get.arguments["room_id"]);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 35.w, vertical: 3.h),
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 0.5,
-                                  blurRadius: 6,
-                                  offset: Offset(0, 3),
-                                ),
-                              ],
-                              color: Color(0xff6BE05B),
-                              borderRadius: BorderRadius.circular(25.r),
-                            ),
-                            child: GestureDetector(
-                              onTap: () {},
-                              child: Text(
-                                "حفظ",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Segoe UI",
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }),
                     ],
+                    color: Color(0xffDA8080),
+                    borderRadius: BorderRadius.circular(25.r),
                   ),
-                  SizedBox(height: 30.h),
-                ],
+                  child: Text(
+                    "إلغاء",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
+              SizedBox(width: 30.w),
+              GetBuilder<RoomSettingController>(builder: (controller) {
+                return GestureDetector(
+                  onTap: () {
+                    print("test");
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 35.w, vertical: 3.h),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 0.5,
+                          blurRadius: 6,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                      color: Color(int.parse(color.substring(1, 7), radix: 16) + 0xFF000000),
+                      borderRadius: BorderRadius.circular(25.r),
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        print("object");
+                        controller.changeSettings(Get.arguments["room_id"]);
+                        controller.getData();
+                        // showSnackBar(context);
+                      },
+                      child: Text(
+                        "حفظ",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }),
             ],
           ),
-        ),
-        GetBuilder<RoomSettingController>(
-            init: RoomSettingController(),
-            builder: (controller) {
-              return controller.isLoading
-                  ? Container(
-                      // height: Get.height,
-                      // width: Get.width,
-                      color: Colors.grey.withOpacity(0.6),
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    )
-                  : SizedBox();
-            }),
-      ],
+          SizedBox(height: 30.h),
+        ],
+      ),
     );
+  }
+
+  var len = 190;
+  trailingBuilder(int index, RoomSettingController controller) {
+    if (index == 0) {
+      return Image.network(roomImagesURL + controller.roomInfo["room_img"]);
+    } else if (index == 1) {
+      return SizedBox(
+        width: len.w,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              controller.room_plan == "1" ? "المظهر القديم" : "المظهر الجديد",
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 14.sp,
+              ),
+            ),
+            SizedBox(width: 20.w),
+            Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+              size: 30.sp,
+            ),
+          ],
+        ),
+      );
+    } else if (index == 4) {
+      return SizedBox(
+        width: len.w,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              controller.speech,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 14.sp,
+              ),
+            ),
+            SizedBox(width: 20.w),
+            Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+              size: 30.sp,
+            ),
+          ],
+        ),
+      );
+    } else if (index == 5) {
+      return SizedBox(
+        width: len.w,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            SizedBox(
+              width: 100.w,
+              child: Text(
+                // controller.welcomeMsg.text.toString(),
+                "",
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 14.sp,
+                ),
+              ),
+            ),
+            SizedBox(width: 20.w),
+            Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+              size: 30.sp,
+            ),
+          ],
+        ),
+      );
+    } else if (index == 6) {
+      return SizedBox(
+        width: len.w,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              controller.cameraRadio,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 14.sp,
+              ),
+            ),
+            SizedBox(width: 20.w),
+            Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+              size: 30.sp,
+            ),
+          ],
+        ),
+      );
+    } else if (index == 7) {
+      return SizedBox(
+        width: len.w,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              controller.privateMessageStatus,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 14.sp,
+              ),
+            ),
+            SizedBox(width: 20.w),
+            Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+              size: 30.sp,
+            ),
+          ],
+        ),
+      );
+    } else if (index == 8) {
+      return SizedBox(
+        width: len.w,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              controller.roomLock,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 14.sp,
+              ),
+            ),
+            SizedBox(width: 20.w),
+            Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+              size: 30.sp,
+            ),
+          ],
+        ),
+      );
+    } else if (index == 9) {
+      return SizedBox(
+        width: 130.w,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            GestureDetector(
+              onTap: () => controller.colorPicker(),
+              child: Container(
+                width: 30.sp,
+                height: 30.sp,
+                decoration: BoxDecoration(
+                  color: controller.pickerColor,
+                  borderRadius: BorderRadius.circular(360.r),
+                ),
+              ),
+            ),
+            SizedBox(width: 10.w),
+            GestureDetector(
+              onTap: () => controller.colorPickerBuilder(),
+              child: Container(
+                width: 30.sp,
+                height: 30.sp,
+                decoration: BoxDecoration(
+                  color: controller.pickerColor,
+                  borderRadius: BorderRadius.circular(4.r),
+                ),
+              ),
+            ),
+            SizedBox(width: 20.w),
+            Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+              size: 30.sp,
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Icon(
+        Icons.arrow_drop_down,
+        color: Colors.black,
+        size: 30.sp,
+      );
+    }
+    // index == 0
+    //     ? Image.network(roomImagesURL + controller.roomInfo["room_img"])
+    //     : index == 9
+    //         ? SizedBox(
+    //             width: 130.w,
+    //             child: Row(
+    //               mainAxisAlignment: MainAxisAlignment.end,
+    //               children: [
+    //                 GestureDetector(
+    //                   onTap: () => controller.colorPicker(),
+    //                   child: Container(
+    //                     width: 30.sp,
+    //                     height: 30.sp,
+    //                     decoration: BoxDecoration(
+    //                       color: controller.pickerColor,
+    //                       borderRadius: BorderRadius.circular(360.r),
+    //                     ),
+    //                   ),
+    //                 ),
+    //                 SizedBox(width: 10.w),
+    //                 GestureDetector(
+    //                   onTap: () => controller.colorPickerBuilder(),
+    //                   child: Container(
+    //                     width: 30.sp,
+    //                     height: 30.sp,
+    //                     decoration: BoxDecoration(
+    //                       color: controller.pickerColor,
+    //                       borderRadius: BorderRadius.circular(4.r),
+    //                     ),
+    //                   ),
+    //                 ),
+    //                 SizedBox(width: 20.w),
+    //                 Icon(
+    //                   Icons.arrow_drop_down,
+    //                   color: Colors.black,
+    //                   size: 30.sp,
+    //                 ),
+    //               ],
+    //             ),
+    //           )
+    //         : Icon(
+    //             Icons.arrow_drop_down,
+    //             color: Colors.black,
+    //             size: 30.sp,
+    //           );
   }
 }
