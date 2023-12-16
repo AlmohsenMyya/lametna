@@ -1,14 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:lametna/view/chat/appBar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class About extends StatelessWidget {
-  const About({Key key}) : super(key: key);
+  const About({Key ?key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

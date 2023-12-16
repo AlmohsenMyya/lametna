@@ -12,7 +12,7 @@ import 'package:lametna/view/chat/room%20mangement/side%20pages/custom_expansion
 class RoomSettings extends StatelessWidget {
   // RoomSettingController controller = Get.put(RoomSettingController());
 
-  RoomSettings({Key key}) : super(key: key);
+  RoomSettings({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class RoomSettings extends StatelessWidget {
                                   leading: Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 15.w),
                                     child: Icon(
-                                      controller.setting[index]["icon"],
+                                      controller.setting[index]["icon"] as IconData?,
                                       color: Color(int.parse(color.substring(1, 7), radix: 16) + 0xFF000000),
                                       size: 28.sp,
                                     ),
@@ -69,7 +69,7 @@ class RoomSettings extends StatelessWidget {
                                               minWidth: 135,
                                               maxWidth: 135,
                                             ),
-                                            context: Get.context,
+                                            context: Get.context!,
                                             position: RelativeRect.fromLTRB(100.w, 130.h, 100.w, 100.h),
                                             items: [
                                               // PopupMenuItem(
@@ -134,7 +134,7 @@ class RoomSettings extends StatelessWidget {
                                       } else {}
                                     },
                                     child: Text(
-                                      controller.setting[index]["name"],
+                                      controller.setting[index]["name"] as String,
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 16.sp,
@@ -262,7 +262,7 @@ class RoomSettings extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
-              controller.speech,
+              controller.speech as String,
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 14.sp,
@@ -311,7 +311,7 @@ class RoomSettings extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
-              controller.cameraRadio,
+              controller.cameraRadio as String,
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 14.sp,
@@ -333,7 +333,7 @@ class RoomSettings extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
-              controller.privateMessageStatus,
+              controller.privateMessageStatus as String,
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 14.sp,
@@ -355,7 +355,7 @@ class RoomSettings extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
-              controller.roomLock,
+              controller.roomLock as String,
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 14.sp,

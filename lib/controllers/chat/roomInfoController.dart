@@ -13,23 +13,23 @@ class RoomInfoController extends GetxController {
   var tiers = [
     {
       "name": "زائر",
-      "color": Color(0xFF7F52A3),
+      "color": const Color(0xFF7F52A3),
     },
     {
       "name": "ممبر",
-      "color": Color(0xFF7F52A3),
+      "color": const Color(0xFF7F52A3),
     },
     {
       "name": "أدمن",
-      "color": Color(0xFF5D00FF),
+      "color": const Color(0xFF5D00FF),
     },
     {
       "name": "سوبر أدمن",
-      "color": Color(0xFF00B041),
+      "color": const Color(0xFF00B041),
     },
     {
       "name": "ماستر",
-      "color": Color(0xFFFF0000),
+      "color": const Color(0xFFFF0000),
     },
   ];
 

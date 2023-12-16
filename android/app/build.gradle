@@ -28,6 +28,14 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     compileSdkVersion 33
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+            universalApk false
+        }
+    }
     ndkVersion '25.1.8937393'
     // buildToolsVersion '23.0.0' ///
 
@@ -40,9 +48,9 @@ android {
         jvmTarget = '1.8'
     }
 
-    lintOptions{
+    lintOptions {
         // disable 'InvalidPackage'
-        checkReleaseBuilds false 
+        checkReleaseBuilds false
         // checkReleaseBuilds false   
     }
 
@@ -64,10 +72,15 @@ android {
 
     buildTypes {
         release {
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -80,4 +93,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation platform('com.google.firebase:firebase-bom:32.1.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.android.gms:play-services-ads:22.5.0'
 }

@@ -1,9 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/chat/room%20managment/roomSettingsController.dart';
 import 'package:lametna/view/chat/appBar.dart';
@@ -12,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 var l = ['الجميع', 'الأعضاء والمشرفين فقط', 'المشرفين فقط', 'لا أحد'];
 
 class CallSettings extends StatefulWidget {
-  const CallSettings({Key key}) : super(key: key);
+  const CallSettings({Key? key}) : super(key: key);
 
   @override
   State<CallSettings> createState() => _CallSettingsState();
@@ -104,7 +101,7 @@ class _CallSettingsState extends State<CallSettings> {
                             child: Row(
                               children: [
                                 Text(
-                                  controller.speech,
+                                  controller.speech as String,
                                   style: TextStyle(color: Colors.grey, fontSize: 15.sp, fontWeight: FontWeight.bold),
                                 ),
                                 Icon(
@@ -260,21 +257,21 @@ class _CallSettingsState extends State<CallSettings> {
                           bottom: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
                         ),
                         title: Text(
-                          e["title"],
+                          e["title"] as String,
                           style: TextStyle(
-                            color: e["color"],
+                            color: e["color"] as Color,
                             fontWeight: FontWeight.bold,
                             fontSize: 17.sp,
                           ),
                         ),
                         trailing: GestureDetector(
-                          onTap: () => controller.alertDialog(e["title"]),
+                          onTap: () => controller.alertDialog(e["title"] as String),
                           child: SizedBox(
                             width: 70.w,
                             child: Row(
                               children: [
                                 Text(
-                                  e["value"],
+                                  e["value"] as String,
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 16.sp,

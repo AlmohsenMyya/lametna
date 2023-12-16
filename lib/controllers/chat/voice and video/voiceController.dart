@@ -1,40 +1,38 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/chat/roomsPageController.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/controllers/userData/variables.dart';
 import 'package:http/http.dart' as http;
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-import 'package:lametna/view/chat/addAccount.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 const String appId = "977621c3bde5423ebb3782aaf5b6edbc"; //e151cc863dd34adc9f76f085e4fb7b78
 
 class VoiceController extends GetxController {
-  String channelName;
-  String token;
+  String? channelName;
+  String? token;
   int uid = 0; // uid of the local user
 
-  int _remoteUid; // uid of the remote user
+  int? _remoteUid; // uid of the remote user
   bool _isJoined = false; // Indicates if the local user has joined the channel
-  RtcEngine agoraEngine; // Agora engine instance
+  RtcEngine? agoraEngine; // Agora engine instance
   bool micWidget = false;
   bool muteMic = false;
   bool isJoined = true;
   bool inCall = false;
   int currentTime = 0;
-  Timer timer;
-  String talkStatus;
-  String memberTalkTime;
-  String adminTalkTime;
-  String superAdminTalkTime;
-  String masterTalkTime;
-  String owner;
+  Timer? timer;
+  String? talkStatus;
+  String? memberTalkTime;
+  String? adminTalkTime;
+  String? superAdminTalkTime;
+  String? masterTalkTime;
+  String? owner;
 
-  Timer talkTimer;
+  Timer? talkTimer;
 
   RoomsPageController roomPageController = Get.put(RoomsPageController());
 
@@ -43,7 +41,7 @@ class VoiceController extends GetxController {
     super.onInit();
     await getRoomInformation();
     await setupVoiceSDKEngine();
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       currentTime = currentTime + 1;
       update();
     });
@@ -86,8 +84,8 @@ class VoiceController extends GetxController {
 
     //create an instance of the Agora engine
     agoraEngine = createAgoraRtcEngine();
-    await agoraEngine.initialize(const RtcEngineContext(appId: appId));
-    agoraEngine.registerEventHandler(
+    await agoraEngine!.initialize(const RtcEngineContext(appId: appId));
+    agoraEngine!.registerEventHandler(
       RtcEngineEventHandler(
         onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
           _isJoined = true;
@@ -150,9 +148,9 @@ class VoiceController extends GetxController {
       // "joinOrLeave": "9", //left 1 joined 0
     });
 
-    await agoraEngine.joinChannel(
-      token: token,
-      channelId: channelName,
+    await agoraEngine!.joinChannel(
+      token: token!,
+      channelId: channelName!,
       options: options,
       uid: uid,
     );
@@ -170,7 +168,7 @@ class VoiceController extends GetxController {
       // "joinOrLeave": "9", //left 1 joined 0
     });
     update();
-    agoraEngine.leaveChannel();
+    agoraEngine!.leaveChannel();
     Get.snackbar("message", "leave");
   }
 
@@ -218,7 +216,7 @@ class VoiceController extends GetxController {
       // "joinOrLeave": "9", //left 1 joined 0
     });
     if (response.statusCode == 200) {
-      agoraEngine.muteLocalAudioStream(true);
+      agoraEngine!.muteLocalAudioStream(true);
     }
   }
 

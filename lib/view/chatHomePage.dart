@@ -1,26 +1,20 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unrelated_type_equality_checks, prefer_interpolation_to_compose_strings
 
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/bottomNavitionBar.dart';
 import 'package:lametna/controllers/chathomePageController.dart';
-import 'package:lametna/controllers/userData/userCredentials.dart';
-import 'package:lametna/controllers/userData/variables.dart';
 import 'package:lametna/view/VIPRoombuildder.dart';
 import 'package:lametna/view/side%20pages/drawer.dart';
-import 'package:lametna/view/side%20pages/scrollText.dart';
-import 'package:lametna/view/store/test.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
 class ChatHomePage extends StatelessWidget {
+  const ChatHomePage({Key? key}) : super(key: key);
+
   // const ChatHomePage({super.key});
   @override
   Widget build(BuildContext context) {
@@ -106,7 +100,7 @@ class ChatHomePage extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    scaffoldKey.currentState.openEndDrawer();
+                    scaffoldKey.currentState?.openEndDrawer();
                   },
                   child: Icon(Icons.menu, size: 30.sp),
                 ),

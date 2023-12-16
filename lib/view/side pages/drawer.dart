@@ -110,7 +110,9 @@ Widget drawerItem(String title, Widget icon, Function onTap) => Directionality(
         dense: true,
         horizontalTitleGap: 0,
         // minLeadingWidth: 9.w,
-        onTap: onTap,
+        onTap: (){
+            onTap();
+                  },
         leading: icon,
         title: Text(
           title,

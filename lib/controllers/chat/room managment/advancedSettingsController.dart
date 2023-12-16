@@ -9,11 +9,11 @@ class AdvancedSettingsController extends GetxController {
   var sendText;
   var sendVoiceInPrivate;
   var sendAlerts;
-  bool allowAddMaster;
-  bool allowEditRoomSettings;
+  bool? allowAddMaster;
+  bool? allowEditRoomSettings;
   var roomEntries;
 
-  bool canEdit;
+  bool? canEdit;
   var items = [
     {
       "title": "السماح للمستخدمين إرسال الصور في غرفة الدردشة",

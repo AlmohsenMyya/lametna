@@ -3,19 +3,15 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/chat/room%20managment/advancedSettingsController.dart';
 import 'package:lametna/controllers/chat/roomsPageController.dart';
-import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/controllers/userData/variables.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:lametna/view/chat/In%20Room%20Widgets/appBar.dart';
-import 'package:lametna/view/chat/room%20mangement/side%20pages/callSettings.dart';
 import 'package:lametna/view/chat/room%20mangement/side%20pages/custom_expansion.dart';
 import 'package:lametna/view/store/storeDetails.dart';
 
@@ -27,8 +23,8 @@ class RoomSettingController extends GetxController {
   TextEditingController welcomeMsg = TextEditingController();
 
   var callDuration = TextEditingController();
-  File roomImage;
-  File backgroundRoomImage;
+  File? roomImage;
+  File? backgroundRoomImage;
   var roomInfo;
   Color pickerColor = Colors.black;
   var timeFormat = "0";
@@ -40,20 +36,20 @@ class RoomSettingController extends GetxController {
   bool isLoading = false;
   TextEditingController dialogController = TextEditingController();
 
-  String cameraRadio;
-  String privateMessageStatus;
-  String roomLock;
-  String roomType;
-  String speech;
-  String roomImageUrl;
+  String? cameraRadio;
+  String? privateMessageStatus;
+  String? roomLock;
+  String? roomType;
+  String? speech;
+  String? roomImageUrl;
 
-  String guestCallTime;
-  String memberTalkTime;
-  String adminTalkTime;
-  String superTalkTime;
-  String masterTalkTime;
-  String room_plan;
-  String roomLockResone;
+  String? guestCallTime;
+  String? memberTalkTime;
+  String? adminTalkTime;
+  String? superTalkTime;
+  String? masterTalkTime;
+  String? room_plan;
+  String? roomLockResone;
   TextEditingController controllertext = TextEditingController();
   var setting = [
     {
@@ -217,7 +213,7 @@ class RoomSettingController extends GetxController {
 
       // await update();
       update();
-      controllertext.text = roomLockResone;
+      controllertext.text = roomLockResone!;
       print(roomInfo);
       print("-----");
     }
@@ -228,7 +224,7 @@ class RoomSettingController extends GetxController {
     update();
   }
 
-  Future<File> getImageFromGallery() async {
+  Future<File?> getImageFromGallery() async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       return File(pickedFile.path);
@@ -240,32 +236,27 @@ class RoomSettingController extends GetxController {
     isLoading = true;
     update();
     final image = await getImageFromGallery();
-    if (image == null) {
+    var request = http.MultipartRequest('POST', Uri.parse(roomImageUrl!));
+    request.fields['room_id'] = roomId;
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'room_img',
+        image!.path,
+        filename: "$roomId.jpeg".toString(),
+      ),
+    );
+    var res = await request.send();
+
+    if (res.statusCode == 200) {
+      print("Uploaded!--");
       isLoading = false;
       update();
+
+      Get.snackbar("title", "uploaded");
     } else {
-      var request = http.MultipartRequest('POST', Uri.parse(roomImageUrl));
-      request.fields['room_id'] = roomId;
-      request.files.add(
-        await http.MultipartFile.fromPath(
-          'room_img',
-          image.path,
-          filename: "$roomId.jpeg".toString(),
-        ),
-      );
-      var res = await request.send();
-
-      if (res.statusCode == 200) {
-        print("Uploaded!--");
-        isLoading = false;
-        update();
-
-        Get.snackbar("title", "uploaded");
-      } else {
-        print("Failed!");
-      }
+      print("Failed!");
     }
-  }
+    }
 
   changeMic(bool value) {
     mic = value;
@@ -277,32 +268,27 @@ class RoomSettingController extends GetxController {
     // isLoading = true;
     // update();
     final image = await getImageFromGallery();
-    if (image == null) {
+    var request = http.MultipartRequest('POST', Uri.parse(roomBackgroundImage));
+    request.fields['room_id'] = roomId;
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'background_img',
+        image!.path,
+        filename: "$roomId.jpeg".toString(),
+      ),
+    );
+    var res = await request.send();
+
+    if (res.statusCode == 200) {
+      print("Uploaded!");
+      // Get.back();
       isLoading = false;
       update();
+      Get.snackbar("title", "uploaded");
     } else {
-      var request = http.MultipartRequest('POST', Uri.parse(roomBackgroundImage));
-      request.fields['room_id'] = roomId;
-      request.files.add(
-        await http.MultipartFile.fromPath(
-          'background_img',
-          image.path,
-          filename: "$roomId.jpeg".toString(),
-        ),
-      );
-      var res = await request.send();
-
-      if (res.statusCode == 200) {
-        print("Uploaded!");
-        // Get.back();
-        isLoading = false;
-        update();
-        Get.snackbar("title", "uploaded");
-      } else {
-        print("Failed!");
-      }
+      print("Failed!");
     }
-  }
+    }
 
   changeSettings(String roomId) async {
     var request = http.MultipartRequest('POST', Uri.parse(roomSetting));
@@ -367,7 +353,7 @@ class RoomSettingController extends GetxController {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
 
-      showSnackBar(Get.context);
+      showSnackBar(Get.context!);
     } else {
       print("Failed!");
     }
@@ -382,10 +368,10 @@ class RoomSettingController extends GetxController {
 
   void alertDialog(
     String title, {
-    String controller,
+    String ?controller,
   }) {
     showDialog(
-      context: Get.context,
+      context: Get.context!,
       builder: (context) => Dialog(
         backgroundColor: Colors.white,
         insetPadding: EdgeInsets.all(10),
@@ -406,15 +392,15 @@ class RoomSettingController extends GetxController {
               SizedBox(height: 10.h),
               Text(
                 (title == "زائر")
-                    ? intToTimeLeft(int.parse(guestCallTime))
+                    ? intToTimeLeft(int.parse(guestCallTime!))
                     : (title == "ممبر")
-                        ? intToTimeLeft(int.parse(memberTalkTime))
+                        ? intToTimeLeft(int.parse(memberTalkTime!))
                         : (title == "أدمن")
-                            ? intToTimeLeft(int.parse(adminTalkTime))
+                            ? intToTimeLeft(int.parse(adminTalkTime!))
                             : (title == "سوبر أدمن")
-                                ? intToTimeLeft(int.parse(superTalkTime))
+                                ? intToTimeLeft(int.parse(superTalkTime!))
                                 : intToTimeLeft(
-                                    int.parse(masterTalkTime),
+                                    int.parse(masterTalkTime!),
                                   ),
                 style: TextStyle(
                   color: Colors.black,
@@ -535,13 +521,13 @@ class RoomSettingController extends GetxController {
   }
 
   changeExpansionTileStatus(int index) {
-    setting[index]["isExpanded"] = !setting[index]["isExpanded"];
+    setting[index]["isExpanded"] = !(setting[index]["isExpanded"]as bool);
     update();
   }
 
   colorPickerBuilder() {
     showDialog(
-      context: Get.context,
+      context: Get.context!,
       builder: (context) => AlertDialog(
         contentPadding: EdgeInsets.all(10.sp),
         content: Builder(
@@ -578,7 +564,7 @@ class RoomSettingController extends GetxController {
 
   colorPicker() {
     showDialog(
-      context: Get.context,
+      context: Get.context!,
       builder: (context) => AlertDialog(
         title: const Text('Pick a color!'),
         content: SingleChildScrollView(
@@ -618,7 +604,7 @@ class RoomSettingController extends GetxController {
 
   dialog(String title, String pastTime) {
     showDialog(
-      context: Get.context,
+      context: Get.context!,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
         insetPadding: EdgeInsets.all(10),
@@ -661,7 +647,7 @@ class RoomSettingController extends GetxController {
     update();
   }
 
-  expansionTileChildren({int index}) {
+  expansionTileChildren({required int index}) {
     if (index == 0) {
       return Container();
     } else if (index == 1) {
@@ -851,7 +837,7 @@ class RoomSettingController extends GetxController {
                       activeColor: Color(int.parse(roomInfo["themeColor"].toString().substring(1), radix: 16) + 0xFF000000),
                       onChanged: (value) {
                         print(value);
-                        cameraRadio = value;
+                        cameraRadio = value as String?;
                         update();
                       },
                     ),
@@ -899,7 +885,7 @@ class RoomSettingController extends GetxController {
                       activeColor: Color(int.parse(roomInfo["themeColor"].toString().substring(1), radix: 16) + 0xFF000000),
                       onChanged: (value) {
                         print(value);
-                        privateMessageStatus = value;
+                        privateMessageStatus = value as String?;
                         update();
                       },
                     ),
@@ -969,7 +955,7 @@ class RoomSettingController extends GetxController {
                             selected: true,
                             onChanged: (value) {
                               // print(value["value"].toString());
-                              roomLock = value;
+                              roomLock = value as String?;
                               update();
                             },
                           ),
@@ -992,7 +978,7 @@ class RoomSettingController extends GetxController {
                         selected: true,
                         onChanged: (value) {
                           // print(value["value"].toString());
-                          roomLock = value;
+                          roomLock = value as String?;
                           update();
                         },
                       ),
@@ -1063,7 +1049,7 @@ class RoomSettingController extends GetxController {
                       height: 50.h,
                       child: SwitchListTile(
                         title: Text(
-                          controller.masterOption[index]["title"],
+                          controller.masterOption[index]["title"]!,
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -1074,7 +1060,7 @@ class RoomSettingController extends GetxController {
                         // activeColor: Colors.black,
                         dense: true,
                         // controlAffinity: ListTileControlAffinity.leading,
-                        value: index == 0 ? controller.allowAddMaster : controller.allowEditRoomSettings,
+                        value:( index == 0 ? controller.allowAddMaster : controller.allowEditRoomSettings)!,
                         onChanged: (value) {
                           print(index);
                           index == 0 ? controller.changeAllowAddMaster(value) : controller.changeAllowEditRoomSettings(value);
@@ -1108,7 +1094,7 @@ class RoomSettingController extends GetxController {
                 // index = 3;
                 return CustomExpansionTile(
                   title: Text(
-                    controller.sendOption[index]["title"],
+                    controller.sendOption[index]["title"]!,
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -1143,14 +1129,14 @@ class RoomSettingController extends GetxController {
                           onChanged: (value) {
                             print(value);
                             index == 0
-                                ? controller.changeSendImage(value)
+                                ? controller.changeSendImage(value! as String)
                                 : index == 1
-                                    ? controller.changeSendText(value)
+                                    ? controller.changeSendText(value! as String)
                                     : index == 2
-                                        ? controller.changeSendVoiceInPrivate(value)
+                                        ? controller.changeSendVoiceInPrivate(value! as String)
                                         : index == 3
-                                            ? controller.changeSendAlerts(value)
-                                            : controller.changeRoomEntries(value);
+                                            ? controller.changeSendAlerts(value! as String)
+                                            : controller.changeRoomEntries(value! as String);
                             update();
                           },
                         ),

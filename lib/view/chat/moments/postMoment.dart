@@ -1,9 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/chat/moments/postMomentController.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
@@ -11,7 +8,7 @@ import 'package:lametna/controllers/userData/variables.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PostMoment extends StatelessWidget {
-  const PostMoment({Key key}) : super(key: key);
+  const PostMoment({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

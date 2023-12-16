@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:lametna/view/chat/appBar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ComplaintsSuggestions extends StatelessWidget {
-  const ComplaintsSuggestions({Key key}) : super(key: key);
+  const ComplaintsSuggestions({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +11,7 @@ class ComplaintsSuggestions extends StatelessWidget {
       appBar: appbarBuilder("الشكاوي والمقترحات", false),
       body: Column(
         children: [
-          Expanded(child: Placeholder()),
+          const Expanded(child: Placeholder()),
           SizedBox(
             height: 71.h,
             // color: Colors.amber,
@@ -27,7 +24,7 @@ class ComplaintsSuggestions extends StatelessWidget {
                     // height: 46.h,
                     padding: EdgeInsets.all(10.sp),
                     decoration: BoxDecoration(
-                      color: Color(0xffFABD63),
+                      color: const Color(0xffFABD63),
                       borderRadius: BorderRadius.circular(360.r),
                     ),
                     child: Image.asset(
@@ -56,13 +53,13 @@ class ComplaintsSuggestions extends StatelessWidget {
                         ),
 
                         decoration: InputDecoration(
-                          fillColor: Color(0xffF5F5F5),
+                          fillColor: const Color(0xffF5F5F5),
                           filled: true,
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 19.w),
                           hintText: "اكتب رسالتك",
                           hintStyle: TextStyle(
-                            color: Color(0xFFA2ACAC), //Color(0xff9A8B8B),
+                            color: const Color(0xFFA2ACAC), //Color(0xff9A8B8B),
                             fontSize: 14.sp,
                             fontFamily: "Portada",
                           ),

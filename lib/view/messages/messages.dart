@@ -1,11 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/messages/messagesController.dart';
@@ -13,7 +9,7 @@ import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/controllers/userData/variables.dart';
 
 class Messages extends StatelessWidget {
-  Messages({Key key}) : super(key: key);
+  Messages({Key? key}) : super(key: key);
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   var images = [
     "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fHww&w=1000&q=80",
@@ -116,7 +112,7 @@ class Messages extends StatelessWidget {
               IconButton(
                   onPressed: () {
                     print("object");
-                    _scaffoldKey.currentState.openEndDrawer();
+                    _scaffoldKey.currentState!.openEndDrawer();
                   },
                   icon: Icon(Icons.menu)),
             ],
@@ -376,7 +372,7 @@ class Messages extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        _showMyDialog(Get.context);
+                        _showMyDialog(Get.context!);
                       },
                       child: Icon(
                         Icons.more_vert,

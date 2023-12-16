@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:lametna/controllers/userData/variables.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Crud {
   getRequest(String url) async {

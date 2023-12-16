@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Trophy extends StatelessWidget {
-  const Trophy({Key key}) : super(key: key);
+  const Trophy({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class Trophy extends StatelessWidget {
             "textColor": Color(0xFFEFA11B),
           }
         ]
-            .map((e) => _bannerBuilder(e["title"], e["gColor"], e["textColor"]))
+            .map((e) => _bannerBuilder(e["title"] as String, e["gColor"] as Color, e["textColor"] as Color))
             .toList(),
         // _bannerBuilder(
         //     'لوحة صدارة الغرف المميزة', Color(0xFFF792F0), Color(0xFFCC77D9))

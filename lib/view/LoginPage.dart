@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/loginController.dart';
-import 'package:lametna/controllers/userData/userCredentials.dart';
 
 class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
   // const LoginPage({super.key});
 
   @override
@@ -213,7 +214,7 @@ class LoginPage extends StatelessWidget {
                         padding: EdgeInsets.only(top: 120.h),
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
-                            primary: Color(0xFFffcc00),
+                            backgroundColor: Color(0xFFffcc00),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.r),
                             ),

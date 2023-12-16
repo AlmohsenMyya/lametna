@@ -7,7 +7,7 @@ import 'package:lametna/view/chat/appBar.dart';
 import 'package:get/get.dart';
 
 class RoomInfo extends StatelessWidget {
-  RoomInfo({Key key}) : super(key: key);
+  RoomInfo({Key? key}) : super(key: key);
 
   var titles = [
     {"إسم الغرفة", "room_name"},
@@ -48,7 +48,7 @@ class RoomInfo extends StatelessWidget {
                           itemBuilder: (context, index) {
                             return infoSetting(
                               titles[index].elementAt(0),
-                              snapshot.data["data"][0][titles[index].elementAt(1)].toString(),
+                              snapshot.data!()["data"][0][titles[index].elementAt(1)].toString(),
                             );
                           },
                         ),
@@ -68,7 +68,7 @@ class RoomInfo extends StatelessWidget {
                                               : controller.tiers[index]["name"].toString() == "سوبر أدمن"
                                                   ? controller.superAdminTime.toString()
                                                   : controller.masterTime.toString(),
-                                  color1: controller.tiers[index]["color"],
+                                  color1: controller.tiers[index]["color"] as Color,
                                   color2: Colors.red,
                                   fontWeight1: FontWeight.w900,
                                 ),
@@ -182,7 +182,7 @@ class RoomInfo extends StatelessWidget {
                               width: 5.w,
                             ),
                             Text(
-                              "| " + countryName,
+                              "| $countryName",
                               style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: Colors.black, fontFamily: "Segoe UI"),
                             ),
                           ],

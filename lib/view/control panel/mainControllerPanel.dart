@@ -1,12 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:lametna/controllers/chat/roomInfoController.dart';
 import 'package:lametna/controllers/control%20panel/controllerPanelController.dart';
 
-import 'package:lametna/controllers/profile/profileController.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/controllers/userData/variables.dart';
 import 'package:lametna/view/chat/appBar.dart';
@@ -45,7 +41,7 @@ var report1 = [
 var report2 = ["محمود", "تم طرد عضو"];
 
 class MainControllerPanel extends StatelessWidget {
-  const MainControllerPanel({Key key}) : super(key: key);
+  const MainControllerPanel({Key ?key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +83,7 @@ class MainControllerPanel extends StatelessWidget {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(360.r),
                                   child: Image.network(
-                                    imageURL + userName + ".jpeg",
+                                    "$imageURL$userName.jpeg",
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -99,7 +95,7 @@ class MainControllerPanel extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    " مرحبا بك  ${userName}",
+                                    " مرحبا بك  $userName",
                                     style: TextStyle(
                                       color: Colors.black, //Color(0xff9A8B8B),
                                       fontSize: 15.sp,
@@ -108,7 +104,7 @@ class MainControllerPanel extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    "رقم لوحتك  ${userId}",
+                                    "رقم لوحتك  $userId",
                                     style: TextStyle(
                                       color: Colors.black, //Color(0xff9A8B8B),
                                       fontSize: 15.sp,
@@ -935,7 +931,7 @@ class MainControllerPanel extends StatelessWidget {
                   Row(
                     children: [
                       IconButton(
-                        icon: Icon(Icons.edit_road, size: 18.sp),
+                        icon: Icon(Icons.edit_road, size: 18.sp), onPressed: () {  },
                       ),
                       GestureDetector(
                         onTap: () {

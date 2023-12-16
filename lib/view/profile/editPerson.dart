@@ -18,11 +18,11 @@ var Info = [
 ];
 
 class EditPerson extends StatelessWidget {
-  const EditPerson({Key key}) : super(key: key);
+  const EditPerson({Key ?key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF1F1F1),
+      backgroundColor: const Color(0xFFF1F1F1),
       appBar: appbarBuilder("تعديل الملف الشخصي", true),
       body: SingleChildScrollView(
         child: SafeArea(
@@ -36,7 +36,7 @@ class EditPerson extends StatelessWidget {
                     Text(
                       "الإعدادات الشخصية",
                       style: TextStyle(
-                        color: Color(0XffA2ACAC),
+                        color: const Color(0XffA2ACAC),
                         fontSize: 10.sp,
                         fontFamily: "Portada",
                         fontWeight: FontWeight.bold,
@@ -64,7 +64,7 @@ class EditPerson extends StatelessWidget {
                               height: 69.h,
                               decoration: BoxDecoration(
                                 // color: const Color(0xff7c94b6),
-                                image: DecorationImage(
+                                image: const DecorationImage(
                                   image: NetworkImage(
                                       "https://www.wilsoncenter.org/sites/default/files/styles/large/public/media/images/person/james-person-1.jpg"),
                                   fit: BoxFit.cover,
@@ -83,7 +83,7 @@ class EditPerson extends StatelessWidget {
                               fontFamily: "Portada",
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 20.w),
                             child: Icon(
@@ -122,7 +122,7 @@ class EditPerson extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 60.0.w, vertical: 3.h),
                                   child: Text(
-                                    EditProfile[index]["name"],
+                                    EditProfile[index]["name"] as String,
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 15.sp,
@@ -137,7 +137,7 @@ class EditPerson extends StatelessWidget {
                         ),
                       );
                     },
-                    separatorBuilder: (context, index) => Divider(
+                    separatorBuilder: (context, index) => const Divider(
                           color: Color(0xffF1F1F1),
                           thickness: 1,
                         ),
@@ -162,7 +162,7 @@ class EditPerson extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 20.0.w, vertical: 3.h),
                                   child: Text(
-                                    Info[index]["name"],
+                                    Info[index]["name"] as String,
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 15.sp,
@@ -177,7 +177,7 @@ class EditPerson extends StatelessWidget {
                         ),
                       );
                     },
-                    separatorBuilder: (context, index) => Divider(
+                    separatorBuilder: (context, index) => const Divider(
                           color: Color(0xffF1F1F1),
                           thickness: 1,
                         ),

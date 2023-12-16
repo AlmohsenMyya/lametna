@@ -20,13 +20,13 @@ class PrivateMessagesRoomController extends GetxController {
   var theSource = AudioSource.microphone;
   TextEditingController messageRoomController = TextEditingController();
   StreamController streamController = StreamController();
-  Timer _timer;
+  late Timer _timer;
 
   Codec _codec = Codec.aacMP4;
   String _mPath = 'tau_file.mp4';
   String audioPath = "";
-  FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
-  FlutterSoundRecorder mRecorder = FlutterSoundRecorder();
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
+  FlutterSoundRecorder? mRecorder = FlutterSoundRecorder();
   //  AudioPlayer audioPlayer = AudioPlayer();
   bool _mPlayerIsInited = false;
   bool mRecorderIsInited = false;
@@ -35,15 +35,15 @@ class PrivateMessagesRoomController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    _mPlayer.openPlayer().then((value) {
+    _mPlayer!.openPlayer().then((value) {
       _mPlayerIsInited = true;
     });
 
     openTheRecorder().then((value) {
       mRecorderIsInited = true;
     });
-    _timer = Timer.periodic(Duration(seconds: 2), (timer) {
-      return getData();
+    _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
+       getData();
     });
     update();
   }
@@ -51,10 +51,10 @@ class PrivateMessagesRoomController extends GetxController {
   @override
   void onClose() {
     _timer.cancel();
-    _mPlayer.closePlayer();
+    _mPlayer!.closePlayer();
     _mPlayer = null;
 
-    mRecorder.closeRecorder();
+    mRecorder!.closeRecorder();
     mRecorder = null;
     super.onClose();
   }
@@ -81,7 +81,7 @@ class PrivateMessagesRoomController extends GetxController {
     }
   }
 
-  Future<Map<String, dynamic>> sendMsg() async {
+  Future<Map<String, dynamic>?> sendMsg() async {
     try {
       var url = Uri.parse(sendPrivateMessageRoom);
       if (messageRoomController.text.trim() != "") {
@@ -114,11 +114,11 @@ class PrivateMessagesRoomController extends GetxController {
         throw RecordingPermissionException('Microphone permission not granted');
       }
     }
-    await mRecorder.openRecorder();
-    if (!await mRecorder.isEncoderSupported(_codec) && kIsWeb) {
+    await mRecorder!.openRecorder();
+    if (!await mRecorder!.isEncoderSupported(_codec) && kIsWeb) {
       _codec = Codec.opusWebM;
       _mPath = 'tau_file.webm';
-      if (!await mRecorder.isEncoderSupported(_codec) && kIsWeb) {
+      if (!await mRecorder!.isEncoderSupported(_codec) && kIsWeb) {
         mRecorderIsInited = true;
         return;
       }
@@ -146,7 +146,7 @@ class PrivateMessagesRoomController extends GetxController {
   }
 
   void record() {
-    mRecorder
+    mRecorder!
         .startRecorder(
       toFile: _mPath,
       codec: _codec,
@@ -158,12 +158,12 @@ class PrivateMessagesRoomController extends GetxController {
   }
 
   void stopRecorder() async {
-    audioPath = await mRecorder.stopRecorder();
+    audioPath = (await mRecorder!.stopRecorder())!;
     //var url = value;
     _mplaybackReady = true;
     update();
 
-    final path = await File(audioPath);
+    final path = File(audioPath);
     var request = http.MultipartRequest(
       'POST', // Change this to your API method
       Uri.parse(
@@ -197,9 +197,9 @@ class PrivateMessagesRoomController extends GetxController {
   void play() {
     assert(_mPlayerIsInited &&
         _mplaybackReady &&
-        mRecorder.isStopped &&
-        _mPlayer.isStopped);
-    _mPlayer
+        mRecorder!.isStopped &&
+        _mPlayer!.isStopped);
+    _mPlayer!
         .startPlayer(
             fromURI: _mPath,
             //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
@@ -212,28 +212,28 @@ class PrivateMessagesRoomController extends GetxController {
   }
 
   void playRecording(String url) {
-    _mPlayer.startPlayer(
-      fromURI: baseURL + "/upload/audiochats/" + url,
+    _mPlayer!.startPlayer(
+      fromURI: "$baseURL/upload/audiochats/$url",
     );
   }
 
   void stopPlayer() {
-    _mPlayer.stopPlayer().then((value) {
+    _mPlayer!.stopPlayer().then((value) {
       update();
     });
   }
 
-  _Fn getRecorderFn() {
-    if (!mRecorderIsInited || !_mPlayer.isStopped) {
+  _Fn? getRecorderFn() {
+    if (!mRecorderIsInited || !_mPlayer!.isStopped) {
       return null;
     }
-    return mRecorder.isStopped ? record : stopRecorder;
+    return mRecorder!.isStopped ? record : stopRecorder;
   }
 
-  _Fn getPlaybackFn() {
-    if (!_mPlayerIsInited || !_mplaybackReady || !mRecorder.isStopped) {
+  _Fn? getPlaybackFn() {
+    if (!_mPlayerIsInited || !_mplaybackReady || !mRecorder!.isStopped) {
       return null;
     }
-    return _mPlayer.isStopped ? play : stopPlayer;
+    return _mPlayer!.isStopped ? play : stopPlayer;
   }
 }

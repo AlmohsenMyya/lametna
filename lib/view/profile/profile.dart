@@ -1,16 +1,14 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lametna/controllers/profile/profileController.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
-import 'package:lametna/view/profile/editPersonalProfile.dart';
 
 class Profile extends StatelessWidget {
+  const Profile({Key? key}) : super(key: key);
+
   // const Profile({Key key}) : super(key: key);
 
   @override

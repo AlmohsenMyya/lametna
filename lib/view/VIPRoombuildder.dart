@@ -8,7 +8,7 @@ import 'package:lametna/controllers/userData/variables.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-Widget roomBuilder({dynamic data, ChatHomeController controller, isVIP = true}) {
+Widget roomBuilder({dynamic data, ChatHomeController? controller, isVIP = true}) {
   return Directionality(
     textDirection: TextDirection.rtl,
     child: GestureDetector(
@@ -17,14 +17,14 @@ Widget roomBuilder({dynamic data, ChatHomeController controller, isVIP = true}) 
         print(isRole);
         if (isGuest || isRole) {
           showAlert(
-            Get.context,
+            Get.context!,
             roomId: data["room_id"],
             roomName: data["room_name"],
             roomOwner: data["owner_username"],
             welcomeText: data["hello_msg"],
           );
         } else {
-          controller.checkIfBanned(roomId: data["room_id"], username: userName);
+          controller?.checkIfBanned(roomId: data["room_id"], username: userName);
         }
       },
       child: Padding(
@@ -51,7 +51,7 @@ Widget roomBuilder({dynamic data, ChatHomeController controller, isVIP = true}) 
           ),
           child: Row(
             children: [
-              Container(
+              SizedBox(
                 width: 90.w,
                 height: 90.h,
                 child: Stack(
@@ -329,10 +329,10 @@ Widget roomBuilder({dynamic data, ChatHomeController controller, isVIP = true}) 
 
 void showAlert(
   BuildContext context, {
-  String roomId,
-  String roomName,
-  String roomOwner,
-  String welcomeText,
+  String? roomId,
+  String? roomName,
+  String? roomOwner,
+  String? welcomeText,
 }) {
   Get.dialog(
     GetBuilder<ChatHomeController>(builder: (controller) {
@@ -513,14 +513,14 @@ void showAlert(
                     onTap: () {
                       if (controller.alertIndex == 0) {
                         Get.back();
-                        controller.checkIfBanned(roomId: roomId, username: controller.guestController.text);
+                        controller.checkIfBanned(roomId: roomId!, username: controller.guestController.text);
                         FocusScope.of(context).unfocus();
                       } else {
                         // print("object");contro
                         Get.back();
 
                         FocusScope.of(context).unfocus();
-                        controller.checkIfBanned(roomId: roomId, username: controller.roleUsernameController.text);
+                        controller.checkIfBanned(roomId: roomId!, username: controller.roleUsernameController.text);
                       }
                     },
                     child: Padding(

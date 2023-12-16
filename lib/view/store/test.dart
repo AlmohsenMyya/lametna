@@ -1,25 +1,18 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
-import 'package:lametna/controllers/store/storeController.dart';
 
-import '../../controllers/chathomePageController.dart';
-import '../../view/chatHomePage.dart';
-import 'package:lametna/view/side%20pages/drawer.dart';
-import 'package:lametna/controllers/bottomNavitionBar.dart';
-import '';
 
 var l = ["الملفات", "الغرف", "روتات", "إطارات", "العروض"];
 var month = ["شهر", "3 شهر", "6 شهر", "سنة"];
 
 class test extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey2 = GlobalKey<ScaffoldState>();
+
+  test({Key? key}) : super(key: key);
   //const test({Key key}) : super(key: key);
 
   @override
@@ -147,7 +140,7 @@ class test extends StatelessWidget {
                                     });
                                   },
                                   child: Image.asset(
-                                    e["icon"],
+                                    e["icon"]!,
                                     width: 60.w,
                                     height: 60.h,
                                   ),
@@ -364,7 +357,7 @@ class test extends StatelessWidget {
     );
   }
 
-  Widget cardBuilder({String title, String image, String price}) {
+  Widget cardBuilder({required String title, required String image, required String price}) {
     return GestureDetector(
       onTap: () {
         Get.toNamed("/storeDetails", arguments: {

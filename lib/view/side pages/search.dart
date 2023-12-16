@@ -1,15 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:lametna/controllers/side%20pages/searchController.dart';
+import '../../controllers/side pages/searchController.dart';
+
 
 class Search extends StatelessWidget {
-  Search({Key key}) : super(key: key);
+ const Search({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +41,8 @@ class Search extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: 40.h),
-            GetBuilder<SearchController>(
-                init: SearchController(),
+            GetBuilder<AlmohsenSearchController>(
+                init: AlmohsenSearchController(),
                 builder: (controller) {
                   return Directionality(
                     textDirection: TextDirection.rtl,
@@ -65,7 +63,9 @@ class Search extends StatelessWidget {
                           // readOnly: true,
                           controller: controller.searchController,
                           // onChanged: (value) => controller.search(),
-                          onEditingComplete: () => controller.search(),
+                          onEditingComplete: () {
+                            controller.search();
+                          },
 
                           autofocus: false,
                           style:
@@ -90,7 +90,7 @@ class Search extends StatelessWidget {
                   );
                 }),
             SizedBox(height: 20.h),
-            GetBuilder<SearchController>(builder: (controller) {
+            GetBuilder<AlmohsenSearchController>(builder: (controller) {
               return SizedBox(
                 height: Get.height * .06,
                 child: ListView.builder(
@@ -144,7 +144,7 @@ class Search extends StatelessWidget {
                 ),
               );
             }),
-            GetBuilder<SearchController>(
+            GetBuilder<AlmohsenSearchController>(
               builder: (controller) => controller.data == null
                   ? SizedBox()
                   : ListView.builder(

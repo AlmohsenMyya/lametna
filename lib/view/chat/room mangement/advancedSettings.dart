@@ -1,23 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:lametna/controllers/chat/room%20managment/advancedSettingsController.dart';
-import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/view/chat/appBar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import 'package:flutter/material.dart';
 import 'package:lametna/controllers/chat/roomPageSettingsController.dart';
-import 'package:lametna/view/chat/appBar.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 
 class AdvancedSettings extends StatelessWidget {
-  const AdvancedSettings({Key key}) : super(key: key);
+  const AdvancedSettings({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +39,7 @@ class AdvancedSettings extends StatelessWidget {
                                       ? controller.sendVoiceInPrivate
                                       : index == 3
                                           ? controller.sendAlerts
-                                          : controller.roomEntries,
+                                          : controller.roomEntries, onChanged: (bool value) {  },
                           // onChanged: (value) {
                           //   print(index);
                           //   index == 0
@@ -64,7 +56,7 @@ class AdvancedSettings extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      controller.items[index]["title"],
+                      controller.items[index]["title"]!,
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -121,11 +113,11 @@ Widget switchmethod(
   );
 }
 
-Widget showAlert(BuildContext context) {
+Widget? showAlert(BuildContext context) {
   showDialog(
     context: context,
     builder: (context) {
-      return Container(
+      return SizedBox(
           height: 183.h,
           width: double.infinity,
           child: Column(
@@ -188,13 +180,14 @@ Widget showAlert(BuildContext context) {
           ));
     },
   );
+  return null;
 }
 
-Widget showAlert2(BuildContext context) {
+Widget? showAlert2(BuildContext context) {
   showDialog(
     context: context,
     builder: (context) {
-      return Container(
+      return SizedBox(
           height: 193.h,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -325,6 +318,7 @@ Widget showAlert2(BuildContext context) {
           ));
     },
   );
+  return null;
 }
 
 // class AdvancedSettings extends StatelessWidget {

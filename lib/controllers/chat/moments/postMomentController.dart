@@ -6,7 +6,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lametna/controllers/profile/profileController.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -51,7 +50,7 @@ class PostMomentController extends GetxController {
     }
   }
 
-  void storyWithImage() async {
+  Future<void> storyWithImage() async {
     // await pickImage();
     // final image = await getImageFromGallery();
 

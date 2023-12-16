@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 
 class ViewImage extends StatelessWidget {
-  const ViewImage({Key key}) : super(key: key);
+  const ViewImage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

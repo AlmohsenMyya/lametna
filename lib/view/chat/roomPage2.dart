@@ -1,5 +1,5 @@
 // // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, missing_return, use_full_hex_values_for_flutter_colors, prefer_interpolation_to_compose_strings, unrelated_type_equality_checks
-
+//
 // import 'dart:async';
 // import 'package:floating_draggable_widget/floating_draggable_widget.dart';
 // import 'package:flutter/foundation.dart' as foundation;
@@ -19,84 +19,84 @@
 // import 'package:lametna/view/messages/messages.dart';
 // import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 // import 'package:lametna/view/side%20pages/scrollText.dart';
-
+//
 // import '../../controllers/userData/userCredentials.dart';
 // import 'package:http/http.dart' as http;
 // import 'package:lametna/controllers/userData/variables.dart';
-
+//
 // GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
+//
 // class RoomPage extends StatefulWidget {
-//   const RoomPage({foundation.Key key}) : super(key: key);
-
+//   const RoomPage({required foundation.Key key}) : super(key: key);
+//
 //   // RoomPage({Key key}) : super(key: key);
-
+//
 //   @override
 //   State<RoomPage> createState() => _RoomPageState();
 // }
-
+//
 // // String Get.arguments["owner"] = Get.arguments["owner"];
-
+//
 // class _RoomPageState extends State<RoomPage> with WidgetsBindingObserver {
-//   AppLifecycleState _lastLifecycleState;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance.addObserver(this);
-  // }
-
-  // @override
-  // void dispose() {
-  //   WidgetsBinding.instance.removeObserver(this);
-  //   super.dispose();
-  // }
-
-  // @override
-  // Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-  //   switch (state) {
-  //     case AppLifecycleState.inactive:
-  //       print("inactive");
-  //       break;
-  //     case AppLifecycleState.paused:
-  //       print("paused");
-
-  //       break;
-  //     case AppLifecycleState.detached:
-  //       Get.put(RoomsPageController()).onLeave();
-
-  //       print("detached");
-  //       break;
-  //     case AppLifecycleState.resumed:
-  //       await print("resumed");
-  //       break;
-  //   }
-  //   super.didChangeAppLifecycleState(state);
-  //   if (state == AppLifecycleState.inactive ||
-  //       state == AppLifecycleState.detached) return;
-  //   bool isBackground = state == AppLifecycleState.paused;
-  //   bool isBackground2 = state == AppLifecycleState.inactive;
-  //   if (isBackground2) {
-  //     print("detached");
-  //     // Get.put(RoomsPageController()).onLeave();
-  //   }
-  //   if (isBackground && pickingImage == false) {
-  //     print("paused");
-  //     if (_scaffoldKey.currentState.isEndDrawerOpen) {
-  //       _scaffoldKey.currentState.closeEndDrawer();
-  //     }
-  //     // Get.put(RoomsPageController()).onLeave();
-  //   }
-
-  //   setState(() {
-  //     _lastLifecycleState = state;
-  //   });
-  // }
-
+//   AppLifecycleState? _lastLifecycleState;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     WidgetsBinding.instance.addObserver(this);
+//   }
+//
+//   @override
+//   void dispose() {
+//     WidgetsBinding.instance.removeObserver(this);
+//     super.dispose();
+//   }
+//
+//   @override
+//   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+//     switch (state) {
+//       case AppLifecycleState.inactive:
+//         print("inactive");
+//         break;
+//       case AppLifecycleState.paused:
+//         print("paused");
+//
+//         break;
+//       case AppLifecycleState.detached:
+//         Get.put(RoomsPageController()).onLeave();
+//
+//         print("detached");
+//         break;
+//       case AppLifecycleState.resumed:
+//         await print("resumed");
+//         break;
+//     }
+//     super.didChangeAppLifecycleState(state);
+//     if (state == AppLifecycleState.inactive ||
+//         state == AppLifecycleState.detached) return;
+//     bool isBackground = state == AppLifecycleState.paused;
+//     bool isBackground2 = state == AppLifecycleState.inactive;
+//     if (isBackground2) {
+//       print("detached");
+//       // Get.put(RoomsPageController()).onLeave();
+//     }
+//     if (isBackground && pickingImage == false) {
+//       print("paused");
+//       if (_scaffoldKey.currentState.isEndDrawerOpen) {
+//         _scaffoldKey.currentState.closeEndDrawer();
+//       }
+//       // Get.put(RoomsPageController()).onLeave();
+//     }
+//
+//     setState(() {
+//       _lastLifecycleState = state;
+//     });
+//   }
+//
 //   // bool isOwner = Get.arguments["owner"] != userName;
-
+//
 //   // final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
+//
 //   @override
 //   Widget build(BuildContext context) {
 //     return FloatingDraggableWidget(
@@ -109,7 +109,7 @@
 //       dx: 0,
 //       dy: 80,
 //       floatingWidget: SizedBox(),
-
+//
 //       //  GetBuilder<VideoController>(
 //       //   init: VideoController(),
 //       //   builder: (controller) => Positioned(
@@ -128,7 +128,7 @@
 //             //  await controller.onLeave();
 //             //
 //             //                         Get.put(VoiceController()).leave();
-
+//
 //             // Get.defaultDialog(
 //             //   title: "هل تريد مغادرة الغرفة؟",
 //             //   titleStyle: TextStyle(
@@ -164,7 +164,7 @@
 //               }
 //             },
 //             // resizeToAvoidBottomInset: false,
-
+//
 //             drawerScrimColor: Colors.transparent,
 //             endDrawer: Padding(
 //               padding: EdgeInsets.symmetric(vertical: 70.h),
@@ -211,7 +211,7 @@
 //                                         : 80.h,
 //                                     decoration: BoxDecoration(
 //                                       // color: Colors.green,
-
+//
 //                                       image: controller.userInRoom["data"]
 //                                                   [index]["selectedBG"] ==
 //                                               ""
@@ -657,26 +657,26 @@
 //                                     ),
 //                                   ),
 //                                   itemBuilder: (context) => [
-                                    // controller.userInRoom["data"][index]
-                                    //             ["username"] ==
-                                    //         userName
-                                    //     ? null
-                                    //     : usersPopUpMenu(
-                                    //         "محادثة خاصة",
-                                    //         f: () async {
-                                    //           await Get.back();
-                                    //           Get.toNamed(
-                                    //             "/privateMessageRoom",
-                                    //             arguments: {
-                                    //               "username": controller
-                                    //                       .userInRoom["data"]
-                                    //                   [index]["username"],
-                                    //               "room_id":
-                                    //                   Get.arguments['room_id'],
-                                    //             },
-                                    //           );
-                                    //         },
-                                    //       ),
+//                                     controller.userInRoom["data"][index]
+//                                                 ["username"] ==
+//                                             userName
+//                                         ? null
+//                                         : usersPopUpMenu(
+//                                             "محادثة خاصة",
+//                                             f: () async {
+//                                               await Get.back();
+//                                               Get.toNamed(
+//                                                 "/privateMessageRoom",
+//                                                 arguments: {
+//                                                   "username": controller
+//                                                           .userInRoom["data"]
+//                                                       [index]["username"],
+//                                                   "room_id":
+//                                                       Get.arguments['room_id'],
+//                                                 },
+//                                               );
+//                                             },
+//                                           ),
 //                                     usersPopUpMenu(controller.userInRoom["data"]
 //                                         [index]["username"]),
 //                                     usersPopUpMenu("الإبلاغ عن الستخدم", f: () {
@@ -737,7 +737,7 @@
 //                                     //                   ],
 //                                     //                 ),
 //                                     //               ),
-
+//
 //                                     //         // usersPopUpMenu('طرد'),
 //                                     //         PopupMenuItem(
 //                                     //           height: 25.h,
@@ -833,7 +833,7 @@
 //                                     //             ? usersPopUpMenu('إرسال تحذير')
 //                                     //             : null,
 //                                     //         usersPopUpMenu('مسح النص للجميع'),
-
+//
 //                                     //         // usersPopUpMenu('دائم'),
 //                                     //       ],
 //                                     //     ),
@@ -845,8 +845,8 @@
 //                               );
 //                       })),
 //             ),
-
-//             // appBar: 
+//
+//             // appBar:
 //             body: Stack(
 //               children: [
 //                 // Image.network(
@@ -1144,7 +1144,7 @@
 //                                                                                 // totalRepeatCount: 4,
 //                                                                                 // pause: const Duration(milliseconds: 1000),
 //                                                                                 displayFullTextOnTap: false,
-
+//
 //                                                                                 // stopPauseOnTap: true,
 //                                                                                 isRepeatingAnimation: false,
 //                                                                               )),
@@ -1355,7 +1355,7 @@
 //                 //               ),
 //                 //             );
 //                 //     }),
-
+//
 //                 GetBuilder<VideoController>(
 //                     init: VideoController(),
 //                     builder: (controller) {
@@ -1400,9 +1400,9 @@
 //                                         } else {
 //                                           controller.joinAsAdmin();
 //                                         }
-
+//
 //                                         // controller.join();
-
+//
 //                                         // if (controller.inCall) {
 //                                         //   controller.leave();
 //                                         // } else {
@@ -1588,26 +1588,26 @@
 //       ),
 //     );
 //   }
-
-  // PopupMenuItem<String> statusBuilder(String title, {Widget icon}) {
-  //   return PopupMenuItem(
-  //       height: 40.h,
-  //       // padding: EdgeInsets.zero,
-  //       child: Row(
-  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //         children: [
-  //           SizedBox(),
-  //           Text(
-  //             title,
-  //             textAlign: TextAlign.center,
-  //             style: TextStyle(color: Colors.black),
-  //           ),
-  //           icon
-  //         ],
-  //       ),
-  //       value: title);
-  // }
-
+//
+//   PopupMenuItem<String> statusBuilder(String title, {Widget icon}) {
+//     return PopupMenuItem(
+//         height: 40.h,
+//         // padding: EdgeInsets.zero,
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           children: [
+//             SizedBox(),
+//             Text(
+//               title,
+//               textAlign: TextAlign.center,
+//               style: TextStyle(color: Colors.black),
+//             ),
+//             icon
+//           ],
+//         ),
+//         value: title);
+//   }
+//
 //   Widget emojiPickerBuilder() {
 //     return GetBuilder<RoomsPageController>(builder: (controller) {
 //       return Offstage(
@@ -1660,7 +1660,7 @@
 //       );
 //     });
 //   }
-
+//
 //   Widget userInCall() {
 //     return SizedBox(
 //       width: 50.w,
@@ -1679,7 +1679,7 @@
 //       ),
 //     );
 //   }
-
+//
 //   // Widget buildMyNavBar(BuildContext context) {
 //   // return Container(
 //   //   height: 71.h,
@@ -1823,7 +1823,7 @@
 //   //   ),
 //   // );
 //   // }
-
+//
 //   Widget messageBuilder({BuildContext context, dynamic data, bool guest}) {
 //     return GestureDetector(
 //       onLongPressStart: (LongPressStartDetails details) {
@@ -2086,7 +2086,7 @@
 //                                   ? Alignment.centerRight
 //                                   : Alignment.centerLeft,
 //                             ),
-
+//
 //                             borderRadius: data["senderName"] == userName
 //                                 ? BorderRadius.only(
 //                                     bottomLeft: Radius.circular(20.r),
@@ -2321,7 +2321,7 @@
 //             ),
 //     );
 //   }
-
+//
 //   Widget messageVIPBuilder(BuildContext context, dynamic data, bool guest) {
 //     return data["isGuest"] == "0"
 //         ? Padding(
@@ -2338,7 +2338,7 @@
 //                       //     borderRadius: BorderRadius.circular(50.r),
 //                       //     color: Colors.white,
 //                       //     image: DecorationImage(
-
+//
 //                       //       image: NetworkImage(
 //                       //         imageURL +
 //                       //             (data["senderName"] + ".jpeg").toString(),
@@ -2530,7 +2530,7 @@
 //             ),
 //           );
 //   }
-
+//
 //   Widget joinAndLeaveAlert(
 //       bool oldOrNew, bool joinOrLeave, String alert, String message) {
 //     return oldOrNew

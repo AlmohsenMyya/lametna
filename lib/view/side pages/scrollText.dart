@@ -8,14 +8,12 @@ class ScrollingText extends StatefulWidget {
   final Axis scrollAxis;
   final double ratioOfBlankToScreen;
 
-  ScrollingText({
-    @required this.text,
-    this.textStyle,
-    this.scrollAxis: Axis.horizontal,
-    this.ratioOfBlankToScreen: 0.25,
-  }) : assert(
-          text != null,
-        );
+  const ScrollingText({Key? key, 
+    required this.text,
+    required this.textStyle,
+    this.scrollAxis = Axis.horizontal,
+    this.ratioOfBlankToScreen = 0.25,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -25,14 +23,14 @@ class ScrollingText extends StatefulWidget {
 
 class ScrollingTextState extends State<ScrollingText>
     with SingleTickerProviderStateMixin {
-  ScrollController scrollController;
-  double screenWidth;
-  double screenHeight;
+   ScrollController? scrollController;
+  double screenWidth =0.0;
+  double screenHeight = 0.0;
   double position = 0.0;
-  Timer timer;
+   Timer? timer;
   final double _moveDistance = 3.0;
   final int _timerRest = 100;
-  GlobalKey _key = GlobalKey();
+  final GlobalKey _key = GlobalKey();
 
   @override
   void initState() {
@@ -46,13 +44,13 @@ class ScrollingTextState extends State<ScrollingText>
   void startTimer() {
     if (_key.currentContext != null) {
       double widgetWidth =
-          _key.currentContext.findRenderObject().paintBounds.size.width;
+          _key.currentContext!.findRenderObject()!.paintBounds.size.width;
       double widgetHeight =
-          _key.currentContext.findRenderObject().paintBounds.size.height;
+          _key.currentContext!.findRenderObject()!.paintBounds.size.height;
 
       timer = Timer.periodic(Duration(milliseconds: _timerRest), (timer) {
-        double maxScrollExtent = scrollController.position.maxScrollExtent;
-        double pixels = scrollController.position.pixels;
+        double maxScrollExtent = scrollController!.position.maxScrollExtent;
+        double pixels = scrollController!.position.pixels;
         if (pixels + _moveDistance >= maxScrollExtent) {
           if (widget.scrollAxis == Axis.horizontal) {
             position = (maxScrollExtent -
@@ -71,10 +69,10 @@ class ScrollingTextState extends State<ScrollingText>
                 pixels -
                 maxScrollExtent;
           }
-          scrollController.jumpTo(position);
+          scrollController!.jumpTo(position);
         }
         position += _moveDistance;
-        scrollController.animateTo(position,
+        scrollController!.animateTo(position,
             duration: Duration(milliseconds: _timerRest), curve: Curves.linear);
       });
     }
@@ -116,10 +114,8 @@ class ScrollingTextState extends State<ScrollingText>
   @override
   void dispose() {
     super.dispose();
-    if (timer != null) {
-      timer.cancel();
+    timer!.cancel();
     }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +123,7 @@ class ScrollingTextState extends State<ScrollingText>
       key: _key,
       scrollDirection: widget.scrollAxis,
       controller: scrollController,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       children: <Widget>[
         getBothEndsChild(),
         getCenterChild(),

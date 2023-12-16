@@ -10,7 +10,7 @@ import 'dart:convert';
 class PrivateMessagesController extends GetxController {
   TextEditingController messageController = TextEditingController();
   StreamController streamController = StreamController();
-  Timer _timer;
+  // Timer? _timer;
 
   @override
   Future<void> onInit() async {

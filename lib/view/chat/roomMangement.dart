@@ -25,7 +25,7 @@ var table1 = [
 ];
 
 class RoomMangement extends StatelessWidget {
-  const RoomMangement({Key key}) : super(key: key);
+  const RoomMangement({Key ?key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -170,13 +170,13 @@ class RoomMangement extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                                 child: Icon(
-                                  table1[index]["icon"],
+                                  table1[index]["icon"] as IconData,
                                   color: Color(int.parse(Get.arguments["color"].substring(1, 7), radix: 16) + 0xFF000000),
                                   size: 28.sp,
                                 ),
                               ),
                               Text(
-                                table1[index]["name"],
+                                table1[index]["name"] as String,
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 16.sp,
@@ -260,13 +260,13 @@ class RoomMangement extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                                 child: Icon(
-                                  table2[index]["icon"],
+                                  table2[index]["icon"] as IconData,
                                   color: Color(int.parse(Get.arguments["color"].substring(1, 7), radix: 16) + 0xFF000000),
                                   size: 28.sp,
                                 ),
                               ),
                               Text(
-                                table2[index]["name"],
+                                table2[index]["name"] as String,
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 16.sp,

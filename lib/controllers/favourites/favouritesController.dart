@@ -38,7 +38,7 @@ class FavouritesController extends GetxController {
     for (var i = 0; i < favouriteRooms.length; i++) {
       if (favouriteRooms[i]["room_id"] == roomId) {
         favouriteRooms.removeAt(i);
-        if (favouriteRooms.length == 0) {
+        if (favouriteRooms.isEmpty) {
           noFavourites = true;
         }
         update();

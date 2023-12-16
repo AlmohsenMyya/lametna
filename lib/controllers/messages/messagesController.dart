@@ -12,14 +12,6 @@ class MessagesController extends GetxController {
   TextEditingController searchController = TextEditingController();
   StreamController peopleMessagedController = StreamController();
 
-  @override
-  void onInit() {
-    super.onInit();
-    // getData();
-    // Timer.periodic(Duration(seconds: 2), (timer) {
-    //   getData();
-    // });
-  }
 
   getData() async {
     var url = Uri.parse(peopleMessaged);

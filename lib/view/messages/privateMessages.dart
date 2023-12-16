@@ -1,10 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/messages/privateMessagesController.dart';
@@ -12,7 +8,7 @@ import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/controllers/userData/variables.dart';
 
 class PrivateMessage extends StatelessWidget {
-  const PrivateMessage({Key key}) : super(key: key);
+  const PrivateMessage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +21,8 @@ class PrivateMessage extends StatelessWidget {
             // LinearGradient
             gradient: LinearGradient(
               colors: [
-                const Color(0xFFF792F0),
-                const Color(0xFFFABD63),
+                Color(0xFFF792F0),
+                Color(0xFFFABD63),
               ],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,

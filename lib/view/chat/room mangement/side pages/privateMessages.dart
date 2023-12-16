@@ -1,15 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:lametna/controllers/chat/room%20managment/roomSettingsController.dart';
 import 'package:lametna/view/chat/appBar.dart';
 import 'package:get/get.dart';
 
 class PrivateMessages extends StatelessWidget {
-  const PrivateMessages({Key key}) : super(key: key);
+  const PrivateMessages({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +25,7 @@ class PrivateMessages extends StatelessWidget {
                 value: "all",
                 groupValue: controller.privateMessageStatus,
                 onChanged: (value) {
-                  controller.changePrivateMessagesRadio(value);
+                  controller.changePrivateMessagesRadio(value!);
                   // setState(() {});
                 },
               ),
@@ -40,7 +37,7 @@ class PrivateMessages extends StatelessWidget {
                 value: "membersAndAdmins",
                 groupValue: controller.privateMessageStatus,
                 onChanged: (value) {
-                  controller.changePrivateMessagesRadio(value);
+                  controller.changePrivateMessagesRadio(value!);
                   // setState(() {});
                 },
               ),
@@ -52,7 +49,7 @@ class PrivateMessages extends StatelessWidget {
                 value: "adminsOnly",
                 groupValue: controller.privateMessageStatus,
                 onChanged: (value) {
-                  controller.changePrivateMessagesRadio(value);
+                  controller.changePrivateMessagesRadio(value!);
                   // setState(() {});
                 },
               ),
@@ -65,7 +62,7 @@ class PrivateMessages extends StatelessWidget {
                 groupValue: controller.privateMessageStatus,
                 onChanged: (value) {
                   // setState(() {});
-                  controller.changePrivateMessagesRadio(value);
+                  controller.changePrivateMessagesRadio(value!);
                 },
               ),
             ],

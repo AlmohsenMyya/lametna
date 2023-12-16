@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:lametna/view/chat/moments/moments.dart';
 import 'package:lametna/view/chatHomePage.dart';
 import 'package:lametna/view/messages/messages.dart';
+import '../view/chat/moments/moments.dart';
 import 'userData/userCredentials.dart';
 import 'package:lametna/view/store/test.dart';
 import 'package:get/get.dart';
@@ -23,11 +23,11 @@ class BottomNavitionBarController extends GetxController {
   }
 
   List<Widget> pages = <Widget>[
-    ChatHomePage(),
-    // Moments(appBar: 1),
+    const ChatHomePage(),
+    Moments(appBar: 1),
     // Get.toNamed()
-    Container(),
-    isGuest == false && isRole == false ? Messages() : null,
+    // Container(),
+    if(isGuest == false && isRole == false)  Messages() ,
     test(),
     // Container()
   ];

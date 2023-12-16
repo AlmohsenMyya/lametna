@@ -1,15 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:lametna/controllers/chat/room%20managment/roomSettingsController.dart';
 import 'package:lametna/view/chat/appBar.dart';
 import 'package:get/get.dart';
 
 class CameraSettings extends StatelessWidget {
-  const CameraSettings({Key key}) : super(key: key);
+  const CameraSettings({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +25,7 @@ class CameraSettings extends StatelessWidget {
                 value: "all",
                 groupValue: controller.cameraRadio,
                 onChanged: (value) {
-                  controller.changeCameraRadio(value);
+                  controller.changeCameraRadio(value!);
                   // setState(() {});
                 },
               ),
@@ -40,7 +37,7 @@ class CameraSettings extends StatelessWidget {
                 value: "membersAndAdmins",
                 groupValue: controller.cameraRadio,
                 onChanged: (value) {
-                  controller.changeCameraRadio(value);
+                  controller.changeCameraRadio(value!);
                   // setState(() {});
                 },
               ),
@@ -52,7 +49,7 @@ class CameraSettings extends StatelessWidget {
                 value: "adminsOnly",
                 groupValue: controller.cameraRadio,
                 onChanged: (value) {
-                  controller.changeCameraRadio(value);
+                  controller.changeCameraRadio(value!);
                   // setState(() {});
                 },
               ),
@@ -65,7 +62,7 @@ class CameraSettings extends StatelessWidget {
                 groupValue: controller.cameraRadio,
                 onChanged: (value) {
                   // setState(() {});
-                  controller.changeCameraRadio(value);
+                  controller.changeCameraRadio(value!);
                 },
               ),
             ],

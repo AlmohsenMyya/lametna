@@ -34,7 +34,7 @@ var color;
 // ];
 
 class AddAccount extends StatelessWidget {
-  const AddAccount({Key key}) : super(key: key);
+  const AddAccount({Key ?key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

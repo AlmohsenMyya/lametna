@@ -1,15 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/chat/roomPageSettingsController.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:lametna/controllers/chat/roomsPageController.dart';
 import 'package:lametna/view/chat/appBar.dart';
 
 class RoomSettingsPage extends StatelessWidget {
+  const RoomSettingsPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

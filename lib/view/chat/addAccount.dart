@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 var user = ["الكل","ماستر", "سوبر ادمن", "ادمن", "مستخدم"];
 class AddAccount extends StatelessWidget {
-  const AddAccount({Key key}) : super(key: key);
+  const AddAccount({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class AddAccount extends StatelessWidget {
                    //height: 27.h,
                     padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 4.h),
                     decoration: BoxDecoration(
-                      color: Color(0xff6BE05B),
+                      color: const Color(0xff6BE05B),
                       borderRadius: BorderRadius.circular(25.r),
                     ),
                       child: GestureDetector(
@@ -79,7 +79,7 @@ class AddAccount extends StatelessWidget {
                         decoration: //controller.selectedIndex == index
                             BoxDecoration(
                           border: Border.all(
-                            color: Color(0xffFABD63),
+                            color: const Color(0xffFABD63),
                             style: BorderStyle.solid,
                             width: 1.0.w,
                           ),
@@ -91,7 +91,7 @@ class AddAccount extends StatelessWidget {
                           user[index],
                           style:
                                TextStyle(
-                            color: Color(0xffFABD63),
+                            color: const Color(0xffFABD63),
                             fontWeight: FontWeight.bold,
                             fontFamily: "Segoe UI",
                             fontSize: 10.sp,
@@ -108,7 +108,7 @@ class AddAccount extends StatelessWidget {
         ),
             Padding(
               padding: EdgeInsets.only(right: 25.0.w,left: 25.0.w),
-              child: Divider(
+              child: const Divider(
                 color: Color(0xFFE7E7E7),
                 thickness: 4,
               ),
@@ -120,19 +120,19 @@ class AddAccount extends StatelessWidget {
               title: Text('Watan',textDirection: TextDirection.rtl,
                 style:
                 TextStyle(
-                color: Color(0xffFF0000),
+                color: const Color(0xffFF0000),
                 fontFamily: "Segoe UI",
                 fontSize: 15.sp,
               )),
               trailing: Icon(
                 Icons.person,
-                color: Color(0xffFF0000),
+                color: const Color(0xffFF0000),
                 size: 18.sp,
               ),
             ),
             Padding(
               padding: EdgeInsets.only(right: 25.0.w,left: 25.0.w),
-              child: Divider(
+              child: const Divider(
                 color: Color(0xFF43d0ca),
                 thickness: 1,
               ),
@@ -140,19 +140,19 @@ class AddAccount extends StatelessWidget {
             ListTile(
               title: Text('Watan',textDirection: TextDirection.rtl, style:
               TextStyle(
-                color: Color(0xffFF0000),
+                color: const Color(0xffFF0000),
                 fontFamily: "Segoe UI",
                 fontSize: 15.sp,
               )),
               trailing: Icon(
                 Icons.person,
-                color: Color(0xffFF0000),
+                color: const Color(0xffFF0000),
                 size: 18.sp,
               ),
             ),
             Padding(
               padding:  EdgeInsets.only(right: 25.0.w,left: 25.0.w),
-              child: Divider(
+              child: const Divider(
                 color: Color(0xFF43D0CA),
                 thickness: 1,
               ),
@@ -160,19 +160,19 @@ class AddAccount extends StatelessWidget {
             ListTile(
               title: Text('Watan',textDirection: TextDirection.rtl,style:
               TextStyle(
-                color: Color(0xffFF0000),
+                color: const Color(0xffFF0000),
                 fontFamily: "Segoe UI",
                 fontSize: 15.sp,
               )),
               trailing: Icon(
                 Icons.person,
-                color: Color(0xffFF0000),
+                color: const Color(0xffFF0000),
                 size: 18.sp,
               ),
             ),
             Padding(
               padding:  EdgeInsets.only(right: 25.0.w,left: 25.0.w),
-              child: Divider(
+              child: const Divider(
                 color: Color(0xFF43D0CA),
                 thickness: 1,
               ),

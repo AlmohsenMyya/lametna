@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ChangePasswordRoom extends StatelessWidget {
-  const ChangePasswordRoom({Key key}) : super(key: key);
+  const ChangePasswordRoom({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +56,13 @@ class ChangePasswordRoom extends StatelessWidget {
                               init: MainControllerPanelController(),
                               builder: (controller) {
                                 return TextFormField(
-                                  style: new TextStyle(
+                                  style: TextStyle(
                                       fontSize: 16.0.sp, color: Colors.black),
                                   obscureText: !controller.passwordVisibility,
                                   decoration: InputDecoration(
                                     filled: true,
                                     hintStyle: TextStyle(
-                                      color: Color(0xffE9E9E9),
+                                      color: const Color(0xffE9E9E9),
                                       fontSize: 16.sp,
                                       fontFamily: "Portada",
                                     ),
@@ -96,7 +96,7 @@ class ChangePasswordRoom extends StatelessWidget {
                   height: 53.h,
                   width: 360.w,
                   decoration: BoxDecoration(
-                    color: Color(0xffFABD63),
+                    color: const Color(0xffFABD63),
                     borderRadius: BorderRadius.all(
                       Radius.circular(10.sp),
                     ),

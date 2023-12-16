@@ -10,7 +10,7 @@ import 'package:lametna/view/chat/room%20mangement/block/countries.dart';
 var color = Get.arguments["color"];
 
 class Blocked extends StatelessWidget {
-  const Blocked({Key key}) : super(key: key);
+  const Blocked({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +140,7 @@ class Blocked extends StatelessWidget {
                           );
                         }
                         return ListView.separated(
-                          itemCount: snapshot.data.length,
+                          itemCount: (((snapshot.data as List) ?? [])).length,
                           separatorBuilder: (context, index) => Divider(
                             height: (0.5).h,
                             color: Colors.black,
@@ -159,7 +159,7 @@ class Blocked extends StatelessWidget {
                                 // padding: EdgeInsets.all(0),
                                 onTap: () {
                                   // Get.back();
-                                  controller.removeBan(snapshot.data[index]["username"].toString());
+                                  controller.removeBan(((snapshot.data as List))[index]["username"].toString());
                                 },
                                 child: Align(
                                   alignment: Alignment.centerRight,
@@ -197,7 +197,7 @@ class Blocked extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    snapshot.data[index]["username"].toString(),
+                                    ((snapshot.data as List))[index]["username"].toString(),
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 16.sp,
@@ -223,7 +223,7 @@ class Blocked extends StatelessWidget {
                                             ),
                                             Text(
                                               // Get.arguments.toString(),
-                                              snapshot.data[index]["country"].toString(),
+                                              ((snapshot.data as List))[index]["country"].toString(),
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 16.sp,
@@ -244,7 +244,7 @@ class Blocked extends StatelessWidget {
                                             width: 3.w,
                                           ),
                                           Text(
-                                            snapshot.data[index]["macAddress"].toString(),
+                                            ((snapshot.data as List))[index]["macAddress"].toString(),
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16.sp,
@@ -273,7 +273,7 @@ class Blocked extends StatelessWidget {
                                               width: 3.w,
                                             ),
                                             Text(
-                                              snapshot.data[index]["userBan"].toString(),
+                                              ((snapshot.data as List))[index]["userBan"].toString(),
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 16.sp,
@@ -297,7 +297,7 @@ class Blocked extends StatelessWidget {
                                             width: 3.w,
                                           ),
                                           Text(
-                                            snapshot.data[index]["banType"].toString(),
+                                            ((snapshot.data as List))[index]["banType"].toString(),
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16.sp,
@@ -322,7 +322,7 @@ class Blocked extends StatelessWidget {
                                         width: 3.w,
                                       ),
                                       Text(
-                                        snapshot.data[index]["endTime"].toString(),
+                                        ((snapshot.data as List))[index]["endTime"].toString(),
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16.sp,
@@ -347,7 +347,7 @@ class Blocked extends StatelessWidget {
                           );
                         }
                         return ListView.separated(
-                          itemCount: snapshot.data.length,
+                          itemCount: ((snapshot.data as List)).length,
                           separatorBuilder: (context, index) => Divider(
                             height: (0.5).h,
                             color: Colors.black,
@@ -366,7 +366,7 @@ class Blocked extends StatelessWidget {
                                 // padding: EdgeInsets.all(0),
                                 onTap: () {
                                   // Get.back();
-                                  controller.removeBan(snapshot.data[index]["username"].toString());
+                                  controller.removeBan(((snapshot.data as List))[index]["username"].toString());
                                 },
                                 child: Align(
                                   alignment: Alignment.centerRight,
@@ -404,7 +404,7 @@ class Blocked extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    snapshot.data[index]["username"].toString(),
+                                    ((snapshot.data as List))[index]["username"].toString(),
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 16.sp,
@@ -430,7 +430,7 @@ class Blocked extends StatelessWidget {
                                             ),
                                             Text(
                                               // Get.arguments.toString(),
-                                              snapshot.data[index]["country"].toString(),
+                                              ((snapshot.data as List))[index]["country"].toString(),
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 16.sp,
@@ -451,7 +451,7 @@ class Blocked extends StatelessWidget {
                                             width: 3.w,
                                           ),
                                           Text(
-                                            snapshot.data[index]["macAddress"].toString(),
+                                            ((snapshot.data as List))[index]["macAddress"].toString(),
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16.sp,
@@ -480,7 +480,7 @@ class Blocked extends StatelessWidget {
                                               width: 3.w,
                                             ),
                                             Text(
-                                              snapshot.data[index]["userBan"].toString(),
+                                              (snapshot.data as List)[index]["userBan"].toString(),
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 16.sp,
@@ -504,7 +504,7 @@ class Blocked extends StatelessWidget {
                                             width: 3.w,
                                           ),
                                           Text(
-                                            snapshot.data[index]["banType"].toString(),
+                                            (snapshot.data as List)[index]["banType"].toString(),
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16.sp,
@@ -529,7 +529,7 @@ class Blocked extends StatelessWidget {
                                         width: 3.w,
                                       ),
                                       Text(
-                                        snapshot.data[index]["endTime"].toString(),
+                                        (snapshot.data as List)[index]["endTime"].toString(),
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16.sp,
@@ -557,7 +557,7 @@ class Blocked extends StatelessWidget {
                               child: FutureBuilder(
                                 future: controller.getBannedCountry(),
                                 builder: (context, snapshot) => ListView.separated(
-                                  itemCount: snapshot.data.length,
+                                  itemCount: (snapshot.data as List).length,
                                   separatorBuilder: (context, index) => Divider(
                                     color: Colors.grey.withOpacity(0.8),
                                     height: 1,
@@ -567,7 +567,7 @@ class Blocked extends StatelessWidget {
                                     child: Row(
                                       children: [
                                         Image.network(
-                                          'https://flagsapi.com/${snapshot.data[index]["countryCode"]}/flat/64.png',
+                                          'https://flagsapi.com/${(snapshot.data as List)[index]["countryCode"]}/flat/64.png',
                                           width: 30.sp,
                                           height: 30.sp,
                                           errorBuilder: (context, error, stackTrace) => Icon(
@@ -577,7 +577,7 @@ class Blocked extends StatelessWidget {
                                         ),
                                         SizedBox(width: 10.w),
                                         Text(
-                                          snapshot.data[index]["countryAr"].toString(),
+                                          (snapshot.data as List)[index]["countryAr"].toString(),
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 16.sp,
@@ -587,7 +587,7 @@ class Blocked extends StatelessWidget {
                                         Spacer(),
                                         GestureDetector(
                                           onTap: () {
-                                            controller.deleteBannedCountry(snapshot.data[index]["id"].toString());
+                                            controller.deleteBannedCountry((snapshot.data as List)[index]["id"].toString());
                                           },
                                           child: Icon(Icons.delete, color: Colors.red, size: 30.sp),
                                         ),
@@ -633,7 +633,7 @@ class Blocked extends StatelessWidget {
 chooseCountry(BlockController controller) {
   return showModalBottomSheet(
     isScrollControlled: true,
-    context: Get.context,
+    context: Get.context!,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(20.r),
@@ -741,9 +741,9 @@ chooseCountry(BlockController controller) {
                   onTap: () {
                     print(countriesData[index]["nameAr"]);
                     controller.countryBan(
-                        countryAr: countriesData[index]["nameAr"],
-                        countryEn: countriesData[index]["name"],
-                        countryCode: countriesData[index]["code"]);
+                        countryAr: countriesData[index]["nameAr"] as String,
+                        countryEn: countriesData[index]["name"] as String,
+                        countryCode: countriesData[index]["code"] as String);
                   },
                   child: Directionality(
                     textDirection: TextDirection.rtl,
@@ -764,7 +764,7 @@ chooseCountry(BlockController controller) {
                           ),
                           SizedBox(width: 10.w),
                           Text(
-                            countriesData[index]["nameAr"],
+                            countriesData[index]["nameAr"]!,
                             style: TextStyle(color: Colors.black, fontSize: 16.sp, fontWeight: FontWeight.bold),
                           ),
                         ],

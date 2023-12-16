@@ -6,6 +6,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:lametna/controllers/Crud.dart';
@@ -20,7 +21,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 // import 'package:get_mac_address/get_mac_address.dart';
 // import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:geocoder/geocoder.dart';
+// import 'package:geocoder/geocoder.dart';
 
 // import 'package:mac_address/mac_address.dart';
 
@@ -42,8 +43,8 @@ class ChatHomeController extends GetxController {
   int roomNumber = 0;
   int numberOfConnections = 0;
   List banedUsers = [];
-  String _platformVersion = 'Unknown';
-  Timer timer;
+  final String _platformVersion = 'Unknown';
+  Timer ?timer;
 
   List countries = [
     "algeria",
@@ -177,12 +178,12 @@ class ChatHomeController extends GetxController {
     }
   }
 
-  loginRoleAccount({String roomId, String roomName, String welcomeText}) async {
+  loginRoleAccount({required String roomId, required String roomName, required String welcomeText}) async {
     print("role");
-    FocusScope.of(Get.context).unfocus();
+    FocusScope.of(Get.context!).unfocus();
     Get.back();
     showDialog(
-      context: Get.context,
+      context: Get.context!,
       builder: (context) => AlertDialog(
         content: SingleChildScrollView(
           child: Column(
@@ -209,12 +210,13 @@ class ChatHomeController extends GetxController {
     // determinePosition();
 
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-    final coordinates = new Coordinates(position.latitude, position.longitude);
-    var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    var first = addresses.first;
-    String country = first.countryName;
+List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+Placemark addresses = placemarks[0];
 
-    String id = await getId();
+    
+    String country = addresses.country!;
+
+    String? id = await getId();
     var ip = IpAddress(type: RequestType.json);
     dynamic ipAddress = await ip.getIpAddress();
 
@@ -298,7 +300,7 @@ class ChatHomeController extends GetxController {
           },
         );
         // } else if (isGuest) {
-        //   showAlert(Get.context, roomId: roomId, roomName: roomName, welcomeText: welcomeText);
+        //   showAlert(Get.context!, roomId: roomId, roomName: roomName, welcomeText: welcomeText);
         // }
       } else if (databody["status"] == "success") {
       } else {
@@ -369,12 +371,12 @@ class ChatHomeController extends GetxController {
     return await Geolocator.getCurrentPosition();
   }
 
-  Future<void> checkIfBanned({String roomId, String username}) async {
+  Future<void> checkIfBanned({required String roomId, required String username}) async {
     // viewBannedUsers
     // alertMessage("message");
     // return
     showDialog(
-      context: Get.context,
+      context: Get.context!,
       builder: (context) => AlertDialog(
         content: SingleChildScrollView(
           child: Column(
@@ -401,13 +403,14 @@ class ChatHomeController extends GetxController {
     var device = DeviceInfoPlugin();
 
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-    final coordinates = new Coordinates(position.latitude, position.longitude);
-    var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    var first = addresses.first;
-    String id = await getId();
+List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+  Placemark addresses = placemarks[0];
+
+    
+    String? id = await getId();
     var ip = IpAddress(type: RequestType.json);
     dynamic ipAddress = await ip.getIpAddress();
-    String country = first.countryName;
+    String country = addresses.country!;
 
     // getCurrentPosition();
 
@@ -476,7 +479,7 @@ class ChatHomeController extends GetxController {
       } else if (data["status"] == "closed") {
         Get.back();
         showDialog(
-          context: Get.context,
+          context: Get.context!,
           builder: (context) {
             timer = Timer.periodic(Duration(seconds: 2), (timer) {
               checkIfAccept(username: username);
@@ -505,7 +508,7 @@ class ChatHomeController extends GetxController {
           },
         ).then((value) {
           deleteFromRoomLock();
-          timer.cancel();
+          timer!.cancel();
 
           // return ;
         });
@@ -514,14 +517,14 @@ class ChatHomeController extends GetxController {
         // timer.cancel();
 
         alertMessage(data["message"]);
-        timer.cancel();
+        timer!.cancel();
       }
     } else {
       Get.back();
     }
   }
 
-  checkIfAccept({String username}) async {
+  checkIfAccept({required String username}) async {
     // https://lametnachat.com/rooms/checkEnteringRoom.php
     var url = Uri.parse(checkEnteringRoom);
     var response = await http.post(
@@ -534,7 +537,7 @@ class ChatHomeController extends GetxController {
     print(databody);
     if (databody["status"] == "success") {
       Get.back();
-      timer.cancel();
+      timer!.cancel();
       Get.toNamed(
         '/room',
         arguments: {
@@ -542,10 +545,10 @@ class ChatHomeController extends GetxController {
           "username": username,
         },
       );
-      timer.cancel();
+      timer!.cancel();
     } else if (databody["status"] == "fail") {
       Get.back();
-      timer.cancel();
+      timer!.cancel();
       alertMessage(databody["message"]);
     }
     print("----------");
@@ -566,10 +569,10 @@ class ChatHomeController extends GetxController {
   }
 
   loginAsGuest(
-      {String welcomeText,
-      String roomName,
+      {required String welcomeText,
+      required String roomName,
       // String owner,
-      String roomId}) async {
+      required String roomId}) async {
     print("guest-${guestController.text.trim()}");
 
     if (guestController.text.isEmpty) {
@@ -617,7 +620,7 @@ class ChatHomeController extends GetxController {
       if (data["status"] == "success") {
         Get.back();
 
-        userName = "${guestController.text.trim()}";
+        userName = guestController.text.trim();
         isRole = false;
         isGuest = true;
         guestController.text = "";
@@ -677,7 +680,7 @@ class ChatHomeController extends GetxController {
   }
 }
 
-Future<String> getId() async {
+Future<String?> getId() async {
   var deviceInfo = DeviceInfoPlugin();
   if (Platform.isIOS) {
     // import 'dart:io'
@@ -687,11 +690,12 @@ Future<String> getId() async {
     var androidDeviceInfo = await deviceInfo.androidInfo;
     return androidDeviceInfo.id; // unique ID on Android
   }
+  return null;
 }
 
 alertMessage(String message) {
   return showDialog(
-    context: Get.context,
+    context: Get.context!,
     builder: (context) => AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.r),

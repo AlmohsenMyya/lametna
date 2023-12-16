@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lametna/controllers/control%20panel/controllerPanelController.dart';
 import 'package:lametna/view/chat/appBar.dart';
@@ -7,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AddRoot extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+
+  AddRoot({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,12 +35,12 @@ class AddRoot extends StatelessWidget {
                             color: Colors.black),
                       ),
                       TextFormField(
-                        style: new TextStyle(
+                        style: TextStyle(
                             fontSize: 16.0.sp, color: Colors.black),
                         decoration: InputDecoration(
                           filled: true,
                           hintStyle: TextStyle(
-                            color: Color(0xffE9E9E9),
+                            color: const Color(0xffE9E9E9),
                             fontSize: 16.sp,
                             fontFamily: "Portada",
                           ),
@@ -47,11 +48,11 @@ class AddRoot extends StatelessWidget {
                               vertical: 10.0.h, horizontal: 10.0.w),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: Color(0xFF7BB39D), width: 1.0.w),
+                                color: const Color(0xFF7BB39D), width: 1.0.w),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: Color(0xFF7BB39D), width: 1.0.w),
+                                color: const Color(0xFF7BB39D), width: 1.0.w),
                           ),
                         ),
                       ),
@@ -67,13 +68,13 @@ class AddRoot extends StatelessWidget {
                           init: MainControllerPanelController(),
                           builder: (controller) {
                             return TextFormField(
-                              style: new TextStyle(
+                              style: TextStyle(
                                   fontSize: 16.0.sp, color: Colors.black),
                               obscureText: !controller.passwordVisibility,
                               decoration: InputDecoration(
                                 filled: true,
                                 hintStyle: TextStyle(
-                                  color: Color(0xffE9E9E9),
+                                  color: const Color(0xffE9E9E9),
                                   fontSize: 16.sp,
                                   fontFamily: "Portada",
                                 ),
@@ -91,11 +92,11 @@ class AddRoot extends StatelessWidget {
                                     vertical: 5.0.h, horizontal: 15.0.w),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Color(0xFF7BB39D), width: 1.0.w),
+                                      color: const Color(0xFF7BB39D), width: 1.0.w),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Color(0xff7bb39d), width: 1.0.w),
+                                      color: const Color(0xff7bb39d), width: 1.0.w),
                                 ),
                               ),
                             );
@@ -111,7 +112,7 @@ class AddRoot extends StatelessWidget {
               height: 53.h,
               width: 360.w,
               decoration: BoxDecoration(
-                color: Color(0xffFABD63),
+                color: const Color(0xffFABD63),
                 borderRadius: BorderRadius.all(
                   Radius.circular(10.sp),
                 ),

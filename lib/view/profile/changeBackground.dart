@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lametna/controllers/profile/changeBackgroundController.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
@@ -8,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChangeBackground extends StatelessWidget {
-  const ChangeBackground({Key key}) : super(key: key);
+  const ChangeBackground({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,18 +37,18 @@ class ChangeBackground extends StatelessWidget {
               init: ChangeBackgroundController(),
               builder: (controller) => FutureBuilder(
                   future: controller.getData(),
-                  builder: (context, snapshot) => snapshot.data == null
-                      ? Center(
+                  builder: (context, snapshot) => (snapshot.data as Map) == null
+                      ? const Center(
                           child: CircularProgressIndicator(),
                         )
                       : ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: 20,
                           itemBuilder: (context, index) => GestureDetector(
                                 onTap: () {
                                   controller.changeUserBackground(
-                                      snapshot.data["data"][index]["name"]);
+                                      (snapshot.data as Map)["data"][index]["name"]);
                                   // Get.back();
                                 },
                                 child: Container(
@@ -59,7 +58,7 @@ class ChangeBackground extends StatelessWidget {
                                     image: DecorationImage(
                                       image: NetworkImage(
                                         backgroundImagesURL +
-                                            snapshot.data["data"][index]
+                                            (snapshot.data as Map)["data"][index]
                                                 ["name"],
                                       ),
                                       fit: BoxFit.cover,
@@ -89,16 +88,16 @@ class ChangeBackground extends StatelessWidget {
                               )
                           // Image.network(
                           //     backgroundImagesURL +
-                          //         snapshot.data["data"][index]["name"]),
+                          //         (snapshot.data as Map)["data"][index]["name"]),
                           )
 
                   // Text(
-                  //   snapshot.data["data"][0]["name"].toString(),
+                  //   (snapshot.data as Map)["data"][0]["name"].toString(),
                   //   style: TextStyle(color: Colors.black),
                   // ),
                   //  Image.network(
                   //     backgroundImagesURL +
-                  //         snapshot.data["data"][index]["name"]),
+                  //         (snapshot.data as Map)["data"][index]["name"]),
                   // ),
                   ),
             )
@@ -122,11 +121,11 @@ Widget StyleContainer() {
           BoxShadow(
             color: Colors.grey.withOpacity(0.4),
             blurRadius: 6,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
         // color: Color(0xFFE1E1E1),
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
@@ -151,7 +150,7 @@ Widget StyleContainer() {
               size: 30.sp,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Text(
@@ -163,7 +162,7 @@ Widget StyleContainer() {
               fontWeight: FontWeight.bold,
             ),
           ),
-          Spacer(),
+          const Spacer(),
           Padding(
             padding: EdgeInsets.only(bottom: 10.0.h, left: 20.w),
             child: Image.asset(

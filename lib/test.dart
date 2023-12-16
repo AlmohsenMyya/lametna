@@ -305,12 +305,11 @@
 
 
 
-import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 class Video extends StatefulWidget {
-  const Video({Key key}) : super(key: key);
+  const Video({required Key key}) : super(key: key);
 
   @override
   State<Video> createState() => _VideoState();

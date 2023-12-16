@@ -22,7 +22,7 @@ class ControlPanelController extends GetxController {
     // if (index != 1) {
     //   roomController.jumpToPage(0);
     // }
-    FocusScope.of(Get.context).unfocus();
+    FocusScope.of(Get.context!).unfocus();
     update();
   }
 
@@ -54,12 +54,12 @@ class ControlPanelController extends GetxController {
         roomCodeController.clear();
         // Get.snackbar("تم", "تم تغيير كلمة المرور بنجاح", backgroundColor: Colors.green, colorText: Colors.white);
         showDialog(
-            context: Get.context,
+            context: Get.context!,
             builder: (context) {
-              Future.delayed(Duration(seconds: 3), () {
+              Future.delayed(const Duration(seconds: 3), () {
                 Navigator.of(context).pop(true);
               });
-              return AlertDialog(
+              return const AlertDialog(
                 title: Text('Title'),
               );
             });

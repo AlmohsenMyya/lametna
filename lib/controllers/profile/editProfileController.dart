@@ -54,7 +54,7 @@ class EditProfileController extends GetxController {
     }
   }
 
-  Future<File> getImageFromGallery() async {
+  Future<File?> getImageFromGallery() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -73,11 +73,6 @@ class EditProfileController extends GetxController {
     // await pickImage();
     final image = await getImageFromGallery();
 
-    if (image == null) {
-      // No image selected
-      return;
-    }
-
     // Create a multipart request
     var request = http.MultipartRequest('POST', Uri.parse(updateUserImage));
 
@@ -88,8 +83,8 @@ class EditProfileController extends GetxController {
     request.files.add(
       await http.MultipartFile.fromPath(
         'image',
-        image.path,
-        filename: "${userName}.jpeg".toString(),
+        image!.path,
+        filename: "$userName.jpeg".toString(),
       ),
     );
 
@@ -120,11 +115,11 @@ class EditProfileController extends GetxController {
       //  var response = await http.post(url,)
       if (newPasswordController.text.trim() ==
           confirmPasswordController.text.trim()) {
-        var response = await http.post(url, body: {
-          "userid": userId,
-          "password": passwordController.text.trim(),
-          "newPassword": newPasswordController.text.trim(),
-        });
+        // var response = await http.post(url, body: {
+        //   "userid": userId,
+        //   "password": passwordController.text.trim(),
+        //   "newPassword": newPasswordController.text.trim(),
+        // });
       } else {
         Get.snackbar(
           "",

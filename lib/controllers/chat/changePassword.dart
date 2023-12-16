@@ -3,17 +3,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:lametna/view/chat/appBar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:lametna/view/chat/room%20mangement/accountMangement.dart';
 
 class ChangePassword extends StatefulWidget {
-  const ChangePassword({Key key}) : super(key: key);
+  const ChangePassword({Key ?key}) : super(key: key);
 
   @override
   State<ChangePassword> createState() => _ChangePasswordState();
@@ -208,7 +204,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   //button
                   Align(
                     alignment: Alignment.centerRight,
-                    child: Container(
+                    child: SizedBox(
                       width: 170.w,
                       height: 45.h,
                       child: ElevatedButton(
@@ -226,7 +222,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         ),
                         style: ElevatedButton.styleFrom(
                           // primary: Color(int.parse(Get.arguments["color"].substring(1, 7), radix: 16) + 0xFF000000),
-                          primary: Colors.grey,
+                          backgroundColor: Colors.grey,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.r),
                           ),
@@ -258,7 +254,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
+                SizedBox(
                   width: 140.w,
                   height: 45.h,
                   child: ElevatedButton(
@@ -274,14 +270,14 @@ class _ChangePasswordState extends State<ChangePassword> {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.red[300],
+                      backgroundColor: Colors.red[300],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.r),
                       ),
                     ),
                   ),
                 ),
-                Container(
+                SizedBox(
                   width: 140.w,
                   height: 45.h,
                   child: ElevatedButton(
@@ -297,7 +293,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Color(int.parse(Get.arguments["color"].substring(1, 7), radix: 16) + 0xFF000000),
+                      backgroundColor: Color(int.parse(Get.arguments["color"].substring(1, 7), radix: 16) + 0xFF000000),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.r),
                       ),

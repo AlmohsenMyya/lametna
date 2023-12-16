@@ -13,7 +13,7 @@ class BlockController extends GetxController {
 
   var data;
   int currentIndex = 1;
-  String roomId;
+  String? roomId;
 
   PageController pageController = PageController();
   var searchController = TextEditingController();
@@ -43,7 +43,7 @@ class BlockController extends GetxController {
 
   changeIndex(int index) {
     currentIndex = index;
-    pageController.animateToPage(index - 1, duration: Duration(milliseconds: 500), curve: Curves.ease);
+    pageController.animateToPage(index - 1, duration: const Duration(milliseconds: 500), curve: Curves.ease);
     update();
   }
 
@@ -84,7 +84,7 @@ class BlockController extends GetxController {
     return dataBody["data"];
   }
 
-  countryBan({String countryEn, String countryAr, String countryCode}) async {
+  countryBan({required String countryEn, required String countryAr, required String countryCode}) async {
     var req = await http.post(Uri.parse(banCountry), body: {
       "roomId": roomId,
       "countryEn": countryEn,

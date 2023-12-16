@@ -3,7 +3,7 @@ import 'package:lametna/view/chat/appBar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 class MessagesRoom extends StatelessWidget {
-  const MessagesRoom({Key key}) : super(key: key);
+  const MessagesRoom({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +22,13 @@ class MessagesRoom extends StatelessWidget {
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10.r),
-              border: Border.all(color: Color(0xFF43D0CA)),
+              border: Border.all(color: const Color(0xFF43D0CA)),
               boxShadow: [
                 BoxShadow(
-                  color: Color(0xFF00000029).withOpacity(0.1),
+                  color: const Color(0xff00000029).withOpacity(0.1),
                   spreadRadius: 0.5,
                   blurRadius: 7,
-                  offset: Offset(0, 3),
+                  offset: const Offset(0, 3),
                   // changes position of shadow
                 ),
               ]),
@@ -53,7 +53,7 @@ class MessagesRoom extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(360.0.r)),
                               border: Border.all(
-                                color: Color(0xff707070),
+                                color: const Color(0xff707070),
                                 width: 1,
                               ),
                             ),
@@ -93,7 +93,7 @@ class MessagesRoom extends StatelessWidget {
                               lastMessage,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xff707070),
+                                color: const Color(0xff707070),
                                 fontSize: 11.sp,
                                 fontFamily: "Portada",
                               ),

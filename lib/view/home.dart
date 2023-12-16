@@ -1,9 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/bottomNavitionBar.dart';
@@ -12,7 +9,7 @@ import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/view/side%20pages/drawer.dart';
 
 class Home extends StatelessWidget {
-  Home({Key key}) : super(key: key);
+  Home({ Key? key}) : super(key: key);
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -311,7 +308,7 @@ class Home extends StatelessWidget {
                   onPressed: () {
                     print("object");
                     // Scaffold.of(context).openDrawer();
-                    _scaffoldKey.currentState.openEndDrawer();
+                    _scaffoldKey.currentState?.openEndDrawer();
                   },
                   icon: Icon(Icons.menu)),
             ],

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lametna/controllers/chat/roomPageSettingsController.dart';
 import 'package:lametna/view/chat/appBar.dart';
@@ -6,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class CloseRoom extends StatelessWidget {
-  const CloseRoom({Key key}) : super(key: key);
+  const CloseRoom({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,7 @@ class CloseRoom extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Divider(
+            const Divider(
               color: Color(0xff43D0CA),
               thickness: 1,
             ),
@@ -67,7 +66,7 @@ class CloseRoom extends StatelessWidget {
                       EdgeInsets.symmetric(horizontal: 18.w, vertical: 1.h),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Color(0xFFFABD63),
+                      color: const Color(0xFFFABD63),
                       style: BorderStyle.solid,
                       width: 1.0.w,
                     ),
@@ -88,7 +87,7 @@ class CloseRoom extends StatelessWidget {
               ],
             ),
             SizedBox(height: 12.h),
-            Divider(
+            const Divider(
               color: Color(0xff43D0CA),
               thickness: 1,
             ),

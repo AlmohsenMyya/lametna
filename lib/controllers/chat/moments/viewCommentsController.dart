@@ -73,7 +73,7 @@ class ViewCommentsController extends GetxController {
                 Radius.circular(10.r),
               ),
               // LinearGradient
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 colors: [
                   Color(0xFFF792F0),
                   Color(0xFFFABD63),
@@ -137,7 +137,7 @@ class ViewCommentsController extends GetxController {
                 Radius.circular(10.r),
               ),
               // LinearGradient
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 colors: [
                   Color(0xFFF792F0),
                   Color(0xFFFABD63),

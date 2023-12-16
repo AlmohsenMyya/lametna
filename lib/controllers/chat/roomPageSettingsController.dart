@@ -18,6 +18,7 @@ class RoomsSettingPageController extends GetxController {
   bool isBold = false;
   bool isItalic = false;
 
+  @override
   onInit() {
     super.onInit();
     getSettings();

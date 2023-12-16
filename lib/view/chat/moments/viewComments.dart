@@ -2,17 +2,13 @@
 
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:lametna/controllers/chat/moments/viewCommentsController.dart';
 import 'package:lametna/controllers/userData/variables.dart';
-import 'package:lametna/view/chat/appBar.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ViewComments extends StatelessWidget {
-  const ViewComments({Key key}) : super(key: key);
+  const ViewComments({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

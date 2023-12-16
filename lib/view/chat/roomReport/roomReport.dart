@@ -2,9 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:lametna/controllers/chat/roomReportController.dart';
 import 'package:lametna/view/chat/appBar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:lametna/view/chat/moments/viewComments.dart';
 
 class RoomReport extends StatelessWidget {
-  const RoomReport({Key key}) : super(key: key);
+  const RoomReport({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -76,15 +73,6 @@ class RoomReport extends StatelessWidget {
                   return FutureBuilder(
                     future: controller.getReport(),
                     builder: (context, snapshot) {
-                      if (snapshot.data == null) {
-                        return Container(
-                          height: Get.height - 100.h,
-                          color: Color(int.parse(Get.arguments["color"].substring(1, 7), radix: 16) + 0xFF000000).withOpacity(0.2),
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
                       return controller.isSearching == true
                           ? ListView.separated(
                               shrinkWrap: true,
@@ -94,8 +82,8 @@ class RoomReport extends StatelessWidget {
                                 thickness: 1,
                                 color: Colors.grey.withOpacity(0.5),
                               ),
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (context, index) => snapshot.data[index]["senderName"]
+                              itemCount: ( snapshot.data as List).length,
+                              itemBuilder: (context, index) => ( snapshot.data as List)[index]["senderName"]
                                       .toString()
                                       .toLowerCase()
                                       .contains(controller.searchController.text)
@@ -111,7 +99,7 @@ class RoomReport extends StatelessWidget {
                                           PopupMenuItem(
                                             height: 40.h,
                                             onTap: () {
-                                              Clipboard.setData(ClipboardData(text: snapshot.data[index]["senderName"].toString()));
+                                              Clipboard.setData(ClipboardData(text: ( snapshot.data as List)[index]["senderName"].toString()));
                                             },
                                             child: Align(
                                               alignment: Alignment.center,
@@ -172,21 +160,21 @@ class RoomReport extends StatelessWidget {
                                               SizedBox(
                                                 width: 150.w,
                                                 child: Text(
-                                                  snapshot.data[index]["senderName"].toString(),
+                                                  ( snapshot.data as List)[index]["senderName"].toString(),
                                                   //VIP
                                                   //VIPWithBG
                                                   //protectedWithBG
                                                   //protected
                                                   //TopVIP
                                                   style: TextStyle(
-                                                    color: snapshot.data[index]["userType"] == "protected" ||
-                                                            snapshot.data[index]["userType"] == "protectedWithBG"
+                                                    color: ( snapshot.data as List)[index]["userType"] == "protected" ||
+                                                            ( snapshot.data as List)[index]["userType"] == "protectedWithBG"
                                                         ? Colors.black
-                                                        : snapshot.data[index]["userType"] == "VIP"
+                                                        : ( snapshot.data as List)[index]["userType"] == "VIP"
                                                             ? Color(0xFF64BC3A)
-                                                            : snapshot.data[index]["userType"] == "VIPWithBG"
+                                                            : ( snapshot.data as List)[index]["userType"] == "VIPWithBG"
                                                                 ? Color(0xFF4200FF)
-                                                                : snapshot.data[index]["userType"] == "TopVIP"
+                                                                : ( snapshot.data as List)[index]["userType"] == "TopVIP"
                                                                     ? Color(0xffFABD63)
                                                                     : Colors.black,
                                                     fontSize: 17.sp,
@@ -211,7 +199,7 @@ class RoomReport extends StatelessWidget {
                                                           width: 5.w,
                                                         ),
                                                         Text(
-                                                          snapshot.data[index]["country"].toString() ?? "nil",
+                                                          ( snapshot.data as List)[index]["country"].toString() ?? "nil",
                                                           style: TextStyle(
                                                             color: Colors.black,
                                                             fontSize: 15.sp,
@@ -226,7 +214,7 @@ class RoomReport extends StatelessWidget {
                                                     width: 5.w,
                                                   ),
                                                   Text(
-                                                    snapshot.data[index]["messageId"].toString(),
+                                                    ( snapshot.data as List)[index]["messageId"].toString(),
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 15.sp,
@@ -245,7 +233,7 @@ class RoomReport extends StatelessWidget {
                                                     child: Row(
                                                       children: [
                                                         Icon(
-                                                          snapshot.data[index]["joinOrLeave"].toString() == "0"
+                                                          ( snapshot.data as List)[index]["joinOrLeave"].toString() == "0"
                                                               ? Icons.call_made_sharp
                                                               : Icons.call_received_sharp,
                                                           size: 20.sp,
@@ -254,9 +242,9 @@ class RoomReport extends StatelessWidget {
                                                           width: 5.w,
                                                         ),
                                                         Text(
-                                                          snapshot.data[index]["joinOrLeave"].toString() == "0" ? "انضمام" : "خروج",
+                                                          ( snapshot.data as List)[index]["joinOrLeave"].toString() == "0" ? "انضمام" : "خروج",
                                                           style: TextStyle(
-                                                            color: snapshot.data[index]["joinOrLeave"].toString() == "0" ? Colors.green : Colors.red,
+                                                            color: ( snapshot.data as List)[index]["joinOrLeave"].toString() == "0" ? Colors.green : Colors.red,
                                                             fontSize: 15.sp,
                                                             fontWeight: FontWeight.bold,
                                                           ),
@@ -272,7 +260,7 @@ class RoomReport extends StatelessWidget {
                                                     textDirection: TextDirection.rtl,
                                                     child: Text(
                                                       convertTime(
-                                                        snapshot.data[index]["time"].toString(),
+                                                        ( snapshot.data as List)[index]["time"].toString(),
                                                       ),
                                                       style: TextStyle(
                                                         color: Colors.black,
@@ -296,10 +284,10 @@ class RoomReport extends StatelessWidget {
                                                     width: 5.w,
                                                   ),
                                                   Text(
-                                                    snapshot.data[index]["time"].toString(),
+                                                    ( snapshot.data as List)[index]["time"].toString(),
                                                     style: TextStyle(
                                                       color: Colors.black,
-                                                      // color: snapshot.data[index]["joinOrLeave"].toString() == "0" ? Colors.green : Colors.red,
+                                                      // color: ( snapshot.data as List)[index]["joinOrLeave"].toString() == "0" ? Colors.green : Colors.red,
                                                       fontWeight: FontWeight.bold,
                                                       fontSize: 15.sp,
                                                     ),
@@ -321,7 +309,7 @@ class RoomReport extends StatelessWidget {
                                 thickness: 1,
                                 color: Colors.grey.withOpacity(0.5),
                               ),
-                              itemCount: snapshot.data.length,
+                              itemCount: ( snapshot.data as List).length,
                               itemBuilder: (context, index) => Theme(
                                 data: Theme.of(context).copyWith(
                                   dividerTheme: DividerThemeData(
@@ -334,7 +322,7 @@ class RoomReport extends StatelessWidget {
                                     PopupMenuItem(
                                       height: 40.h,
                                       onTap: () {
-                                        Clipboard.setData(ClipboardData(text: snapshot.data[index]["senderName"].toString()));
+                                        Clipboard.setData(ClipboardData(text: ( snapshot.data as List)[index]["senderName"].toString()));
                                       },
                                       child: Align(
                                         alignment: Alignment.center,
@@ -395,21 +383,21 @@ class RoomReport extends StatelessWidget {
                                         SizedBox(
                                           width: 150.w,
                                           child: Text(
-                                            snapshot.data[index]["senderName"].toString(),
+                                            ( snapshot.data as List)[index]["senderName"].toString(),
                                             //VIP
                                             //VIPWithBG
                                             //protectedWithBG
                                             //protected
                                             //TopVIP
                                             style: TextStyle(
-                                              color: snapshot.data[index]["userType"] == "protected" ||
-                                                      snapshot.data[index]["userType"] == "protectedWithBG"
+                                              color: ( snapshot.data as List)[index]["userType"] == "protected" ||
+                                                      ( snapshot.data as List)[index]["userType"] == "protectedWithBG"
                                                   ? Colors.black
-                                                  : snapshot.data[index]["userType"] == "VIP"
+                                                  : ( snapshot.data as List)[index]["userType"] == "VIP"
                                                       ? Color(0xFF64BC3A)
-                                                      : snapshot.data[index]["userType"] == "VIPWithBG"
+                                                      : ( snapshot.data as List)[index]["userType"] == "VIPWithBG"
                                                           ? Color(0xFF4200FF)
-                                                          : snapshot.data[index]["userType"] == "TopVIP"
+                                                          : ( snapshot.data as List)[index]["userType"] == "TopVIP"
                                                               ? Color(0xffFABD63)
                                                               : Colors.black,
                                               fontSize: 17.sp,
@@ -434,7 +422,7 @@ class RoomReport extends StatelessWidget {
                                                     width: 5.w,
                                                   ),
                                                   Text(
-                                                    snapshot.data[index]["country"].toString() ?? "nil",
+                                                    ( snapshot.data as List)[index]["country"].toString() ?? "nil",
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 15.sp,
@@ -449,7 +437,7 @@ class RoomReport extends StatelessWidget {
                                               width: 5.w,
                                             ),
                                             Text(
-                                              snapshot.data[index]["messageId"].toString(),
+                                              ( snapshot.data as List)[index]["messageId"].toString(),
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 15.sp,
@@ -468,7 +456,7 @@ class RoomReport extends StatelessWidget {
                                               child: Row(
                                                 children: [
                                                   Icon(
-                                                    snapshot.data[index]["joinOrLeave"].toString() == "0"
+                                                    ( snapshot.data as List)[index]["joinOrLeave"].toString() == "0"
                                                         ? Icons.call_made_sharp
                                                         : Icons.call_received_sharp,
                                                     size: 20.sp,
@@ -477,9 +465,9 @@ class RoomReport extends StatelessWidget {
                                                     width: 5.w,
                                                   ),
                                                   Text(
-                                                    snapshot.data[index]["joinOrLeave"].toString() == "0" ? "انضمام" : "خروج",
+                                                    ( snapshot.data as List)[index]["joinOrLeave"].toString() == "0" ? "انضمام" : "خروج",
                                                     style: TextStyle(
-                                                      color: snapshot.data[index]["joinOrLeave"].toString() == "0" ? Colors.green : Colors.red,
+                                                      color: ( snapshot.data as List)[index]["joinOrLeave"].toString() == "0" ? Colors.green : Colors.red,
                                                       fontSize: 15.sp,
                                                       fontWeight: FontWeight.bold,
                                                     ),
@@ -495,7 +483,7 @@ class RoomReport extends StatelessWidget {
                                               textDirection: TextDirection.rtl,
                                               child: Text(
                                                 convertTime(
-                                                  snapshot.data[index]["time"].toString(),
+                                                  ( snapshot.data as List)[index]["time"].toString(),
                                                 ),
                                                 style: TextStyle(
                                                   color: Colors.black,
@@ -519,7 +507,7 @@ class RoomReport extends StatelessWidget {
                                               width: 5.w,
                                             ),
                                             Text(
-                                              snapshot.data[index]["time"].toString(),
+                                              ( snapshot.data as List)[index]["time"].toString(),
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.bold,

@@ -1,19 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lametna/controllers/chathomePageController.dart';
 import 'package:lametna/controllers/favourites/favouritesController.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
-import 'package:lametna/view/chatHomePage.dart';
 import 'package:lametna/view/VIPRoombuildder.dart';
 
 class Favourite extends StatelessWidget {
-  const Favourite({Key key}) : super(key: key);
+  const Favourite({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +59,7 @@ class Favourite extends StatelessWidget {
                     color: controller.favouriteRooms[index]
                                 ["background_color"] ==
                             ""
-                        ? null
+                        ? Colors.white
                         : Color(int.parse(
                                 controller.favouriteRooms[index]
                                         ["background_color"]

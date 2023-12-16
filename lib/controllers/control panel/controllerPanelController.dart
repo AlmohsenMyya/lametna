@@ -10,14 +10,14 @@ import 'package:http/http.dart' as http;
 class MainControllerPanelController extends GetxController {
   PageController pageController = PageController();
   PageController alertPageController = PageController();
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   bool passwordVisibility = false;
   int selectedIndex = 0;
   int alertIndex = 0;
   bool isLoading = true;
   var data;
   bool pageIndex = true;
-  String roomId;
+  String ?roomId;
   List listOfRoles = [];
 
   @override
@@ -39,7 +39,7 @@ class MainControllerPanelController extends GetxController {
       data = dataBody["data"];
       print(dataBody["data"]);
       isLoading = false;
-      roomId = await dataBody["data"][0]["room_id"].toString();
+      roomId = dataBody["data"][0]["room_id"].toString();
 
       update();
       // roles.add(data["data"])

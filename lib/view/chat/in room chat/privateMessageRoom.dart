@@ -1,18 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/chat/in%20room%20chat/PrivateMessageRoomController.dart';
-import 'package:lametna/controllers/chat/roomsPageController.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
 
 class PrivateMessageRoom extends StatelessWidget {
-  const PrivateMessageRoom({Key key}) : super(key: key);
+  const PrivateMessageRoom({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +20,8 @@ class PrivateMessageRoom extends StatelessWidget {
             // LinearGradient
             gradient: LinearGradient(
               colors: [
-                const Color(0xFFF792F0),
-                const Color(0xFFFABD63),
+                Color(0xFFF792F0),
+                Color(0xFFFABD63),
               ],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
@@ -188,8 +183,8 @@ class PrivateMessageRoom extends StatelessWidget {
               // LinearGradient
               gradient: LinearGradient(
                 colors: [
-                  const Color(0xFFF792F0),
-                  const Color(0xFFFABD63),
+                  Color(0xFFF792F0),
+                  Color(0xFFFABD63),
                 ],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
@@ -274,7 +269,7 @@ class PrivateMessageRoom extends StatelessWidget {
                         ),
                       ),
                       GestureDetector(
-                        onTap: controller.mRecorder.isRecording ? controller.stopRecorder : controller.record,
+                        onTap: controller.mRecorder!.isRecording ? controller.stopRecorder : controller.record,
                         // onTap: () {
                         //   print("test");
                         //   controller.record();
@@ -283,7 +278,7 @@ class PrivateMessageRoom extends StatelessWidget {
                         //   controller.stopRecorder();
                         // },
                         child: Icon(
-                          controller.mRecorder.isRecording ? Icons.mic_off : Icons.mic,
+                          controller.mRecorder!.isRecording ? Icons.mic_off : Icons.mic,
                           size: 25.sp,
                         ),
                       ),

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Countries extends StatelessWidget {
-  Countries({Key key}) : super(key: key);
+  Countries({Key? key}) : super(key: key);
   //https://www.worldometers.info/img/flags/iz-flag.gif
   var countries = [
     {

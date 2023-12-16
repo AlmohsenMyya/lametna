@@ -1,9 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lametna/controllers/chat/in%20room%20chat/previosChatController.dart';
@@ -11,7 +8,7 @@ import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/controllers/userData/variables.dart';
 
 class PreviosChat extends StatelessWidget {
-  const PreviosChat({Key key}) : super(key: key);
+  const PreviosChat({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +20,8 @@ class PreviosChat extends StatelessWidget {
             // LinearGradient
             gradient: LinearGradient(
               colors: [
-                const Color(0xFFF792F0),
-                const Color(0xFFFABD63),
+                Color(0xFFF792F0),
+                Color(0xFFFABD63),
               ],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,

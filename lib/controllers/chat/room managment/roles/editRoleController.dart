@@ -2,10 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lametna/controllers/chat/room%20managment/accountMangementController.dart';
-import 'package:lametna/controllers/userData/variables.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lametna/controllers/userData/userCredentials.dart';
 // import 'package:lametna/controllers/Crud.dart';
 import 'package:http/http.dart' as http;
 import 'package:lametna/view/store/storeDetails.dart';
@@ -13,7 +10,7 @@ import 'package:lametna/view/store/storeDetails.dart';
 class EditRolesController extends GetxController {
   PageController pageController = PageController();
   PageController alertPageController = PageController();
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   String selectedMasterType = "ماستر";
@@ -74,7 +71,7 @@ class EditRolesController extends GetxController {
   void changeSeletedIndex(int newIndex) {
     selectedIndex = newIndex;
     for (var i = 0; i < icons.length; i++) {
-      if (newIndex >= icons[i]["val"]) {
+      if (newIndex >= (icons[i]["val"] as num)) {
         icons[i]["isActive"] = true;
       } else {
         icons[i]["isActive"] = false;
@@ -84,7 +81,7 @@ class EditRolesController extends GetxController {
   }
 
   void changeIconColor(int index) {
-    icons[index]["isActive"] = !icons[index]["isActive"];
+    icons[index]["isActive"] = !(icons[index]["isActive"] as bool);
     update();
   }
 
@@ -119,7 +116,7 @@ class EditRolesController extends GetxController {
       "adminMangment": icons[14]["isActive"] == true ? "1" : "0",
     });
     // update();
-    FocusScope.of(Get.context).unfocus();
+    FocusScope.of(Get.context!).unfocus();
     final dataBody = json.decode(response.body);
     print(dataBody);
     if (dataBody['status'] == "success") {
@@ -170,7 +167,7 @@ class EditRolesController extends GetxController {
     showDialog(
         context: context,
         builder: (context) {
-          Future.delayed(Duration(seconds: 2), () {
+          Future.delayed(const Duration(seconds: 2), () {
             Navigator.of(context).pop(true);
           });
           return AlertDialog(
@@ -188,7 +185,7 @@ class EditRolesController extends GetxController {
                     Text(
                       "تم إضافة الحساب بنجاح",
                       style: TextStyle(
-                        color: Color(0xff2ABC42),
+                        color: const Color(0xff2ABC42),
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w900,
                         fontFamily: "Segoe UI",

@@ -1,6 +1,6 @@
 class MessagesModel {
-  String status;
-  List<Data> data;
+  String? status;
+  List<Data>? data;
 
   MessagesModel({this.status, this.data});
 
@@ -9,28 +9,26 @@ class MessagesModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
+        (data??[]).add(Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
-    }
-    return data;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['data'] = this.data!.map((v) => v.toJson()).toList();
+      return data;
   }
 }
 
 class Data {
-  String messageid;
-  String time;
-  String sender;
-  String text;
-  String roomId;
-  String senderName;
+  String? messageid;
+  String ?time;
+  String ?sender;
+  String ?text;
+  String ?roomId;
+  String ?senderName;
 
   Data(
       {this.messageid,
@@ -50,13 +48,13 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['messageid'] = this.messageid;
-    data['time'] = this.time;
-    data['sender'] = this.sender;
-    data['text'] = this.text;
-    data['room_id'] = this.roomId;
-    data['sender_name'] = this.senderName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['messageid'] = messageid;
+    data['time'] = time;
+    data['sender'] = sender;
+    data['text'] = text;
+    data['room_id'] = roomId;
+    data['sender_name'] = senderName;
     return data;
   }
 }

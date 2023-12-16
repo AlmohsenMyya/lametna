@@ -8,7 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/view/chat/roomPage.dart';
 
-Widget appbar() {
+PreferredSize appbar() {
   return PreferredSize(
     preferredSize: Size.fromHeight(60.h),
     child: GetBuilder<RoomsPageController>(
@@ -31,9 +31,9 @@ Widget appbar() {
                           : null,
                       color: controller.themeColor == ""
                           ? null
-                          : Color(int.parse(controller.themeColor.substring(1, 7), radix: 16) + 0xFF000000) == null
+                          : Color(int.parse(controller.themeColor!.substring(1, 7), radix: 16) + 0xFF000000) == null
                               ? Colors.white
-                              : Color(int.parse(controller.themeColor.substring(1, 7), radix: 16) + 0xFF000000)),
+                              : Color(int.parse(controller.themeColor!.substring(1, 7), radix: 16) + 0xFF000000)),
                   child: AppBar(
                     leadingWidth: 105.w,
                     toolbarHeight: 72.35.h,
@@ -428,11 +428,15 @@ Widget appbar() {
   );
 }
 
-PopupMenuItem<int> statusBuilder(String title, {Widget icon, Function onTap, int value, Color color = Colors.black}) {
+PopupMenuItem<int> statusBuilder(String title, {Widget? icon, Function ?onTap, int ?value, Color color = Colors.black}) {
   return PopupMenuItem(
       height: 40.h,
       padding: EdgeInsets.only(right: 10.w),
-      onTap: onTap,
+      onTap: (){
+        if(onTap != null) {
+          onTap();
+        }
+      },
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: Container(
@@ -451,31 +455,31 @@ PopupMenuItem<int> statusBuilder(String title, {Widget icon, Function onTap, int
       value: value);
 }
 
-// menuBuilder() {
-//   showMenu(
-//     elevation: 3,
-//     shape: RoundedRectangleBorder(
-//       borderRadius: BorderRadius.circular(10.r),
-//     ),
-//     context: Get.context,
-//     position: RelativeRect.fromLTRB(0.w, 90.h, Get.width, 0.h),
-//     items: [
-//       statusBuilder(
-//         "الحالة",
-//         value: 0,
-//         // onTap: showStatus(),
-//       ),
-//       statusBuilder("الحالة", value: 1, onTap: () {
-//         Get.back();
-//         Get.toNamed("/roomSettingsPage");
-//       }),
-//     ],
-//   );
-// }
+menuBuilder() {
+  showMenu(
+    elevation: 3,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10.r),
+    ),
+    context: Get.context!,
+    position: RelativeRect.fromLTRB(0.w, 90.h, Get.width, 0.h),
+    items: [
+      statusBuilder(
+        "الحالة",
+        value: 0,
+        // onTap: showStatus(),
+      ),
+      statusBuilder("الحالة", value: 1, onTap: () {
+        Get.back();
+        Get.toNamed("/roomSettingsPage");
+      }),
+    ],
+  );
+}
 
 showStatus() {
   showMenu(
-    context: Get.context,
+    context: Get.context!,
     position: RelativeRect.fromLTRB(50, 50, 50, 50),
     items: [
       // usersPopUpMenu("dog"),

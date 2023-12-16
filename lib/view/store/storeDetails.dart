@@ -1,9 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:lametna/controllers/store/storeDetailsController.dart';
 import 'package:lametna/controllers/userData/variables.dart';
 import 'package:lametna/view/chat/appBar.dart';
@@ -14,7 +11,7 @@ import 'package:lametna/view/side%20pages/dottedDivider.dart';
 // StoreDetailsController controller = Get.put(StoreDetailsController());
 
 class StoreDetails extends StatelessWidget {
-  const StoreDetails({Key key}) : super(key: key);
+  const StoreDetails({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -561,7 +558,7 @@ class StoreDetails extends StatelessWidget {
     );
   }
 
-  Widget framesBuilder({String title, String imageUrl, String price, bool isFrame = true}) {
+  Widget framesBuilder({required String title, required String imageUrl, required String price, bool isFrame = true}) {
     return GetBuilder<StoreDetailsController>(builder: (c) {
       return GestureDetector(
         // onTap: () => showDialog(
@@ -931,7 +928,7 @@ class StoreDetails extends StatelessWidget {
     );
   }
 
-  Widget roomOfferBuilder({String title, List prices, int roomPrice}) {
+  Widget roomOfferBuilder({required String title, required List prices, required int roomPrice}) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -1067,7 +1064,7 @@ class StoreDetails extends StatelessWidget {
     );
   }
 
-  Widget roomTabBuilder({String title, int index}) {
+  Widget roomTabBuilder({required String title, required int index}) {
     return GetBuilder<StoreDetailsController>(
         init: StoreDetailsController(),
         builder: (controller) {
@@ -1108,7 +1105,7 @@ class StoreDetails extends StatelessWidget {
         });
   }
 
-  Widget namesTabBuilder({String title, int index}) {
+  Widget namesTabBuilder({required String title, required int index}) {
     return GetBuilder<StoreDetailsController>(
         init: StoreDetailsController(),
         builder: (controller) {
@@ -1149,7 +1146,7 @@ class StoreDetails extends StatelessWidget {
         });
   }
 
-  Widget vipTabBuilder({String title, int index}) {
+  Widget vipTabBuilder({required String title, required int index}) {
     return GetBuilder<StoreDetailsController>(
         init: StoreDetailsController(),
         builder: (controller) {
@@ -1190,7 +1187,7 @@ class StoreDetails extends StatelessWidget {
         });
   }
 
-  Widget namesOfferBuilder({String title, List items, int index, bool isDialog = false, int price = 30, bool isRoot = false}) {
+  Widget namesOfferBuilder({required String title, required List items, required int index, bool isDialog = false, int price = 30, bool isRoot = false}) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -1324,7 +1321,7 @@ class StoreDetails extends StatelessWidget {
                                 )
                               : index == 0
                                   ? Center(
-                                      child: Image.network(baseURL + "test/currentBanner.gif",
+                                      child: Image.network("${baseURL}test/currentBanner.gif",
                                           // width: 57.5.sp, //45,
                                           height: 40.sp,
                                           fit: BoxFit.fitHeight),
@@ -1485,7 +1482,7 @@ class StoreDetails extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
       ),
       backgroundColor: Colors.transparent,
-      context: Get.context,
+      context: Get.context!,
       builder: (context) => SizedBox(
         height: (Get.height * .40).h,
         child: Column(
@@ -1562,7 +1559,7 @@ class StoreDetails extends StatelessWidget {
     );
   }
 
-  Widget tabsBuilder({String title, int index}) {
+  Widget tabsBuilder({required String title, required int index}) {
     return GetBuilder<StoreDetailsController>(
         init: StoreDetailsController(),
         builder: (c) {
@@ -1605,7 +1602,7 @@ class StoreDetails extends StatelessWidget {
         });
   }
 
-  Widget nameStyleBuilder({int index}) {
+  Widget nameStyleBuilder({required int index}) {
     return Padding(
       padding: EdgeInsets.all(50.sp),
       child: Container(
@@ -1615,7 +1612,7 @@ class StoreDetails extends StatelessWidget {
           border: Border.all(
             color: Color(0xFF43D0CA),
           ),
-          image: index == 0 || index == 1 ? DecorationImage(image: NetworkImage(baseURL + "test/1.png"), fit: BoxFit.cover) : null,
+          image: index == 0 || index == 1 ? DecorationImage(image: NetworkImage("${baseURL}test/1.png"), fit: BoxFit.cover) : null,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1624,7 +1621,7 @@ class StoreDetails extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(bottom: index == 2 || index == 1 ? 30.h : 0),
               child: index == 0
-                  ? Image.network(baseURL + "test/currentBanner.gif",
+                  ? Image.network("${baseURL}test/currentBanner.gif",
                       // width: 57.5.sp, //45,
                       height: 45.sp,
                       fit: BoxFit.fitHeight)
@@ -1698,7 +1695,7 @@ class StoreDetails extends StatelessWidget {
                 ),
                 index == 0
                     ? Image.network(
-                        baseURL + "test/currentBadge.gif",
+                        "${baseURL}test/currentBadge.gif",
                         height: 70.sp,
                         width: 70.sp,
                         fit: BoxFit.fitHeight,
@@ -1714,7 +1711,7 @@ class StoreDetails extends StatelessWidget {
 
   Future buyRoom() {
     return showModalBottomSheet(
-      context: Get.context,
+      context: Get.context!,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -1856,8 +1853,8 @@ class StoreDetails extends StatelessWidget {
                                               color: Colors.black,
                                               fontSize: 15.sp,
                                             ),
-                                            onChanged: (String newValue) {
-                                              controller.updateRoomTime(newValue);
+                                            onChanged: (String? newValue) {
+                                              controller.updateRoomTime(newValue!);
                                             },
                                             items: <String>['شهر', '٣ شهور', '٦ شهور', "سنة"].map<DropdownMenuItem<String>>((String value) {
                                               return DropdownMenuItem<String>(
@@ -1916,8 +1913,8 @@ class StoreDetails extends StatelessWidget {
                                               color: Colors.black,
                                               fontSize: 15.sp,
                                             ),
-                                            onChanged: (String newValue) {
-                                              controller.updateRoomType(newValue);
+                                            onChanged: (String? newValue) {
+                                              controller.updateRoomType(newValue!);
                                             },
                                             items: <String>['مميزة', 'دهبية', 'فضية'].map<DropdownMenuItem<String>>((String value) {
                                               return DropdownMenuItem<String>(
@@ -1975,8 +1972,8 @@ class StoreDetails extends StatelessWidget {
                                       color: Colors.black,
                                       fontSize: 15.sp,
                                     ),
-                                    onChanged: (String newValue) {
-                                      controller.updateCountry(newValue);
+                                    onChanged: (String? newValue) {
+                                      controller.updateCountry(newValue!);
                                     },
                                     items: <String>['الجزائر', "مصر", "العراق", "المغرب", "فلسطين", "إسبانيا", "السودان", "سوريا", "تونس", "اليمن"]
                                         .map<DropdownMenuItem<String>>((String value) {
@@ -2188,7 +2185,7 @@ class StoreDetails extends StatelessWidget {
 
   Future buyAccount() {
     return showModalBottomSheet(
-      context: Get.context,
+      context: Get.context!,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -2324,8 +2321,8 @@ class StoreDetails extends StatelessWidget {
                                       color: Colors.black,
                                       fontSize: 15.sp,
                                     ),
-                                    onChanged: (String newValue) {
-                                      controller.updateRoomTime(newValue);
+                                    onChanged: (String? newValue) {
+                                      controller.updateRoomTime(newValue!);
                                     },
                                     items: <String>['شهر', '٣ شهور', '٦ شهور', "سنة"].map<DropdownMenuItem<String>>((String value) {
                                       return DropdownMenuItem<String>(
@@ -2558,7 +2555,7 @@ class StoreDetails extends StatelessWidget {
 
   Future buyRoot() {
     return showModalBottomSheet(
-      context: Get.context,
+      context: Get.context!,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -2730,8 +2727,8 @@ class StoreDetails extends StatelessWidget {
                                       color: Colors.black,
                                       fontSize: 15.sp,
                                     ),
-                                    onChanged: (String newValue) {
-                                      controller.updateRoomTime(newValue);
+                                    onChanged: (String? newValue) {
+                                      controller.updateRoomTime(newValue!);
                                     },
                                     items: <String>['شهر', '٣ شهور', '٦ شهور', "سنة"].map<DropdownMenuItem<String>>((String value) {
                                       return DropdownMenuItem<String>(
@@ -2928,7 +2925,7 @@ class StoreDetails extends StatelessWidget {
 
   Future buyFrame({isForMe = true}) {
     return showModalBottomSheet(
-      context: Get.context,
+      context: Get.context!,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -3100,8 +3097,8 @@ class StoreDetails extends StatelessWidget {
                                       color: Colors.black,
                                       fontSize: 15.sp,
                                     ),
-                                    onChanged: (String newValue) {
-                                      controller.updateRoomTime(newValue);
+                                    onChanged: (String? newValue) {
+                                      controller.updateRoomTime(newValue!);
                                     },
                                     items: <String>['شهر', '٣ شهور', '٦ شهور', "سنة"].map<DropdownMenuItem<String>>((String value) {
                                       return DropdownMenuItem<String>(
@@ -3317,7 +3314,7 @@ class StoreDetails extends StatelessWidget {
 
   Future buyEntries({isForMe = true}) {
     return showModalBottomSheet(
-      context: Get.context,
+      context: Get.context!,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -3489,8 +3486,8 @@ class StoreDetails extends StatelessWidget {
                                       color: Colors.black,
                                       fontSize: 15.sp,
                                     ),
-                                    onChanged: (String newValue) {
-                                      controller.updateRoomTime(newValue);
+                                    onChanged: (String? newValue) {
+                                      controller.updateRoomTime(newValue!);
                                     },
                                     items: <String>['شهر', '٣ شهور', '٦ شهور', "سنة"].map<DropdownMenuItem<String>>((String value) {
                                       return DropdownMenuItem<String>(
@@ -3706,7 +3703,7 @@ class StoreDetails extends StatelessWidget {
 
   Future<dynamic> successBuilder() {
     return showDialog(
-      context: Get.context,
+      context: Get.context!,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(22.r),
@@ -3759,7 +3756,7 @@ class StoreDetails extends StatelessWidget {
 
   Future<dynamic> errorBuilder() {
     return showDialog(
-      context: Get.context,
+      context: Get.context!,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(22.r),

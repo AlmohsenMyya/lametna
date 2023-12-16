@@ -1,14 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class CustomerService extends StatelessWidget {
-  const CustomerService({Key key}) : super(key: key);
+  const CustomerService({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +95,7 @@ class CustomerService extends StatelessWidget {
           Get.toNamed(pageName);
         },
         style: ElevatedButton.styleFrom(
-          primary: Colors.white,
+          backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.r),
           ),

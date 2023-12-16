@@ -1,11 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings
 
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,7 +16,7 @@ var l = [
 ];
 
 class EditPersonalProfile extends StatelessWidget {
-  const EditPersonalProfile({Key key}) : super(key: key);
+  const EditPersonalProfile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

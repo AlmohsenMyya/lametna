@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, unrelated_type_equality_checks
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/chat/room%20managment/roles/rolesController.dart';
@@ -16,7 +15,7 @@ var user = [
 var color;
 
 class RolesPage extends StatelessWidget {
-  const RolesPage({Key key}) : super(key: key);
+  const RolesPage({Key ?key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     color = Get.arguments["color"];
@@ -457,16 +456,16 @@ class RolesPage extends StatelessWidget {
                   color: Color(0xFF43D0CA),
                   width: 1,
                 ),
-                color: controller.icons[index]["isActive"] ? Color(int.parse(color.substring(1, 7), radix: 16) + 0xFF000000) : Color(0xffE7E7E7),
+                color: controller.icons[index]["isActive"] != null ? Color(int.parse(color.substring(1, 7), radix: 16) + 0xFF000000) : Color(0xffE7E7E7),
                 borderRadius: BorderRadius.circular(360.r),
               ),
               child: Icon(
-                controller.icons[index]["icon"],
+                controller.icons[index]["icon"] as IconData?,
                 color: Colors.black,
                 size: 22.sp,
               ),
             ),
-            Text(controller.icons[index]["text"],
+            Text(controller.icons[index]["text"] as String,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,

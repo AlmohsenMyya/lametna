@@ -3,13 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:lametna/controllers/chat/roomsPageController.dart';
 import 'package:lametna/controllers/chat/voice%20and%20video/videoController.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lametna/controllers/chat/voice%20and%20video/voiceController.dart';
-import 'package:lametna/controllers/userData/userCredentials.dart';
-import 'package:lametna/controllers/userData/variables.dart';
-import 'package:lametna/view/chat/moments/viewComments.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/foundation.dart' as foundation;
 
@@ -17,9 +13,9 @@ Widget buildMyNavBar(BuildContext context) {
   return GetBuilder<RoomsPageController>(
       init: RoomsPageController(),
       builder: (controller) {
-        var color = Color(int.parse(controller.themeColor.substring(1, 7), radix: 16) + 0xFF000000);
+        var color = Color(int.parse(controller.themeColor!.substring(1, 7), radix: 16) + 0xFF000000);
 
-        _onBackspacePressed() {
+        onBackspacePressed() {
           controller.messageController
             ..text = controller.messageController.text.characters.toString()
             ..selection = TextSelection.fromPosition(TextPosition(offset: controller.messageController.text.length));
@@ -377,7 +373,7 @@ Widget buildMyNavBar(BuildContext context) {
 ///////////////////////////////////////////////////////////////////////
                 child: Column(
                   children: [
-                    Container(
+                    SizedBox(
                       height: 71.h,
                       child: Row(
                         children: [
@@ -533,7 +529,7 @@ Widget buildMyNavBar(BuildContext context) {
                           width: Get.width,
                           child: EmojiPicker(
                             textEditingController: controller.messageController,
-                            onBackspacePressed: _onBackspacePressed,
+                            onBackspacePressed: onBackspacePressed,
                             config: Config(
                               columns: 7,
                               // Issue: https://github.com/flutter/flutter/issues/28894

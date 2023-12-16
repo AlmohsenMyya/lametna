@@ -13,7 +13,7 @@ var EditProfile = [
 ];
 
 class EditBackground extends StatelessWidget {
-  const EditBackground({Key key}) : super(key: key);
+  const EditBackground({Key ?key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class EditBackground extends StatelessWidget {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 25.0.w, vertical: 3.h),
                               child: Text(
-                                EditProfile[index]["name"],
+                                EditProfile[index]["name"] as String,
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 12.sp,
@@ -58,7 +58,7 @@ class EditBackground extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 20.w),
                               child: Icon(
@@ -75,7 +75,7 @@ class EditBackground extends StatelessWidget {
                 },
                 separatorBuilder: (context, index) => Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.0.w),
-                      child: Divider(
+                      child: const Divider(
                         color: Color(0xffDADADC),
                         thickness: 1,
                       ),
@@ -83,7 +83,7 @@ class EditBackground extends StatelessWidget {
                 itemCount: EditProfile.length),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.0.w),
-              child: Divider(
+              child: const Divider(
                 color: Color(0xffDADADC),
                 thickness: 1,
               ),

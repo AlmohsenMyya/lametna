@@ -14,7 +14,7 @@ import 'package:http/http.dart' as http;
 class RolesController extends GetxController {
   PageController pageController = PageController();
   PageController alertPageController = PageController();
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   String selectedMasterType = "ماستر";
@@ -49,7 +49,7 @@ class RolesController extends GetxController {
   void changeSeletedIndex(int newIndex) {
     selectedIndex = newIndex;
     for (var i = 0; i < icons.length; i++) {
-      if (newIndex >= icons[i]["val"]) {
+      if (newIndex >= (icons[i]["val"]as num)) {
         icons[i]["isActive"] = true;
       } else {
         icons[i]["isActive"] = false;
@@ -59,7 +59,7 @@ class RolesController extends GetxController {
   }
 
   void changeIconColor(int index) {
-    icons[index]["isActive"] = !icons[index]["isActive"];
+    icons[index]["isActive"] = !(icons[index]["isActive"] as bool);
     update();
   }
 

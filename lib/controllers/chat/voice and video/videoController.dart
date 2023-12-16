@@ -1,19 +1,8 @@
 // ignore_for_file: unused_field, prefer_final_fields, prefer_const_constructors, prefer_interpolation_to_compose_strings
 
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-import 'package:lametna/controllers/chat/voice%20and%20video/voiceController.dart';
-import 'package:lametna/controllers/userData/userCredentials.dart';
-import 'package:lametna/controllers/userData/variables.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
 
 const String appId = "e151cc863dd34adc9f76f085e4fb7b78";
 

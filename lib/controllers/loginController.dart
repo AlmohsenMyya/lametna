@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_conditional_assignment
 
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:lametna/controllers/Crud.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
-import 'package:lametna/view/store/test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -45,18 +43,14 @@ class LoginController extends GetxController {
 
   void autoLogIn() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String username = prefs.getString('username');
-    final String password = prefs.getString('password');
-    if (username != null && password != null) {
-      userNameController.text = username;
-      passwordController.text = password;
-      // login(Get.context);
-      print("saved data");
-      login(Get.context, username, password);
-    } else {
-      print("no data");
+    final String? username = prefs.getString('username');
+    final String? password = prefs.getString('password');
+    userNameController.text = username!;
+    passwordController.text = password!;
+    // login(Get.context!);
+    print("saved data");
+    login(Get.context!, username, password);
     }
-  }
 
   Future login(BuildContext context, String email, String password) async {
     try {

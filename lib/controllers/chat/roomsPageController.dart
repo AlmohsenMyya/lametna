@@ -5,25 +5,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:lametna/controllers/Crud.dart';
-import 'package:lametna/controllers/chat/voice%20and%20video/videoController.dart';
-import 'package:lametna/controllers/chat/voice%20and%20video/voiceController.dart';
 import 'package:lametna/controllers/chathomePageController.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
-import 'package:lametna/model/message.dart';
 // import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-import 'package:lametna/view/chat/addAccount.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'package:get_ip_address/get_ip_address.dart';
-import 'package:lametna/view/chatHomePage.dart';
-import 'package:lametna/view/home.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:geocoder/geocoder.dart';
 import '../userData/variables.dart';
 
 const String APP_ID = "e151cc863dd34adc9f76f085e4fb7b78";
@@ -36,7 +27,7 @@ class RoomsPageController extends GetxController {
   StreamController roomLockController = StreamController.broadcast();
   // VideoController videoController = Get.put(VideoController());
   // VoiceController voiceController = Get.put(VoiceController());
-  OverlayEntry entry;
+  OverlayEntry? entry;
   var memberInCall;
 
   bool isRoomLock = false;
@@ -53,19 +44,19 @@ class RoomsPageController extends GetxController {
   bool isVisible = false;
   bool waitingListStatus = false;
 
-  String timeEntered;
+  String? timeEntered;
 
-  String privateMessages;
+  String? privateMessages;
 
   var userInRoom;
-  String roomId;
+  String ?roomId;
 
-  String roomOwner;
-  String welcomeText;
-  String welcomeMsg;
+  String ?roomOwner;
+  String ?welcomeText;
+  String ?welcomeMsg;
 
-  String roomName;
-  String themeColor;
+  String ?roomName;
+  String ?themeColor;
 
   bool isEndrawerOpen = false;
 
@@ -191,12 +182,13 @@ class RoomsPageController extends GetxController {
   }
 
   onJoin() async {
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
 
-    final coordinates = new Coordinates(position.latitude, position.longitude);
-    var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    var first = addresses.first;
-    String country = first.countryName;
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+
+  Placemark addresses = placemarks[0];
+
+    String country = addresses.country!;
 
     var url = Uri.parse(joinRoom);
     http.post(url, body: {
@@ -355,7 +347,7 @@ class RoomsPageController extends GetxController {
         ));
   }
 
-  kickUser(String name, {String roomId}) async {
+  kickUser(String name, {String ?roomId}) async {
     Get.defaultDialog(
         middleText: "هل تريد طرد هذا المستخدم؟",
         middleTextStyle: TextStyle(color: Colors.green),
@@ -460,7 +452,7 @@ class RoomsPageController extends GetxController {
   }
 
   getUserDeviceType() async {
-    String os = await Platform.operatingSystem;
+    String os = Platform.operatingSystem;
     // Or, use a predicate getter.
     Get.defaultDialog(
       title: "IP",
@@ -476,7 +468,7 @@ class RoomsPageController extends GetxController {
   }
 
   getUserCountry() async {
-    String localeName = await Platform.localeName;
+    String localeName = Platform.localeName;
 
     print(localeName);
     Get.defaultDialog(
@@ -515,7 +507,7 @@ class RoomsPageController extends GetxController {
     return dataBody["participants"];
   }
 
-  acceptOrRejectWaitingList({String status, String name}) async {
+  acceptOrRejectWaitingList({required String status, required String name}) async {
     var url = Uri.parse(statusEntringRoom);
     var response = await http.post(url, body: {
       "userName": name,

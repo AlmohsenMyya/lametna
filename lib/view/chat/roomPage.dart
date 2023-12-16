@@ -17,10 +17,9 @@ import 'package:lametna/view/chat/In%20Room%20Widgets/appBar.dart';
 import 'package:lametna/view/chat/In%20Room%20Widgets/navbarBuilder.dart';
 import 'package:lametna/view/chat/In%20Room%20Widgets/roomEndDrawer.dart';
 import 'package:lametna/view/store/storeDetails.dart';
-import '';
 
 class Room extends StatefulWidget {
-  const Room({Key key}) : super(key: key);
+  const Room({Key? key}) : super(key: key);
 
   @override
   State<Room> createState() => _RoomState();
@@ -31,7 +30,7 @@ bool isOwner = Get.arguments["owner"] != userName;
 
 class _RoomState extends State<Room> with WidgetsBindingObserver {
   // Future<bool> result = isLockScreen();
-  AppLifecycleState _lastLifecycleState;
+  AppLifecycleState? _lastLifecycleState;
 
   @override
   void initState() {
@@ -45,18 +44,6 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
-    super.didChangeAppLifecycleState(state);
-    // print('app inactive, is lock screen: ${state}');
-    // if (state == AppLifecycleState.inactive) {
-    //   print('app inactive, is lock screen: ${state}');
-    //   await Get.put(RoomsPageController()).onLeave();
-    //   // Get.put(VoiceController()).leave(); /////////////////////////////////////////////////////////////////////
-    // } else if (state == AppLifecycleState.resumed) {
-    //   print('app resumed');
-    // }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +51,15 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
       onWillPop: () {
         if (Get.put(RoomsPageController()).isEndrawerOpen) {
           Get.back();
-          return null;
+          return Future.value(false);
         } else {
           return closeAlert();
         }
-      },
+
+        },
       child: Scaffold(
         key: scaffoldKey,
-        appBar: appbar(),
+        appBar:appbar(),
         onEndDrawerChanged: (isOpened) {
           // print("object");
           if (isOpened) {
@@ -97,7 +85,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                           height: 80.h,
                           decoration: BoxDecoration(
                               // LinearGradient
-                              color: Color(int.parse(controller.themeColor.substring(1, 7), radix: 16) + 0xFF000000).withOpacity(0.2)),
+                              color: Color(int.parse(controller.themeColor!.substring(1, 7), radix: 16) + 0xFF000000).withOpacity(0.2)),
                           child: StreamBuilder(
                               stream: controller.membersController.stream,
                               builder: (context, snapshot) {
@@ -174,6 +162,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                                     ],
                                   );
                                 }
+                              return Container();
                               }
 
                               // Text(snapshot.data.toString()),
@@ -333,9 +322,13 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                                 return snapshot.hasData
                                     ? NotificationListener(
                                         onNotification: (ScrollNotification scrollInfo) {
-                                          scrollInfo.metrics.pixels > 80
-                                              ? controller.scrollDownButtonStatus(false)
-                                              : controller.scrollDownButtonStatus(true);
+                                        if ( scrollInfo.metrics.pixels > 80) {
+                                          controller.scrollDownButtonStatus(false);
+                                          return false;
+                                        } else {
+                                          controller.scrollDownButtonStatus(true);
+                                          return true;
+                                        }
                                         },
                                         child: Container(
                                           // color: Colors.green,
@@ -399,7 +392,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                                                     borderRadius: BorderRadius.circular(10.r),
                                                   ),
                                                   child: Text(
-                                                    controller.welcomeMsg + " " + userName ?? "",
+                                                    "${controller.welcomeMsg!} $userName" ?? "",
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       color: Colors.white,
@@ -506,7 +499,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
     );
   }
 
-  Widget messageBuilder({BuildContext context, dynamic data, bool guest}) {
+  Widget messageBuilder({required BuildContext context, dynamic data, required bool guest}) {
     return GestureDetector(
       onLongPressStart: (LongPressStartDetails details) {
         showMenu(
@@ -519,8 +512,8 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
           ),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.r))),
           items: <PopupMenuEntry>[
-            data["image"] != "1"
-                ? PopupMenuItem<String>(
+            if(data["image"] != "1")
+                 PopupMenuItem<String>(
                     onTap: () {
                       Clipboard.setData(ClipboardData(text: data['message']));
                       // Get.back();
@@ -538,11 +531,11 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                       ),
                     ),
                   )
-                : null,
+                ,
             PopupMenuDivider(height: 2),
-            data["userType"] == "3" || data["userType"] == "2" || data["userType"] == "1"
-                //  ||Get.arguments["owner"] == userName
-                ? PopupMenuItem<String>(
+            if(data["userType"] == "3" || data["userType"] == "2" || data["userType"] == "1"
+            )    //  ||Get.arguments["owner"] == userName
+                 PopupMenuItem<String>(
                     onTap: () {
                       // sj();
                       var url = Uri.parse(deleteAllRoomMessages);
@@ -563,10 +556,10 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                       ),
                     ),
                   )
-                : null,
+               ,
             PopupMenuDivider(),
-            data["senderName"] == userName
-                ? PopupMenuItem<String>(
+           if( data["senderName"] == userName)
+                 PopupMenuItem<String>(
                     onTap: () {
                       //https://lametnachat.com/messages/deleteMessageInRoom.php
                       var url = Uri.parse(deleteMessage);
@@ -588,7 +581,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                       ),
                     ),
                   )
-                : null,
+                ,
             PopupMenuDivider(),
             PopupMenuItem<String>(
               padding: EdgeInsets.symmetric(vertical: 0, horizontal: 6.w),
@@ -803,7 +796,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(360.r),
                         child: Image.network(
-                          imageURL + data["senderName"] + ".jpeg",
+                          "${imageURL + data["senderName"]}.jpeg",
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) => Image.network(
                             "https://lametnachat.com/upload/imageUser/anonymous.jpg",
@@ -989,7 +982,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
             child: Container(
               padding: EdgeInsets.all(7.sp),
               decoration: BoxDecoration(
-                color: joinOrLeave ? Color(0xff88d95d) : Color(0xffFf6472a),
+                color: joinOrLeave ? Color(0xff88d95d) : Color(0xffff6472a),
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Row(
@@ -1011,7 +1004,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
           );
   }
 
-  Widget userInCall({String userName}) {
+  Widget userInCall({String ?userName}) {
     return userName == null
         ? ClipOval(
             // borderRadius: BorderRadius.circular(50.r),
@@ -1036,7 +1029,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
               ClipRRect(
                 borderRadius: BorderRadius.circular(50.r),
                 child: Image.network(
-                  imageURL + userName + '.jpeg',
+                  '$imageURL$userName.jpeg',
                   fit: BoxFit.fill,
                   height: 50.sp,
                   width: 50.sp,
@@ -1058,7 +1051,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
 
 closeAlert() {
   showDialog(
-    context: Get.context,
+    context: Get.context!,
     builder: (context) => AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(22.r),

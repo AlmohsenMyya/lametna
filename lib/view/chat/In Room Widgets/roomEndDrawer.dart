@@ -5,10 +5,8 @@ import 'package:get/get.dart';
 import 'package:lametna/controllers/chat/roomsPageController.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lametna/controllers/chat/voice%20and%20video/videoController.dart';
-import 'package:lametna/controllers/chat/voice%20and%20video/voiceController.dart';
 import 'package:lametna/controllers/userData/userCredentials.dart';
 import 'package:lametna/controllers/userData/variables.dart';
-import 'package:lametna/view/chat/addAccount.dart';
 import 'package:lametna/view/chat/room%20mangement/side%20pages/custom_expansion.dart';
 import 'package:lametna/view/side%20pages/scrollText.dart';
 
@@ -16,9 +14,13 @@ import 'package:lametna/view/side%20pages/scrollText.dart';
 // bool isOwner = roomOwner != userName;
 final scaffoldKey = GlobalKey<ScaffoldState>();
 
-PopupMenuItem<int> usersPopUpMenu(String name, {Function f}) {
+PopupMenuItem<int> usersPopUpMenu(String name, {Function? f}) {
   return PopupMenuItem(
-    onTap: f,
+    onTap: (){
+      if(f != null){
+        f();
+      }
+    },
     height: 35.h,
     textStyle: TextStyle(
       fontSize: 13.sp,
@@ -57,12 +59,11 @@ Widget endDrawer() {
                     var data = controller.userInRoom["data"][index];
                     return PopupMenuButton<int>(
                       itemBuilder: (context) => [
-                        data["username"] == userName
-                            ? null
-                            : usersPopUpMenu(
+                       if( data["username"] != userName)
+                             usersPopUpMenu(
                                 "محادثة خاصة",
                                 f: () async {
-                                  await Get.back();
+                                  Get.back();
                                   Get.toNamed(
                                     "/privateMessageRoom",
                                     arguments: {
@@ -72,24 +73,23 @@ Widget endDrawer() {
                                   );
                                 },
                               ),
-                        data["username"] == userName ? null : CustomPopupMenuDivider(thickness: 1, indent: 1, endIndent: 1),
+                        if(data["username"] != userName)  CustomPopupMenuDivider(thickness: 1, indent: 1, endIndent: 1, color: Colors.white,) as PopupMenuItem<int>,
                         // usersPopUpMenu("حظر", f: () {
                         //   controller.blockUser(data["username"], 1);
                         // }),
-                        data["handIs"] == "1" && controller.roomOwner == userName
-                            ? usersPopUpMenu("قبول الطلب", f: () {
+                       if( data["handIs"] == "1" && controller.roomOwner == userName)
+                             usersPopUpMenu("قبول الطلب", f: () {
                                 // Get.put(VoiceController()).forceJoinCall(data["username"], roomId); ////////////////////////////
                               })
-                            : null,
-                        data["handIs"] == "1" && controller.roomOwner == userName ? usersPopUpMenu("رفض الطلب") : null,
-                        data["handIs"] == "1" && controller.roomOwner == userName
-                            ? CustomPopupMenuDivider(thickness: 1, indent: 1, endIndent: 1)
-                            : null,
+                            ,
+                       if( data["handIs"] == "1" && controller.roomOwner == userName)  usersPopUpMenu("رفض الطلب") ,
+                        if(data["handIs"] == "1" && controller.roomOwner == userName)
+                             CustomPopupMenuDivider(thickness: 1, indent: 1, endIndent: 1, color: Colors.white,) as PopupMenuItem<int>
+                            ,
                         usersPopUpMenu("تبليغ"),
-                        roleType == "" && controller.roomOwner != userName ? null : CustomPopupMenuDivider(thickness: 1, indent: 1, endIndent: 1),
-                        roleType == "" && controller.roomOwner != userName
-                            ? null
-                            : PopupMenuItem(
+                        if(!(roleType == "" && controller.roomOwner != userName)) CustomPopupMenuDivider( color: Colors.white,thickness: 1, indent: 1, endIndent: 1)as PopupMenuItem<int>,
+                        if(!(roleType == "" && controller.roomOwner != userName))
+                             PopupMenuItem(
                                 height: 35.h,
                                 textStyle: TextStyle(
                                   fontSize: 13.sp,
@@ -103,15 +103,14 @@ Widget endDrawer() {
                                     usersPopUpMenu(
                                       "معلومات المستخدم",
                                       f: () async {
-                                        await Get.back();
+                                        Get.back();
                                         userInfo(data);
                                         print(kick);
                                       },
                                     ),
-                                    kick == false ? null : CustomPopupMenuDivider(thickness: 1, indent: 1, endIndent: 1),
-                                    stop == false
-                                        ? null
-                                        : PopupMenuItem(
+                                    if(!(kick == false))  CustomPopupMenuDivider( color: Colors.white,thickness: 1, indent: 1, endIndent: 1)as PopupMenuItem<int>,
+                                    if(!(stop == false))
+                                         PopupMenuItem(
                                             height: 35.h,
                                             textStyle: TextStyle(
                                               fontSize: 13.sp,
@@ -123,10 +122,9 @@ Widget endDrawer() {
                                               data["username"],
                                             ),
                                           ),
-                                    stop == false ? null : CustomPopupMenuDivider(thickness: 1, indent: 1, endIndent: 1),
-                                    kick == false
-                                        ? null
-                                        : PopupMenuItem(
+                                    if(!(stop == false))  CustomPopupMenuDivider( color: Colors.white,thickness: 1, indent: 1, endIndent: 1) as PopupMenuItem<int>,
+                                    if(!(kick == false))
+                                         PopupMenuItem(
                                             height: 35.h,
                                             textStyle: TextStyle(
                                               fontSize: 13.sp,
@@ -138,10 +136,9 @@ Widget endDrawer() {
                                               data["username"],
                                             ),
                                           ),
-                                    banDevice == false ? null : CustomPopupMenuDivider(thickness: 1, indent: 1, endIndent: 1),
-                                    banDevice == false
-                                        ? null
-                                        : PopupMenuItem(
+                                   if(!( banDevice == false)) CustomPopupMenuDivider( color: Colors.white,thickness: 1, indent: 1, endIndent: 1)as PopupMenuItem<int>,
+                                    if(!(banDevice == false))
+                                         PopupMenuItem(
                                             height: 35.h,
                                             textStyle: TextStyle(
                                               fontSize: 13.sp,
@@ -178,7 +175,7 @@ Widget endDrawer() {
                                               ],
                                             ),
                                           ),
-                                    CustomPopupMenuDivider(thickness: 1, indent: 1, endIndent: 1),
+                                    CustomPopupMenuDivider( color: Colors.white,thickness: 1, indent: 1, endIndent: 1) as PopupMenuItem<int>,
                                     usersPopUpMenu("إرسال تحذير")
                                   ],
                                 ),
@@ -469,7 +466,7 @@ Widget endDrawer() {
 
 Future<dynamic> userInfo(data) {
   return showDialog(
-    context: Get.context,
+    context: Get.context!,
     builder: (context) => AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.r),

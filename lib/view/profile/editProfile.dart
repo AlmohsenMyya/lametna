@@ -1,9 +1,6 @@
 // ignore_for_file: prefer_const_constructors, missing_required_param, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lametna/controllers/profile/editProfileController.dart';
@@ -20,7 +17,7 @@ var items = [
 ];
 
 class EditProfileAccount extends StatelessWidget {
-  const EditProfileAccount({Key key}) : super(key: key);
+  const EditProfileAccount({Key ?key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -216,8 +213,8 @@ class EditProfileAccount extends StatelessWidget {
                                         iconSize: 12.sp,
 
                                         icon: RotatedBox(
-                                          child: Icon(Icons.arrow_back_ios),
                                           quarterTurns: 1,
+                                          child: Icon(Icons.arrow_back_ios),
                                         ),
                                         // Step 3.
                                         value: controller.dropdownValue,
@@ -237,9 +234,9 @@ class EditProfileAccount extends StatelessWidget {
                                           );
                                         }).toList(),
                                         // Step 5.
-                                        onChanged: (String newValue) {
+                                        onChanged: (String? newValue) {
                                           controller
-                                              .changeDropdownValue(newValue);
+                                              .changeDropdownValue(newValue!);
                                           // setState(() {
                                           //   dropdownValue = newValue!;
                                           // });
@@ -392,7 +389,7 @@ class EditProfileAccount extends StatelessWidget {
   }
 
   Widget formBuilder(String title, TextEditingController controller,
-      {Widget icon, bool isIcon = false}) {
+      {Widget? icon, bool isIcon = false}) {
     return Padding(
       padding: EdgeInsets.only(bottom: 10.h),
       child: Directionality(
@@ -405,7 +402,7 @@ class EditProfileAccount extends StatelessWidget {
                     ? SizedBox(
                         width: 17.w,
                       )
-                    : icon,
+                    : icon!,
                 SizedBox(
                   width: 10.w,
                 ),

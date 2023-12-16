@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../userData/variables.dart';
 
-class SearchController extends GetxController {
+class AlmohsenSearchController extends GetxController {
   var list = ["المستخدمين", "الغرف الكتابية", "الكل"];
   TextEditingController searchController = TextEditingController();
   var data;

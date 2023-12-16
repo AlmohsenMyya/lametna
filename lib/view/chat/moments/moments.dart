@@ -9,14 +9,13 @@ import 'package:lametna/controllers/userData/variables.dart';
 import 'package:lametna/view/chat/appBar.dart';
 import 'package:get/get.dart';
 import 'package:lametna/view/chat/moments/viewComments.dart';
-import 'package:lametna/view/chat/room%20mangement/roles/addRole.dart';
 
 class Moments extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   // var page = 0;
   // var appBar = 0;
 
-  Moments({Key key, this.appBar = 0}) : super(key: key);
+  Moments({Key? key, this.appBar = 0 , }) : super(key: key);
   final int appBar;
 
   @override
@@ -287,7 +286,7 @@ class Moments extends StatelessWidget {
                                                 ),
                                               ),
                                               Text(
-                                                '0' + " مشاهدة ",
+                                                '0' " مشاهدة ",
                                                 style: TextStyle(
                                                   fontSize: 13.sp,
                                                   color: Color(0xFFA2ACAC),
@@ -482,8 +481,8 @@ class Moments extends StatelessWidget {
               onPressed: () {
                 Get.toNamed('/postMoment');
               },
-              child: Icon(Icons.edit),
               backgroundColor: Color(0xffFFC700),
+              child: Icon(Icons.edit),
             )
           : null,
     );
