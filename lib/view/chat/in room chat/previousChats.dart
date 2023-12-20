@@ -90,7 +90,7 @@ class PreviosChat extends StatelessWidget {
                       arguments: {
                         "username": snapshot.data[index]["recieverUserRoom"]
                                     .toString() ==
-                                userName
+                                mobileUserName
                             ? snapshot.data[index]["senderUserRoom"].toString()
                             : snapshot.data[index]["recieverUserRoom"]
                                 .toString(),
@@ -118,7 +118,7 @@ class PreviosChat extends StatelessWidget {
                               // .toString(),
                               snapshot.data[index]["recieverUserRoom"]
                                           .toString() ==
-                                      userName
+                                      mobileUserName
                                   ? snapshot.data[index]["senderUserRoom"]
                                       .toString()
                                   : snapshot.data[index]["recieverUserRoom"]
@@ -151,7 +151,7 @@ class PreviosChat extends StatelessWidget {
                                           snapshot.data[index]
                                                   ["recieverUserRoom"]
                                               .toString() ==
-                                      userName
+                                      mobileUserName
                                   ? snapshot.data[index]["senderUserRoom"]
                                       .toString()
                                   : snapshot.data[index]["recieverUserRoom"]

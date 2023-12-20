@@ -78,7 +78,7 @@ class ChatHomeController extends GetxController {
   getFavourites() async {
     var url = Uri.parse(viewFavoriteRooms);
     var response = await http.post(url, body: {
-      "username": userName,
+      "username": mobileUserName,
     });
     final databody = json.decode(response.body);
     // update();
@@ -129,7 +129,7 @@ class ChatHomeController extends GetxController {
     var response = await http.post(
       url,
       body: {
-        "username": userName,
+        "username": mobileUserName,
         "roomId": roomId,
       },
     );
@@ -270,7 +270,7 @@ Placemark addresses = placemarks[0];
       if (databody["status"] == "success") {
         print("login");
         print(databody);
-        userName = roleUsernameController.text.trim();
+        mobileUserName = roleUsernameController.text.trim();
         isRole = true;
         isGuest = false;
         roleType = databody["data"]["roleType"].toString();
@@ -296,7 +296,7 @@ Placemark addresses = placemarks[0];
           '/room',
           arguments: {
             "room_id": roomId,
-            "username": userName,
+            "username": mobileUserName,
           },
         );
         // } else if (isGuest) {
@@ -560,7 +560,7 @@ List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, p
     var response = await http.post(
       url,
       body: {
-        "username": userName,
+        "username": mobileUserName,
       },
     );
     final databody = json.decode(response.body);
@@ -620,7 +620,7 @@ List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, p
       if (data["status"] == "success") {
         Get.back();
 
-        userName = guestController.text.trim();
+        mobileUserName = guestController.text.trim();
         isRole = false;
         isGuest = true;
         guestController.text = "";

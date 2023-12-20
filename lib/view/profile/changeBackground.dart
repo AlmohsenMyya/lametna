@@ -68,7 +68,7 @@ class ChangeBackground extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Text(
-                                        userName,
+                                        mobileUserName,
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontFamily: 'Portada',

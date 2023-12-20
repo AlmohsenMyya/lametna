@@ -26,7 +26,7 @@ class Room extends StatefulWidget {
 }
 
 final scaffoldKey = GlobalKey<ScaffoldState>();
-bool isOwner = Get.arguments["owner"] != userName;
+bool isOwner = Get.arguments["owner"] != mobileUserName;
 
 class _RoomState extends State<Room> with WidgetsBindingObserver {
   // Future<bool> result = isLockScreen();
@@ -192,7 +192,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                 }),
             GetBuilder<RoomsPageController>(
               init: RoomsPageController(),
-              builder: (controller) => userName == controller.roomOwner
+              builder: (controller) => mobileUserName == controller.roomOwner
                   ? Container(
                       width: Get.width,
                       height: controller.waitingListStatus ? 200.h : 0,
@@ -346,7 +346,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                                                 itemBuilder: (context, index) {
                                                   var data = snapshot.data[index];
 
-                                                  if (data["senderName"] == "roomAlert" && !data["message"].toString().contains(userName)) {
+                                                  if (data["senderName"] == "roomAlert" && !data["message"].toString().contains(mobileUserName)) {
                                                     return joinAndLeaveAlert(controller.roomStatus, data["joinOrLeave"] == "0" ? true : false,
                                                         data["senderName"].toString(), data["message"].toString());
                                                   } else if (data["senderName"] == "roomWelcome") {
@@ -354,7 +354,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                                                       data["message"],
                                                       style: TextStyle(color: Colors.green),
                                                     );
-                                                  } else if (data["senderName"] == "roomAlert" && data["message"].toString().contains(userName)) {
+                                                  } else if (data["senderName"] == "roomAlert" && data["message"].toString().contains(mobileUserName)) {
                                                     return SizedBox();
                                                   } else {
                                                     // return Text(
@@ -392,7 +392,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                                                     borderRadius: BorderRadius.circular(10.r),
                                                   ),
                                                   child: Text(
-                                                    "${controller.welcomeMsg!} $userName" ?? "",
+                                                    "${controller.welcomeMsg!} $mobileUserName" ?? "",
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       color: Colors.white,
@@ -558,13 +558,13 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                   )
                ,
             PopupMenuDivider(),
-           if( data["senderName"] == userName)
+           if( data["senderName"] == mobileUserName)
                  PopupMenuItem<String>(
                     onTap: () {
                       //https://lametnachat.com/messages/deleteMessageInRoom.php
                       var url = Uri.parse(deleteMessage);
                       http.post(url, body: {
-                        "senderName": userName,
+                        "senderName": mobileUserName,
                         "messageId": data["messageId"],
                       });
                     },
@@ -627,10 +627,10 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                         width: double.infinity,
                         color: Color(0xFFCAF8ED),
                         child: Padding(
-                          padding: EdgeInsets.fromLTRB(data["senderName"] == guestUserName || data["senderName"] == userName ? 0.w : 55.w, 5.h,
-                              data["senderName"] == userName || data["senderName"] == guestUserName ? 55.w : 0, 5.h),
+                          padding: EdgeInsets.fromLTRB(data["senderName"] == guestUserName || data["senderName"] == mobileUserName ? 0.w : 55.w, 5.h,
+                              data["senderName"] == mobileUserName || data["senderName"] == guestUserName ? 55.w : 0, 5.h),
                           child: Directionality(
-                            textDirection: data["senderName"] == userName ? TextDirection.ltr : TextDirection.rtl,
+                            textDirection: data["senderName"] == mobileUserName ? TextDirection.ltr : TextDirection.rtl,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
@@ -682,7 +682,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                                     ),
                                     Text(
                                       data["senderName"], // data["userType"]  data["senderName"]
-                                      textAlign: data["senderName"] == userName ? TextAlign.right : TextAlign.left,
+                                      textAlign: data["senderName"] == mobileUserName ? TextAlign.right : TextAlign.left,
                                       style: TextStyle(
                                         fontSize: 15.sp,
                                         letterSpacing: 1.2,
@@ -724,11 +724,11 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                                 Color(0xFFF792F0),
                                 Color(0xFFF1F1F1),
                               ],
-                              begin: data["senderName"] == userName ? Alignment.centerLeft : Alignment.centerRight,
-                              end: data["senderName"] == userName ? Alignment.centerRight : Alignment.centerLeft,
+                              begin: data["senderName"] == mobileUserName ? Alignment.centerLeft : Alignment.centerRight,
+                              end: data["senderName"] == mobileUserName ? Alignment.centerRight : Alignment.centerLeft,
                             ),
 
-                            borderRadius: data["senderName"] == userName
+                            borderRadius: data["senderName"] == mobileUserName
                                 ? BorderRadius.only(
                                     bottomLeft: Radius.circular(20.r),
                                   )
@@ -738,10 +738,10 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                           ),
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(
-                                data["senderName"] == userName ? 20.w : 60.w, 9.h, data["senderName"] == userName ? 60.w : 20.w, 9.h),
+                                data["senderName"] == mobileUserName ? 20.w : 60.w, 9.h, data["senderName"] == mobileUserName ? 60.w : 20.w, 9.h),
                             child: data["image"] == "1"
                                 ? Align(
-                                    alignment: data["senderName"] == userName ? Alignment.centerRight : Alignment.centerLeft,
+                                    alignment: data["senderName"] == mobileUserName ? Alignment.centerRight : Alignment.centerLeft,
                                     // color: Colors.green,
                                     child: Image.network(
                                       imageSent + data["message"],
@@ -753,7 +753,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                                   )
                                 : Text(
                                     data["message"],
-                                    textAlign: data["senderName"] == userName ? TextAlign.right : TextAlign.left,
+                                    textAlign: data["senderName"] == mobileUserName ? TextAlign.right : TextAlign.left,
                                     style: TextStyle(
                                       fontSize:
                                           data["message"].toString().contains("لقد تم حذف هذه الرسالة") ? 18.sp : int.parse(data["fontSize"]).sp,
@@ -771,8 +771,8 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                   ),
                   Positioned(
                     top: 3.h,
-                    left: data["senderName"] == userName ? null : 10.w,
-                    right: data["senderName"] == userName ? 10.w : null,
+                    left: data["senderName"] == mobileUserName ? null : 10.w,
+                    right: data["senderName"] == mobileUserName ? 10.w : null,
                     child: Container(
                       width: 35.w,
                       height: 40.h,
@@ -810,8 +810,8 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                       ? Positioned(
                           top: -7.h,
                           // right: isMe ? 10.w : null,
-                          left: data["senderName"] == userName ? 10.w : null,
-                          right: data["senderName"] == userName ? null : 10.w,
+                          left: data["senderName"] == mobileUserName ? 10.w : null,
+                          right: data["senderName"] == mobileUserName ? null : 10.w,
                           // right: isMe ? null : 10.w,
                           child: Image.asset(
                             "assets/images/vipBadge.png",
@@ -824,8 +824,8 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                           ? Positioned(
                               top: -7.h,
                               // right: isMe ? 10.w : null,
-                              left: data["senderName"] == userName ? 10.w : null,
-                              right: data["senderName"] == userName ? null : 10.w,
+                              left: data["senderName"] == mobileUserName ? 10.w : null,
+                              right: data["senderName"] == mobileUserName ? null : 10.w,
                               // right: isMe ? null : 10.w,
                               child: Image.asset(
                                 "assets/images/vip.png",
@@ -847,7 +847,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                     width: double.infinity,
                     color: Color(0xFFCAF8ED),
                     child: Directionality(
-                      textDirection: data["senderName"] == userName || data["senderName"] == guestUserName ? TextDirection.rtl : TextDirection.ltr,
+                      textDirection: data["senderName"] == mobileUserName || data["senderName"] == guestUserName ? TextDirection.rtl : TextDirection.ltr,
                       child: Row(
                         children: [
                           Container(
@@ -872,7 +872,7 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                           ),
                           Text(
                             data["senderName"],
-                            textAlign: data["senderName"] == userName || data["senderName"] == guestUserName ? TextAlign.right : TextAlign.left,
+                            textAlign: data["senderName"] == mobileUserName || data["senderName"] == guestUserName ? TextAlign.right : TextAlign.left,
                             style: TextStyle(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.bold,
@@ -906,11 +906,11 @@ class _RoomState extends State<Room> with WidgetsBindingObserver {
                       )
                     ]),
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(data["senderName"] == userName || data["senderName"] == guestUserName ? 0.w : 60.w, 9.h,
-                          data["senderName"] == userName || data["senderName"] == guestUserName ? 60.w : 0.w, 9.h),
+                      padding: EdgeInsets.fromLTRB(data["senderName"] == mobileUserName || data["senderName"] == guestUserName ? 0.w : 60.w, 9.h,
+                          data["senderName"] == mobileUserName || data["senderName"] == guestUserName ? 60.w : 0.w, 9.h),
                       child: Text(
                         data["message"],
-                        textAlign: data["senderName"] == userName || data["senderName"] == guestUserName ? TextAlign.right : TextAlign.left,
+                        textAlign: data["senderName"] == mobileUserName || data["senderName"] == guestUserName ? TextAlign.right : TextAlign.left,
                         style: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.bold,
@@ -1108,9 +1108,9 @@ closeAlert() {
                     onTap: () async {
                       Get.back();
                       await controller.onLeave();
-                      // Get.put(VoiceController()).leave();
-                      // Get.put(VoiceController()).agoraEngine.leaveChannel();
-                      // Get.put(VoiceController()).agoraEngine = null;
+                      Get.put(VoiceController()).leave();
+                      Get.put(VoiceController()).agoraEngine?.leaveChannel();
+                      Get.put(VoiceController()).agoraEngine = null;
                     },
                     child: Text(
                       "موافق",

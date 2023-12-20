@@ -87,9 +87,9 @@ class Favourite extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: GestureDetector(
         onTap: () {
-          print(userName);
+          print(mobileUserName);
           print(owner);
-          if (userName.isNotEmpty) {
+          if (mobileUserName.isNotEmpty) {
             Get.toNamed('/room', arguments: {
               "room_name": roomName,
               "room_id": roomId,

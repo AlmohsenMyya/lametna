@@ -51,7 +51,7 @@ class EditPersonalProfile extends StatelessWidget {
                   ),
                   Spacer(),
                   Text(
-                    userName,
+                    mobileUserName,
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'Portada',
@@ -63,7 +63,7 @@ class EditPersonalProfile extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(360.r),
                     child: Image.network(
-                      imageURL + userName + ".jpeg",
+                      imageURL + mobileUserName + ".jpeg",
                       width: 62.w,
                       height: 70.h,
                       fit: BoxFit.cover,

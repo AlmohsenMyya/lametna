@@ -83,7 +83,7 @@ class MainControllerPanel extends StatelessWidget {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(360.r),
                                   child: Image.network(
-                                    "$imageURL$userName.jpeg",
+                                    "$imageURL$mobileUserName.jpeg",
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -95,7 +95,7 @@ class MainControllerPanel extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    " مرحبا بك  $userName",
+                                    " مرحبا بك  $mobileUserName",
                                     style: TextStyle(
                                       color: Colors.black, //Color(0xff9A8B8B),
                                       fontSize: 15.sp,

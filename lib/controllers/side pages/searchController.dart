@@ -47,7 +47,7 @@ class AlmohsenSearchController extends GetxController {
       data = dataBody;
       update();
 
-      print("success");
+      print("success222");
     } else {
       print("error");
     }
@@ -69,7 +69,7 @@ class AlmohsenSearchController extends GetxController {
       data = dataBody;
       update();
 
-      print("success");
+      print("success3333");
     } else {
       print("error");
     }

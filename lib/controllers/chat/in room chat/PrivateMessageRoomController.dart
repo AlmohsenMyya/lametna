@@ -68,7 +68,7 @@ class PrivateMessagesRoomController extends GetxController {
       var response = await http.post(url, body: {
         "roomId": Get.arguments['room_id'],
         "senderUserRoom": Get.arguments["username"],
-        "recieverUserRoom": userName,
+        "recieverUserRoom": mobileUserName,
       });
       final dataBody = json.decode(response.body);
       update();
@@ -87,14 +87,14 @@ class PrivateMessagesRoomController extends GetxController {
       if (messageRoomController.text.trim() != "") {
         var response = await http.post(url, body: {
           "roomId": Get.arguments['room_id'],
-          "senderUserRoom": userName,
+          "senderUserRoom": mobileUserName,
           "recieverUserRoom": Get.arguments["username"],
           "message": messageRoomController.text.trim(),
         });
         final dataBody = json.decode(response.body);
         if (dataBody['status'] == "success") {
           messageRoomController.text = "";
-          print("success");
+          print("success سثىي ة");
         } else {
           print("error");
         }
@@ -170,7 +170,7 @@ class PrivateMessagesRoomController extends GetxController {
           'https://lametnachat.com/messages/audioInRoom.php'), // Replace with your API endpoint
     );
     request.fields['roomId'] = Get.arguments["room_id"];
-    request.fields['senderUserRoom'] = userName;
+    request.fields['senderUserRoom'] = mobileUserName;
     request.fields['recieverUserRoom'] = Get.arguments['username'];
     request.files.add(
       http.MultipartFile(

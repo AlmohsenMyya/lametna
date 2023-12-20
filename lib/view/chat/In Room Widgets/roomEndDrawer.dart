@@ -10,6 +10,9 @@ import 'package:lametna/controllers/userData/variables.dart';
 import 'package:lametna/view/chat/room%20mangement/side%20pages/custom_expansion.dart';
 import 'package:lametna/view/side%20pages/scrollText.dart';
 
+import '../../../controllers/chat/voice and video/voiceController.dart';
+import 'messageBuilder.dart';
+
 // String roomOwner = Get.arguments["owner"];
 // bool isOwner = roomOwner != userName;
 final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -59,7 +62,7 @@ Widget endDrawer() {
                     var data = controller.userInRoom["data"][index];
                     return PopupMenuButton<int>(
                       itemBuilder: (context) => [
-                       if( data["username"] != userName)
+                       if( data["username"] != mobileUserName)
                              usersPopUpMenu(
                                 "محادثة خاصة",
                                 f: () async {
@@ -73,22 +76,22 @@ Widget endDrawer() {
                                   );
                                 },
                               ),
-                        if(data["username"] != userName)  CustomPopupMenuDivider(thickness: 1, indent: 1, endIndent: 1, color: Colors.white,) as PopupMenuItem<int>,
+                        if(data["username"] != mobileUserName)  CustomPopupMenuDivider(thickness: 1, indent: 1, endIndent: 1, color: Colors.white,) as PopupMenuItem<int>,
                         // usersPopUpMenu("حظر", f: () {
                         //   controller.blockUser(data["username"], 1);
                         // }),
-                       if( data["handIs"] == "1" && controller.roomOwner == userName)
+                       if( data["handIs"] == "1" && controller.roomOwner == mobileUserName)
                              usersPopUpMenu("قبول الطلب", f: () {
-                                // Get.put(VoiceController()).forceJoinCall(data["username"], roomId); ////////////////////////////
+                                Get.put(VoiceController()).forceJoinCall(data["username"], roomId); ////////////////////////////
                               })
                             ,
-                       if( data["handIs"] == "1" && controller.roomOwner == userName)  usersPopUpMenu("رفض الطلب") ,
-                        if(data["handIs"] == "1" && controller.roomOwner == userName)
+                       if( data["handIs"] == "1" && controller.roomOwner == mobileUserName)  usersPopUpMenu("رفض الطلب") ,
+                        if(data["handIs"] == "1" && controller.roomOwner == mobileUserName)
                              CustomPopupMenuDivider(thickness: 1, indent: 1, endIndent: 1, color: Colors.white,) as PopupMenuItem<int>
                             ,
                         usersPopUpMenu("تبليغ"),
-                        if(!(roleType == "" && controller.roomOwner != userName)) CustomPopupMenuDivider( color: Colors.white,thickness: 1, indent: 1, endIndent: 1)as PopupMenuItem<int>,
-                        if(!(roleType == "" && controller.roomOwner != userName))
+                        if(!(roleType == "" && controller.roomOwner != mobileUserName)) CustomPopupMenuDivider( color: Colors.white,thickness: 1, indent: 1, endIndent: 1)as PopupMenuItem<int>,
+                        if(!(roleType == "" && controller.roomOwner != mobileUserName))
                              PopupMenuItem(
                                 height: 35.h,
                                 textStyle: TextStyle(

@@ -21,7 +21,7 @@ class ProfileController extends GetxController {
   Future getData() async {
     var url = Uri.parse(userInfo);
     var response = await http.post(url, body: {
-      "username": userName,
+      "username": mobileUserName,
     });
     if (response.statusCode == 200) {
       final dataBody = json.decode(response.body);

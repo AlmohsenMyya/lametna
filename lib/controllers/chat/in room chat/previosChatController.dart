@@ -20,7 +20,7 @@ class PreviosChatController extends GetxController {
     try {
       var url = Uri.parse(inRoomListOfChat);
       var response = await http.post(url, body: {
-        "senderUserRoom": userName,
+        "senderUserRoom": mobileUserName,
         "roomId": Get.arguments["roomId"]
       });
       final dataBody = json.decode(response.body);

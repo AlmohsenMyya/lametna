@@ -26,7 +26,7 @@ class ChangeBackgroundController extends GetxController {
     var uri = Uri.parse(updateBackground);
     var res = await http.post(uri, body: {
       "selectedBG": background,
-      "username": userName,
+      "username": mobileUserName,
     });
 
     var dataBody = json.decode(res.body);

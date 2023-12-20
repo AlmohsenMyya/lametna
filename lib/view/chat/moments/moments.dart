@@ -181,10 +181,10 @@ class Moments extends StatelessWidget {
                                                             textDirection: TextDirection.rtl,
                                                             child: ListBody(
                                                               children: <Widget>[
-                                                                snapshot.data[index]["username"] == userName
+                                                                snapshot.data[index]["username"] == mobileUserName
                                                                     ? ListTile(
                                                                         onTap: () {
-                                                                          if (snapshot.data[index]["username"].toString() == userName) {
+                                                                          if (snapshot.data[index]["username"].toString() == mobileUserName) {
                                                                             controller.deleteStory(snapshot.data[index]["id"].toString());
                                                                           }
                                                                         },

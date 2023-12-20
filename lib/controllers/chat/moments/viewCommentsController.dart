@@ -34,7 +34,7 @@ class ViewCommentsController extends GetxController {
   postComment() async {
     if (isGuest == false && isRole == false) {
       var res = await http.post(Uri.parse(addStoryComment), body: {
-        "username": userName,
+        "username": mobileUserName,
         "storyId": Get.arguments["id"].toString(),
         "comment": commentController.text.toString(),
       });
@@ -99,7 +99,7 @@ class ViewCommentsController extends GetxController {
   likeStory(String storyId) async {
     if (isGuest == false && isRole == false) {
       var res = await http.post(Uri.parse(likeStoryUrl), body: {
-        "username": userName,
+        "username": mobileUserName,
         "storyId": storyId,
       });
       var dataBody = json.decode(res.body);

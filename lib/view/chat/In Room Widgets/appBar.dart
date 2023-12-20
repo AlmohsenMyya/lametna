@@ -340,7 +340,7 @@ PreferredSize appbar() {
                       ],
                     ),
                     actions: <Widget>[
-                      if (userName == controller.roomOwner)
+                      if (mobileUserName == controller.roomOwner)
                         GestureDetector(
                           onTap: () {
                             controller.toggleWaitingList();

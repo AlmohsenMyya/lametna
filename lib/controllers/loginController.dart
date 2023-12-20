@@ -61,7 +61,7 @@ class LoginController extends GetxController {
       print(response.toString());
       print(response.toString());
       if (response['status'] == "success") {
-        userName = response["data"]['username'];
+        mobileUserName = response["data"]['username'];
         userId = response["data"]['userid'];
         userImage = response["data"]["image"];
         userType = response["data"]["userType"];

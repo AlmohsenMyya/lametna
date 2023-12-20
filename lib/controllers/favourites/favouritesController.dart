@@ -19,7 +19,7 @@ class FavouritesController extends GetxController {
     favouriteRooms.clear();
     var url = Uri.parse(viewFavoriteRooms);
     var response = await http.post(url, body: {
-      "username": userName,
+      "username": mobileUserName,
     });
     final databody = json.decode(response.body);
     // update();

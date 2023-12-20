@@ -24,7 +24,7 @@ Widget roomBuilder({dynamic data, ChatHomeController? controller, isVIP = true})
             welcomeText: data["hello_msg"],
           );
         } else {
-          controller?.checkIfBanned(roomId: data["room_id"], username: userName);
+          controller?.checkIfBanned(roomId: data["room_id"], username: mobileUserName);
         }
       },
       child: Padding(

@@ -127,7 +127,7 @@ class Profile extends StatelessWidget {
                                               BorderRadius.circular(100.r),
                                           child: Image.network(
                                             "https://lametnachat.com/upload/imageUser/" +
-                                                userName.toString() +
+                                                mobileUserName.toString() +
                                                 ".jpeg",
                                             errorBuilder:
                                                 (context, error, stackTrace) =>

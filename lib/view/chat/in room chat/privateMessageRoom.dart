@@ -43,7 +43,7 @@ class PrivateMessageRoom extends StatelessWidget {
                 padding: EdgeInsets.only(right: 20.w),
                 child: GestureDetector(
                   onTap: () {
-                    print(userName);
+                    print(mobileUserName);
                     print("-------------------");
                     print(Get.arguments['username']);
                   },
@@ -85,7 +85,7 @@ class PrivateMessageRoom extends StatelessWidget {
                                 reverse: true,
                                 itemBuilder: (context, index) {
                                   final message = snapshot.data["data"][(snapshot.data["data"].length ?? 0) - 1 - index];
-                                  final isSentByMe = message["senderUserRoom"] == userName;
+                                  final isSentByMe = message["senderUserRoom"] == mobileUserName;
                                   return Padding(
                                     padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
                                     child: Column(

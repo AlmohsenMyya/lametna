@@ -41,7 +41,7 @@ class PostMomentController extends GetxController {
     // addStory
     if (textEditingController.text != "") {
       var res = await http.post(Uri.parse(addStory), body: {
-        "username": userName,
+        "username": mobileUserName,
         "text": textEditingController.text,
       });
       var dataBody = json.decode(res.body);
@@ -58,7 +58,7 @@ class PostMomentController extends GetxController {
     var request = http.MultipartRequest('POST', Uri.parse(addStoryWithImage));
 
     // Set headers if required
-    request.fields['username'] = userName;
+    request.fields['username'] = mobileUserName;
     request.fields['text'] = textEditingController.text;
 
     // Add the image file to the request
@@ -86,7 +86,7 @@ class PostMomentController extends GetxController {
 
   getAllStories() async {
     var res = await http.post(Uri.parse('https://lametnachat.com/stories/viewstories.php'), body: {
-      "username": userName,
+      "username": mobileUserName,
     });
     var dataBody = json.decode(res.body);
     streamController.sink.add(dataBody["data"]);
@@ -124,7 +124,7 @@ class PostMomentController extends GetxController {
   likeStory(String storyId) async {
     if (isGuest == false && isRole == false) {
       var res = await http.post(Uri.parse(likeStoryUrl), body: {
-        "username": userName,
+        "username": mobileUserName,
         "storyId": storyId,
       });
       var dataBody = json.decode(res.body);

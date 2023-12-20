@@ -128,7 +128,7 @@ class PrivateMessage extends StatelessWidget {
                                                     BorderRadius.circular(
                                                         360.r),
                                                 child: Image.network(
-                                                  imageURL + userName + ".jpeg",
+                                                  imageURL + mobileUserName + ".jpeg",
                                                   width: 50.w,
                                                   height: 50.h,
                                                   fit: BoxFit.cover,

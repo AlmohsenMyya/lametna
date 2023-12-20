@@ -80,7 +80,7 @@ class RoomsSettingPageController extends GetxController {
   sendFontSize() async {
     var url = Uri.parse(fontSize);
     await http.post(url, body: {
-      'username': userName,
+      'username': mobileUserName,
       'fontSize': sliderValue.toString(),
     });
 
@@ -90,7 +90,7 @@ class RoomsSettingPageController extends GetxController {
   getSettings() async {
     var url = Uri.parse(getFontSettings);
     var res = await http.post(url, body: {
-      'username': userName,
+      'username': mobileUserName,
     });
     var data = json.decode(res.body);
     sliderValue = int.parse(data["data"][0]["fontSize"]);
@@ -106,7 +106,7 @@ class RoomsSettingPageController extends GetxController {
   changeBold() async {
     var url = Uri.parse(toggleBold);
     await http.post(url, body: {
-      'username': userName,
+      'username': mobileUserName,
     });
     isBold = !isBold;
     update();
@@ -115,7 +115,7 @@ class RoomsSettingPageController extends GetxController {
   changeItalic() async {
     var url = Uri.parse(toggleItalic);
     await http.post(url, body: {
-      'username': userName,
+      'username': mobileUserName,
     });
     isItalic = !isItalic;
     update();
@@ -124,7 +124,7 @@ class RoomsSettingPageController extends GetxController {
   changeFontColor() async {
     var url = Uri.parse(changeFontColorUrl);
     await http.post(url, body: {
-      'username': userName,
+      'username': mobileUserName,
       'color': ("#" + pickerColor.toString().substring(10, 16)),
     });
   }

@@ -28,7 +28,7 @@ class ControlPanelController extends GetxController {
 
   getRooms() async {
     var request = await http.post(Uri.parse(controlPanelRoomInfo), body: {
-      'ownerUser': userName,
+      'ownerUser': mobileUserName,
     });
     var res = json.decode(request.body);
     print(res);
@@ -45,7 +45,7 @@ class ControlPanelController extends GetxController {
       var request = await http.post(Uri.parse(controlPanelUpdatePassword), body: {
         "roomId": roomCodeController.text.trim(),
         'password': roomPasswordController.text,
-        "roomOwner": userName,
+        "roomOwner": mobileUserName,
       });
       var res = json.decode(request.body);
       print(res);

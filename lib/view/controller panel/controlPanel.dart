@@ -34,7 +34,7 @@ class ControlPanel extends StatelessWidget {
               title: Align(
                 alignment: Alignment((1.3).sp, 0),
                 child: Text(
-                  "مرحبا بك " + userName,
+                  "مرحبا بك " + mobileUserName,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 14.sp,

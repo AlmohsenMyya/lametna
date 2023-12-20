@@ -34,7 +34,7 @@ class PostMoment extends StatelessWidget {
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(360),
                 child: Image.network(
-                  imageURL + userName + ".jpeg",
+                  imageURL + mobileUserName + ".jpeg",
                   width: 50.w,
                   height: 55.h,
                   fit: BoxFit.cover,
@@ -48,7 +48,7 @@ class PostMoment extends StatelessWidget {
                 ),
               ),
               title: Text(
-                userName,
+                mobileUserName,
                 style: TextStyle(color: Colors.black, fontFamily: 'Portada'),
               ),
             ),

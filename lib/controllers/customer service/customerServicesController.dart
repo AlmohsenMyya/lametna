@@ -17,7 +17,7 @@ class CustomerServicesController extends GetxController {
       url,
       body: {
         // "user_id": user_id,
-        "sender": userName,
+        "sender": mobileUserName,
         "reciever": "CustomerService",
       },
     );

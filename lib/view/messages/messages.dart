@@ -245,7 +245,7 @@ class Messages extends StatelessWidget {
                             shrinkWrap: true,
                             itemBuilder: (context, index) => controller
                                             .data[index]["username"] !=
-                                        userName &&
+                                        mobileUserName &&
                                     controller.data[index]["type"] == ""
                                 ? GestureDetector(
                                     onTap: () {

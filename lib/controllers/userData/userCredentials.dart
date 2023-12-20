@@ -1,5 +1,5 @@
 //user data
-String userName = "";
+String mobileUserName = "";
 String userPassword = "";
 String userId = "";
 String userImage = "";
